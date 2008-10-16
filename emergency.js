@@ -167,46 +167,44 @@ function RSS2Channel(rssxml)
 //PROCESSES
 
 // //uses xmlhttpreq to get the raw rss xml
-// function getRSS()
-// {
-
-    // alert("Got this Far");
-	// //call the right constructor for the browser being used
-	// if (window.ActiveXObject)
-		// xhr = new ActiveXObject("Microsoft.XMLHTTP");
-	// else if (window.XMLHttpRequest)
-		// xhr = new XMLHttpRequest();
-	// else
-		// alert("not supported");
+function getRSS()
+{
+	//call the right constructor for the browser being used
+	if (window.ActiveXObject)
+		xhr = new ActiveXObject("Microsoft.XMLHTTP");
+	else if (window.XMLHttpRequest)
+		xhr = new XMLHttpRequest();
+	else
+		alert("not supported");
 
         
-	// //prepare the xmlhttprequest object
-	// //xhr.open("GET",document.rssform.rssurl.value,true);
-    // xhr.open("GET",'http://emergency.washington.edu/?feed=rss2&cat=4',true);
-	// xhr.setRequestHeader("Cache-Control", "no-cache");
-	// xhr.setRequestHeader("Pragma", "no-cache");
-	// xhr.onreadystatechange = function() {
-		// if (xhr.readyState == 4)
-		// {
-			// if (xhr.status == 200)
-			// {
-				// if (xhr.responseText != null)
-                    // alert("Processing Began");
-					// processRSS(xhr.responseXML);
-				// else
-				// {
-					// alert("Failed to receive RSS feed from the emergency server - service not available.");
-					// return false;
-				// }
-			// }
-			// else
-				// alert("Error code " + xhr.status + " received: " + xhr.statusText);
-		// }
-	// }
+	//prepare the xmlhttprequest object
+	//xhr.open("GET",document.rssform.rssurl.value,true);
+    xhr.open("GET",'emergency.rss',true);
+	xhr.setRequestHeader("Cache-Control", "no-cache");
+	xhr.setRequestHeader("Pragma", "no-cache");
+	xhr.onreadystatechange = function()
+    {
+		if (xhr.readyState == 4)
+		{
+			if (xhr.status == 200)
+			{
+				if (xhr.responseText != null)
+					processRSS(xhr.responseXML);
+				else
+				{
+					alert("Failed to receive RSS feed from the emergency server - service not available.");
+					return false;
+				}
+			}
+			else
+				alert("Error code " + xhr.status + " received: " + xhr.statusText);
+		}
+	}
 
-	// //send the request
-	// xhr.send(null);
-// }
+	//send the request
+	xhr.send(null);
+}
 
 //processes the received rss xml
 function processRSS(rssxml)
@@ -219,79 +217,51 @@ function processRSS(rssxml)
 function showRSS(RSS)
 {
 	//default values for html tags used
-	var imageTag = "<img id='chan_image'";
-	var startItemTag = "<div id='item'>";
-	var startTitle = "<div id='item_title'>";
-	var startLink = "<div id='item_link'>";
-	var startDescription = "<div id='item_description'>";
-	var endTag = "</div>";
-
-	//populate channel data
-	var properties = new Array("title","link","description","pubDate","copyright");
-	for (var i=0; i<properties.length; i++)
-	{
-		eval("document.getElementById('chan_"+properties[i]+"').innerHTML = ''");
-		curProp = eval("RSS."+properties[i]);
-		if (curProp != null)
-			eval("document.getElementById('chan_"+properties[i]+"').innerHTML = curProp");
-	}
-
-	//show the image
-	document.getElementById("chan_image_link").innerHTML = "";
-	if (RSS.image.src != null)
-	{
-		document.getElementById("chan_image_link").href = RSS.image.link;
-		document.getElementById("chan_image_link").innerHTML = imageTag
-			+" alt='"+RSS.image.description
-			+"' width='"+RSS.image.width
-			+"' height='"+RSS.image.height
-			+"' src='"+RSS.image.url
-			+"' "+"/>";
-	}
+    var strHTML = '';
+    var startWrapper = '<div id="alertBox">';
+	var startItemTag = '  <div id="alertBoxText">';
+	var startTitle = '    <h1>Campus Alert:</h1> ';
+    var clearTag = '<div id="clearer"></div> ';
+    var closeTag = '  <img src="close.gif" name="xmark" width="10" height="10" id="xmark" />';
+	var endTag = '</div>';
 
 	//populate the items
-	document.getElementById("chan_items").innerHTML = "";
 	for (var i=0; i<RSS.items.length; i++)
 	{
-		item_html = startItemTag;
-		item_html += (RSS.items[i].title == null) ? "" : startTitle + RSS.items[i].title + endTag;
-		item_html += (RSS.items[i].link == null) ? "" : startLink + RSS.items[i].link + endTag;
-		item_html += (RSS.items[i].description == null) ? "" : startDescription + RSS.items[i].description + endTag;
-		item_html += endTag;
-		document.getElementById("chan_items").innerHTML += item_html;
+        strHTML = startWrapper;
+		strHTML += startItemTag;
+        strHTML += startTitle;
+		// strHTML += (RSS.items[i].title == null) ? "" : startTitle + RSS.items[i].title + endTag;
+		// strHTML += (RSS.items[i].link == null) ? "" : startLink + RSS.items[i].link + endTag;
+		strHTML += (RSS.items[i].description == null) ? "" : RSS.items[i].description + endTag;
+        strHTML += closeTag;
+        strHTML += clearTag;
+		strHTML += endTag;
 	}
 
+    addtoStart(strHTML);
+    
 	//we're done
     //document.getElementById("chan").style.visibility = "visible";
 	return true;
 }
 
-
-function addToStart()
+//<script type="text/javascript">addToStart()</script> 
+function addToStart(strHTML)
 {
 
-var strText = '<div id="alertBox">'+
-'  <div id="alertBoxText">'+
-'    <h1>Campus Alert:</h1> '+  
-'   	<p>University Police, in coordination with Seattle Police, will conduct a drill in Kane Hall on Tuesday, Sept. 16, 				from approximately 10 a.m.-3 p.m. The drill will simulate a crime in Kane Hall. The building will be closed during the drill. 		<a href="http://emergency.washington.edu/">More Info</a> &gt;&gt;  </p>'+
-'  </div>'+ 
-'  <img src="close.gif" name="xmark" width="10" height="10" id="xmark" />'+
-'<div id="clearer"></div> '+
-'</div>';
-
-strText = 'New';
-
 	// first we create a new div with document.createElement()
-	var newcontent = document.createElement('div');
+	//var newcontent = document.createElement('div');
+    var newcontent = document.write(strHTML);
 
 	// then we create some text with document.createTextNode()
-	var newtext = document.createTextNode(strText);
+	//var newtext = document.createTextNode(strText);
 
 	// then we put the text in the div
-	newcontent.appendChild(newtext);
+	//newcontent.appendChild(newtext);
 
 	// and you can nest/combine them like this to add more text
-	newcontent.appendChild(document.createTextNode('  It looks like a nice day!'));
+	//newcontent.appendChild(document.createTextNode('  It looks like a nice day!'));
 
 	// then we want to get a reference to the body tag with document.getElementsByTagName()
 	// this returns an array, so we only take the first result by specifying the [0] at the end
@@ -305,38 +275,3 @@ strText = 'New';
 }
 
 var xhr;
-
-//call the right constructor for the browser being used
-if (window.ActiveXObject)
-    xhr = new ActiveXObject("Microsoft.XMLHTTP");
-else if (window.XMLHttpRequest)
-    xhr = new XMLHttpRequest();
-else
-    alert("not supported");
-
-    
-//prepare the xmlhttprequest object
-//xhr.open("GET",document.rssform.rssurl.value,true);
-xhr.open("GET",'http://emergency.washington.edu/?feed=rss2&cat=4',true);
-xhr.setRequestHeader("Cache-Control", "no-cache");
-xhr.setRequestHeader("Pragma", "no-cache");
-xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4)
-    {
-        if (xhr.status == 200)
-        {
-            if (xhr.responseText != null)
-            {
-                alert("Processing Began");
-                processRSS(xhr.responseXML);
-            }   
-            else
-            {
-                alert("Failed to receive RSS feed from the emergency server - service not available.");
-                return false;
-            }
-        }
-        else
-            alert("Error code " + xhr.status + " received: " + xhr.statusText);
-    }
-}
