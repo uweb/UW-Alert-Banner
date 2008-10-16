@@ -1,11 +1,11 @@
 <html>
 <head>
-<title>UW Content</title>
+    <title>UW Content</title>
     <link href="uwalert_red.css" rel="stylesheet" type="text/css" />
-    <style type="text/css">
-    <!-- body { margin: 0px; } -->
-    </style>
     <?php include_once('loadrss.php'); ?>
+    <style type="text/css">
+        <!-- body { margin: 0px; } -->
+    </style>
     <script type="text/javascript" src="emergency.js"></script>
     <script type="text/javascript">
     function hide(id)
