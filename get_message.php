@@ -13,12 +13,19 @@
     $strLink = $arrItems[0]['link'];
     $strDesc = $arrItems[0]['description'];
     
-    echo $strTitle;
-    echo $strLink;
-    echo $strDesc;
+    // Content length unknown, trim to reasonable length
+    $strContent = $strDesc." ";
+    $strContent = substr($strContent,0,250);
+    $strContent = substr($strContent,0,strrpos($strContent,' '));
+    $strContent = $strContent."...";
+    
+    $strContent .= '<a href="' . $strLink . '" title ="'. $strTitle .'">More Info</a> &gt;&gt;';
+    
+    //echo $strTitle;
+    //echo $strLink;
+    echo $strContent;
     
     /**
-     * HTML goes here
-     */
-    
+         * HTML goes here
+         */  
 ?>
