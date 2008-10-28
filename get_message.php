@@ -15,7 +15,7 @@
     
     echo $strTitle;
     echo $strLink;
-    echo $strDes;
+    echo $strDesc;
     
     /**
      * HTML goes here

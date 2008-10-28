@@ -18,6 +18,8 @@
 			    frequency: 3,
 			    
 			});
+			
+			document.write('<div id="MessageContainer"></div>');
 		
 		}
        
@@ -29,8 +31,6 @@
 <script type="text/javascript">
 	getMessage();
 </script>
-
-<div id="MessageContainer"></div>
 
 </body>
 </html>
