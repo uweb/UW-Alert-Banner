@@ -3,6 +3,12 @@
 	/**
 	 * Go get our alert content via an RSS feed out of the emergency blog
 	 */    
+    session_start();
+    if ($_GET['hide'])
+    {
+        $_SESSION['hide'] = "yes"; 
+    }
+
     include_once('rss_php.php');
     $RSS_PHP = new rss_php; 
     $RSS_PHP->load('http://emergency.washington.edu/?feed=rss2&cat=4');
@@ -21,9 +27,9 @@
     
     $strContent .= '<a href="' . $strLink . '" title ="'. $strTitle .'">More Info</a> &gt;&gt;';
     
-    //echo $strTitle;
-    //echo $strLink;
-    echo $strContent;
+    $strFinal = $_SESSION['hide'] ? '' : $strContent;
+    
+    echo $strFinal;
     
     /**
          * HTML goes here
