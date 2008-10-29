@@ -25,6 +25,9 @@
     $strContent = substr($strContent,0,strrpos($strContent,' '));
     $strContent = $strContent."...";
     
+    /**
+          * HTML goes here
+          */
     $strContent .= '<a href="' . $strLink . '" title ="'. $strTitle .'">More Info</a> &gt;&gt;';
 
     $strFinal = $_SESSION['hide'] ? '' : "<div id=\"alertBox\"><div id=\"alertBoxText\">" .
@@ -34,9 +37,5 @@
     "<div id=\"clearer\"></div></div>";
     
     echo $strFinal;
-    
-    /**
-         * HTML goes here
-         */  
 ?>
 

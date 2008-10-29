@@ -21,6 +21,9 @@
 /*
  * Include our javascript object script, the wonderful Prototype... and friends
  *---------------------------*/
+ 
+var sGetMsgUrlHide = '';
+ 
 document.write('<scr' + 'ipt type="text\/javascript" src="prototype.js"><\/script>' +
 '<link href="uwalert_red.css" rel="stylesheet" type="text\/css" \/>' +
 '<sty' + 'le type="text\/css"><!-- body { margin: 0px; } --><\/style>');
@@ -29,12 +32,12 @@ function hideit(id)
 {
     $('alertBox').hide();
 
-    var sGetMsgUrl = 'get_message.php?hide=1';
+    sGetMsgUrlHide = '1';
 }
 
 function getMessage() {
 		
-	var sGetMsgUrl = 'get_message.php';
+	var sGetMsgUrl = sGetMsgUrlHide ? 'get_message.php?hide=1' : 'get_message.php';
 	new Ajax.PeriodicalUpdater('alertMessage', sGetMsgUrl, {
 	    method: 'post', // using POST to combat IE caching,
 	    frequency: 3,
