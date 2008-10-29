@@ -26,8 +26,12 @@
     $strContent = $strContent."...";
     
     $strContent .= '<a href="' . $strLink . '" title ="'. $strTitle .'">More Info</a> &gt;&gt;';
-    
-    $strFinal = $_SESSION['hide'] ? '' : $strContent;
+
+    $strFinal = $_SESSION['hide'] ? '' : "<div id=\"alertBox\"><div id=\"alertBoxText\">" .
+    "<h1>Campus Alert:</h1><p>" . $strContent . 
+    "</p></div><a href=\"#\" onclick=\"javascript:hideit('alertBox')\">" .
+    "<img src=\"close.gif\" name=\"xmark\" width=\"10\" height=\"10\" id=\"xmark\" /></a>" . 
+    "<div id=\"clearer\"></div></div>";
     
     echo $strFinal;
     
@@ -35,3 +39,4 @@
          * HTML goes here
          */  
 ?>
+

@@ -8,6 +8,7 @@
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
 	border-bottom-color: #FFFFFF;
+    overflow: hidden;
 }
 #alertBoxText {
 	width: 810px;
@@ -35,6 +36,9 @@
 	font-size: 12px;
 	color: #FFFFFF;
 	padding: 5px 0 5px 350px;
+}
+#alertBox img {
+    border: none;
 }
 #alertBoxText a {
 	color: #FFFF66;

@@ -19,20 +19,28 @@
  *--------------------------------------------------------------------------*/
 
 /*
- * Include our javascript object script, the wonderful Prototype
+ * Include our javascript object script, the wonderful Prototype... and friends
  *---------------------------*/
-document.write('<scr' + 'ipt type="text\/javascript" src="prototype.js"><\/script>');
+document.write('<scr' + 'ipt type="text\/javascript" src="prototype.js"><\/script>' +
+'<link href="uwalert_red.css" rel="stylesheet" type="text\/css" \/>' +
+'<sty' + 'le type="text\/css"><!-- body { margin: 0px; } --><\/style>');
+
+function hideit(id)
+{
+    $('alertBox').hide();
+
+    var sGetMsgUrl = 'get_message.php?hide=1';
+}
 
 function getMessage() {
 		
 	var sGetMsgUrl = 'get_message.php';
-	new Ajax.PeriodicalUpdater('messageContainer', sGetMsgUrl, {
+	new Ajax.PeriodicalUpdater('alertMessage', sGetMsgUrl, {
 	    method: 'post', // using POST to combat IE caching,
 	    frequency: 3,
-	    
 	});
 	
 	// output the HTML block we receive from the php script
-	//document.write()
+	document.write('<div id="alertMessage"><\/div>');
 
 }
