@@ -1,13 +1,14 @@
 <?php
 
+    // session_start();
+    // if ($_GET['hide']) // Condition?
+    // {
+        // $_SESSION['hide'] = "yes"; 
+    // }
+    
 	/**
 	 * Go get our alert content via an RSS feed out of the emergency blog
 	 */    
-    session_start();
-    if ($_GET['hide'])
-    {
-        $_SESSION['hide'] = "yes"; 
-    }
 
     include_once('rss_php.php');
     $RSS_PHP = new rss_php; 
@@ -30,7 +31,7 @@
           */
     $strContent .= '<a href="' . $strLink . '" title ="'. $strTitle .'">More Info</a> &gt;&gt;';
 
-    $strFinal = $_SESSION['hide'] ? '' : "<div id=\"alertBox\"><div id=\"alertBoxText\">" .
+    $strFinal = "<div id=\"alertBox\"><div id=\"alertBoxText\">" .
     "<h1>Campus Alert:</h1><p>" . $strContent . 
     "</p></div><a href=\"#\" onclick=\"javascript:hideit('alertBox')\">" .
     "<img src=\"close.gif\" name=\"xmark\" width=\"10\" height=\"10\" id=\"xmark\" /></a>" . 
@@ -38,4 +39,3 @@
     
     echo $strFinal;
 ?>
-
