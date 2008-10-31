@@ -21,13 +21,29 @@
 /*
  * Include our javascript object script, the wonderful Prototype... and friends
  *---------------------------*/
+ 
+// getCookie - Stolen from the tubes, grab cookie by name
+function getCookie(cookieName)
+{
+    var arrResults = document.cookie.match ( '(^|;) ?' + cookieName + '=([^;]*)(;|$)' );
+
+    if ( arrResults )
+        return ( unescape ( arrResults[2] ) );
+    else
+        return null;
+}
 
 // Might have to do some additional work here
 document.write('<scr' + 'ipt type="text\/javascript" src="prototype.js"><\/script>');
 document.write('<scr' + 'ipt type="text\/javascript" src="emergency.js"><\/script>');
 
 // Dynamically set the next two
-var alert = 'red';
-var strStyle = alert == 'red' ? 'uwalert_red.css' : 'uwalert_orange.css';
-document.write('<link href="'+ strStyle +'" rel="stylesheet" type="text\/css" \/>' +
-'<sty' + 'le type="text\/css"><!-- body { margin: 0px; } --><\/style>');
+var strAlert = 'red';
+var strStyle = strAlert == 'red' ? 'uwalert_red.css' : 'uwalert_orange.css';
+
+//Output the rest of HTML Header if the message is not closed
+if ( !getCookie('uwalerthide') )
+{
+    document.write('<link href="'+ strStyle +'" rel="stylesheet" type="text\/css" \/>' +
+    '<sty' + 'le type="text\/css"><!-- body { margin: 0px; } --><\/style>');
+}

@@ -1,71 +1,78 @@
-function getMessage()
-{
-    //var sGetMsgUrl = hide ? 'get_message.php?hide=1' : 'get_message.php';
-    var sGetMsgUrl = 'get_message.php';
-    
-    var message = new Ajax.PeriodicalUpdater('alertMessage', sGetMsgUrl, {
-	    method: 'post', // using POST to combat IE caching,
-	    frequency: 3
-	});
+/*  University of Washington - Alert 1.0 Beta
+ *  (c) 2008 Chris Heiland, Tim Chang-Miller
+ *
+ *  Script should be included like such:
+ *  
+ *  <html>
+ *  <head>
+ *  <title>Page Title</title>
+ *  <script type="text/javascript" src="http://depts.washington.edu/uweb/scripts/alert.js"></script>
+ *  </head>
+ *  <body>
+ *  
+ *  <script type="text/javascript">
+ *  	getMessage();
+ *  </script>
+ *  </body>
+ *  </html>
+ *
+ *--------------------------------------------------------------------------*/
 
-    var hide = get_cookie("hide");
-    if (hide)
-        message.stop();
-    return message;
-}
-
+// Object Creation for message to carry through functions
 var oMessage = getMessage();
 
-function addElement() 
+// getMessage - grab HTML from get_message.php
+function getMessage()
 {
-  var body = document.getElementsByTagName('body')[0];
-  
-  var newdiv = document.createElement('div');
-  var divIdName = 'alertMessage';
-  
-  newdiv.setAttribute('id',divIdName);
-  
-  body.insertBefore(newdiv, body.firstChild);
-  //body.appendChild(newdiv);
-}
-
-function get_cookie(cookie_name)
-{
-    var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
-
-    if ( results )
-        return ( unescape ( results[2] ) );
-    else
-        return null;
-}
-
-function hideit(id)
-{
-    $('alertBox').hide();
+    var strGetMsgUrl = 'get_message.php';
     
-    var cookie_date = new Date();
-    var expdate = cookie_date.getTime();
-    expdate += 3600*1000; //expires in 1 hour(milliseconds) 
-    cookie_date.setTime(expdate);
-    
-    document.cookie = 'hide=yes;expires=' +
-        cookie_date.toGMTString();
-
-    oMessage.stop();
+    return new Ajax.PeriodicalUpdater('alertMessage', strGetMsgUrl, {
+	    method: 'post', // using POST to combat IE caching,
+	    frequency: 10
+	});
 }
 
-
+// displayAlert - check for cookie before  displaying message
+// don't display if they have closed the alert
 function displayAlert()
 {
-    var hide = get_cookie("hide");
-    
-    if (hide)
+    if ( getCookie('uwalerthide') )
     {
         oMessage.stop();
     }
     else
     {
         addElement();
-        oMessage.start();
     }
+}
+
+// addElement - display HTML on page right below the body page
+// don't want the alert to show up anywhere
+function addElement() 
+{
+  var bodyTag = document.getElementsByTagName('body')[0];
+  
+  var newDiv = document.createElement('div');
+  var divIdName = 'alertMessage';
+  
+  newDiv.setAttribute('id',divIdName);
+  
+  bodyTag.insertBefore(newDiv, bodyTag.firstChild);
+}
+
+// hideit - external function tied to close button
+// sets the cookie and closes the alert
+function hideit(id)
+{
+    $('alertBox').hide();
+    
+    var cookieDate = new Date();
+    var strExpDate = cookieDate.getTime();
+    strExpDate += 3600*1000; //expires in 1 hour (milliseconds) 
+    cookieDate.setTime(strExpDate);
+    
+    document.cookie = 'uwalerthide=yes;expires=' +
+        cookieDate.toGMTString();
+
+    oMessage.stop();
 }
