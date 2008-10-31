@@ -60,19 +60,43 @@ function addElement()
   bodyTag.insertBefore(newDiv, bodyTag.firstChild);
 }
 
+// setCookie - Another function stolen from the tubes
+//http://techpatterns.com/downloads/javascript_cookies.php
+function setCookie( strName, strValue, strExpires, strPath, strDomain, strSecure ) 
+{
+    // set time, it's in milliseconds
+    var strToday = new Date();
+    strToday.setTime( strToday.getTime() );
+
+     /*
+            if the strExpires variable is set, make the correct 
+            strExpires time, the current script below will set 
+            it for x number of days, to make it for hours, 
+            delete * 24, for minutes, delete * 60 * 24
+            */
+    if ( strExpires )
+    {
+        // Original was set for days, we want to set it for hours
+        //strExpires = strExpires * 1000 * 60 * 60 * 24;
+        strExpires = strExpires * 1000 * 60 * 60;
+    }
+    var expiresDate = new Date( strToday.getTime() + (strExpires) );
+
+    document.cookie = strName + "=" + escape( strValue ) +
+    ( ( strExpires ) ? ";expires=" + expiresDate.toGMTString() : "" ) + 
+    ( ( strPath ) ? ";path=" + strPath : "" ) + 
+    ( ( strDomain ) ? ";domain=" + strDomain : "" ) +
+    ( ( strSecure ) ? ";secure" : "" );
+}
+
+
 // hideit - external function tied to close button
 // sets the cookie and closes the alert
 function hideit(id)
 {
     $('alertBox').hide();
     
-    var cookieDate = new Date();
-    var strExpDate = cookieDate.getTime();
-    strExpDate += 3600*1000; //expires in 1 hour (milliseconds) 
-    cookieDate.setTime(strExpDate);
-    
-    document.cookie = 'uwalerthide=yes;expires=' +
-        cookieDate.toGMTString();
-
+    setCookie('uwalerthide' , 'yes' , 1);
+        
     oMessage.stop();
 }

@@ -37,13 +37,13 @@ function getCookie(cookieName)
 document.write('<scr' + 'ipt type="text\/javascript" src="prototype.js"><\/script>');
 document.write('<scr' + 'ipt type="text\/javascript" src="emergency.js"><\/script>');
 
-// Dynamically set the next two
+// Dynamically set the next either from category or another method
 var strAlert = 'red';
-var strStyle = strAlert == 'red' ? 'uwalert_red.css' : 'uwalert_orange.css';
 
-//Output the rest of HTML Header if the message is not closed
+// Don't output the stylesheet if the alert box was closed
 if ( !getCookie('uwalerthide') )
 {
+    var strStyle = strAlert == 'red' ? 'uwalert_red.css' : 'uwalert_orange.css';
     document.write('<link href="'+ strStyle +'" rel="stylesheet" type="text\/css" \/>' +
     '<sty' + 'le type="text\/css"><!-- body { margin: 0px; } --><\/style>');
 }
