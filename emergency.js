@@ -11,7 +11,7 @@
  *  <body>
  *  
  *  <script type="text/javascript">
- *  	getMessage();
+ *  	displayAlert();
  *  </script>
  *  </body>
  *  </html>
@@ -93,9 +93,7 @@ function setCookie( strName, strValue, strExpires, strPath, strDomain, strSecure
 // hideit - external function tied to close button
 // sets the cookie and closes the alert
 function hideit(id)
-{
-    $('alertBox').hide();
-    
+{    
     setCookie('uwalerthide' , 'yes' , 1);
         
     oMessage.stop();

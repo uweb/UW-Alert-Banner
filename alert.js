@@ -35,6 +35,7 @@ function getCookie(cookieName)
 
 // Might have to do some additional work here
 document.write('<scr' + 'ipt type="text\/javascript" src="prototype.js"><\/script>');
+document.write('<scr' + 'ipt type="text\/javascript" src="scriptaculous.js?load=effects"><\/script>');
 document.write('<scr' + 'ipt type="text\/javascript" src="emergency.js"><\/script>');
 
 // Dynamically set the next either from category or another method
@@ -45,5 +46,5 @@ if ( !getCookie('uwalerthide') )
 {
     var strStyle = strAlert == 'red' ? 'uwalert_red.css' : 'uwalert_orange.css';
     document.write('<link href="'+ strStyle +'" rel="stylesheet" type="text\/css" \/>' +
-    '<sty' + 'le type="text\/css"><!-- body { margin: 0px; } --><\/style>');
+    '<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
 }

@@ -27,13 +27,13 @@
     $strContent = $strContent."...";
     
     /**
-          * HTML goes here
-          */
+     * HTML goes here
+     */
     $strContent .= '<a href="' . $strLink . '" title ="'. $strTitle .'">More Info</a> &gt;&gt;';
 
     $strFinal = "<div id=\"alertBox\"><div id=\"alertBoxText\">" .
     "<h1>Campus Alert:</h1><p>" . $strContent . 
-    "</p></div><a href=\"#\" onclick=\"javascript:hideit('alertBox')\">" .
+    "</p></div><a href=\"javascript:void(0)\" onclick=\"javascript:hideit('alertBox');Effect.BlindUp('alertBox')\">" .
     "<img src=\"close.gif\" name=\"xmark\" width=\"10\" height=\"10\" id=\"xmark\" /></a>" . 
     "<div id=\"clearer\"></div></div>";
     
