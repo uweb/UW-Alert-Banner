@@ -28,7 +28,8 @@ function getMessage()
     
     return new Ajax.PeriodicalUpdater('alertMessage', strGetMsgUrl, {
 	    method: 'post', // using POST to combat IE caching,
-	    frequency: 10
+	    //decay: ??, // Resets if there is a change in the response
+        frequency: 10
 	});
 }
 
