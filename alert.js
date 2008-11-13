@@ -36,16 +36,22 @@ function getCookie(cookieName)
 function AJ()
 {
 	var obj;
-	if (window.XMLHttpRequest) obj= new XMLHttpRequest(); 
-	else if (window.ActiveXObject){
-		try{
+	if (window.XMLHttpRequest)
+        obj = new XMLHttpRequest();
+	else if (window.ActiveXObject)
+    {
+		try
+        {
 			obj= new ActiveXObject('MSXML2.XMLHTTP.3.0');
 		}
-		catch(er){
-			try{
+		catch(er)
+        {
+			try
+            {
 				obj= new ActiveXObject("Microsoft.XMLHTTP");
 			}
-			catch(er){
+			catch(er)
+            {
 				obj= false;
 			}
 		}
@@ -55,13 +61,15 @@ function AJ()
 
 function isThere(strURL)
 {
-	var req= new AJ(); // XMLHttpRequest object
-	try {
-		req.open("HEAD", url, false);
-		req.send(null);		
-		return req.status== 200 ? true : false;
+	var req = new AJ(); // XMLHttpRequest object
+	try
+    {
+		req.open("HEAD", strURL, false);
+		req.send(null);
+		return req.status == 200 ? true : false;
 	}
-	catch (er) {
+	catch (er)
+    {
 		return false;
 	}
 }
@@ -74,7 +82,7 @@ var strAlert = 'red';
 if ( !getCookie('uwalerthide') && isThere('http://staff.washington.edu/cheiland/alert/emergency'))
 {
     // If the file does not exist - then don't show
-
+    
     // Might have to do some additional work here
     // Probably less effecient but much easier to read
     // -------
@@ -86,8 +94,11 @@ if ( !getCookie('uwalerthide') && isThere('http://staff.washington.edu/cheiland/
     var strStyle = strAlert == 'red' ? 'uwalert_red.css' : 'uwalert_orange.css';
     document.write('<link href="'+ strStyle +'" rel="stylesheet" type="text\/css" \/>' +
     '<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
-    
-  document.write('<scr' + 'ipt type="text/javascript">' +
-	'displayAlert();' +
-    '</script>');
+}
+else
+{
+    function displayAlert()
+    {
+        // Does nothing - for error prevention
+    }   
 }

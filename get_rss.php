@@ -38,8 +38,8 @@
     // get-message just pull from a file and have something run
     // as a cronjob, not as fast, but we aren't going for speed here
     // Reliability is much more important than how fast they get the message
-    $arrItems8 = getFeedData(4);
-    $arrItems9 = getFeedData(6);
+    $arrItems8 = getFeedData(8);
+    $arrItems9 = getFeedData(9);
 
     if ( $strStatus = getHighest($arrItems8[0]['pubDate'],$arrItems9[0]['pubDate']) )
     {

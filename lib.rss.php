@@ -1,7 +1,4 @@
 <?php
-    
-    $strStorage = 'emergency';
-
     // getFeedData - grab the RSS feed from the category and 
     // put it into an array
     function getFeedData($intCategory)
@@ -68,7 +65,7 @@
     // Linked to rmData function
     function setData($strData)
     {
-        $fh = fopen($strStorage, 'w+');
+        $fh = fopen('emergency', 'w');
         fwrite($fh, $strData); // Should have an or die here
         fclose($fh);
     }
@@ -78,6 +75,6 @@
     // Takes no arguements
     function rmData()
     {
-        unlink($strStorage);
+        unlink('emergency');
     }
 ?>
