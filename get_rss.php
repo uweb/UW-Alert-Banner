@@ -72,7 +72,9 @@
         // would have to go down in the middle of an emergency to pose
         // much of a problem - is this really an issue?
         
-        rmData();
+        // only remove data if it exists
+        if (file_exists('emergency'))
+            rmData();
         // Clearing the cache does physically remove all the file(s)
         $Cache_Lite->clean();
     }

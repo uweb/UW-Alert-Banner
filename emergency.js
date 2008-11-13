@@ -25,13 +25,13 @@ var oMessage = getMessage();
 function getMessage()
 {
     var strGetMsgUrl = 'get_message.php';
-    var strDecayRate = 0 ? isThere('http://staff.washington.edu/cheiland/alert/emergency')
-        : 10;
+    //var strDecayRate = 0;
+    //strDecayRate = isThere('http://staff.washington.edu/cheiland/alert/emergency') ? 1 : 10;
     
     return new Ajax.PeriodicalUpdater('alertMessage', strGetMsgUrl, {
 	    method: 'post', // using POST to combat IE caching,
-	    decay: strDecayRate, // Resets if there is a change in the response
-        frequency: 10
+	    frequency: 3
+        //decay: strDecayRate // Resets if there is a change in the response
 	});
 }
 

@@ -42,17 +42,17 @@ function AJ()
     {
 		try
         {
-			obj= new ActiveXObject('MSXML2.XMLHTTP.3.0');
+			obj = new ActiveXObject('MSXML2.XMLHTTP.3.0');
 		}
 		catch(er)
         {
 			try
             {
-				obj= new ActiveXObject("Microsoft.XMLHTTP");
+				obj = new ActiveXObject("Microsoft.XMLHTTP");
 			}
 			catch(er)
             {
-				obj= false;
+				obj = false;
 			}
 		}
 	}
