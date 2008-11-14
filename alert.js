@@ -75,7 +75,7 @@ function isThere(strURL)
 }
 
 // Dynamically set the next either from category or another method
-var strAlert = 'red';
+var strAlert = getCookie('uwalertcolor') == 'red' ? 'red' : 'orange';
 
 // Don't output the stylesheet if the alert box was closed
 // || FileNoExists(RSS Feed)  // Maybe do a OR statement here as we don't always want to set a cookie

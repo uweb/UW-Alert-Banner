@@ -25,6 +25,7 @@ var oMessage = getMessage();
 function getMessage()
 {
     var strGetMsgUrl = 'get_message.php';
+    // This does not seem to work as designed
     //var strDecayRate = 0;
     //strDecayRate = isThere('http://staff.washington.edu/cheiland/alert/emergency') ? 1 : 10;
     

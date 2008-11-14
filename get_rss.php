@@ -38,24 +38,31 @@
     // get-message just pull from a file and have something run
     // as a cronjob, not as fast, but we aren't going for speed here
     // Reliability is much more important than how fast they get the message
-    $arrItems8 = getFeedData(8);
-    $arrItems9 = getFeedData(9);
+    $arrItems8 = getFeedData(6);
+    $arrItems9 = getFeedData(4);
 
     if ( $strStatus = getHighest($arrItems8[0]['pubDate'],$arrItems9[0]['pubDate']) )
     {
+        $strAlertColor = '';
+
         // Not taking into account if the dates are the same or if the objects passed are not dates
         if ($strStatus == 1)
+        {
             $arrItems = $arrItems8;
+            $strAlertColor = 'red';
+        }
         elseif ($strStatus == 2)
+        {
             $arrItems = $arrItems9;
+            $strAlertColor = 'orange';
+        }
 
-        
         // Could replace this with another method and forgo traditinal caching
         // I don't think it's gaining us much at this point
         // As the RSS feed is updated every 5 minutes or so, it will probably
         // end up being more of a stumbling block than anything else
         $status = $Cache_Lite->save($arrItems,'rss');
-        setData('blah'); // We are touching the file
+        setData($strAlertColor); // We are touching the file
         // echo "Cache Creation Status: $status\n";
     }
     else
@@ -73,8 +80,7 @@
         // much of a problem - is this really an issue?
         
         // only remove data if it exists
-        if (file_exists('emergency'))
-            rmData();
+        rmData();
         // Clearing the cache does physically remove all the file(s)
         $Cache_Lite->clean();
     }

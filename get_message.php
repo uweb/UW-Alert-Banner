@@ -1,6 +1,7 @@
 <?php
     //require_once('get_rss.php'); // Take out to run as a cronjob
     require_once('Cache/Lite.php');
+    require_once('get_rss.php');
 	/**
 	 * Go get our alert content via an RSS feed out of the emergency blog
 	 */
@@ -11,7 +12,45 @@
     'automaticSerialization' => TRUE,
     'lifeTime' => 3600 // 1 hour ?
     );
+    
+    
+    // Check if the cookie is set
+    // We don't want to set a cookie every 3 seconds, but we want to know if it changes
+    
+    // Cookie has 3 possible states
+    // - Off
+    // - Red
+    // - Orange
+   
+    // Print an individual cookie
+    //echo $_COOKIE["uwalertcolor"];
+    //echo $HTTP_COOKIE_VARS["uwalertcolor"];
 
+    // Another way to debug/test is to view all cookies
+    //print_r($_COOKIE);
+   
+   
+    $fh = fopen('emergency', 'r');
+    $strAlertColor = fread($fh, filesize('emergency'));
+    fclose($fh);
+   
+    if ($_COOKIE["uwalertcolor"])
+        setcookie( 'uwalertcolor' , $strAlertColor , time() - 1 );    
+    
+    //setcookie( 'uwalertcolor' , $strAlertColor , time()+60*60*24*1 );
+    setcookie( 'uwalertcolor' , 'red' , time()+60*60*24*1 );    
+   
+    // if ($HTTP_COOKIE_VARS['uwalertcolor'])
+    // {
+        // if ($HTTP_COOKIE_VARS['uwalertcolor'] != $strAlertColor)
+            // setcookie( 'uwalertcolor' , $strAlertColor , time()+60*60*24*1 );
+    // }
+    // else
+    // {
+        // setcookie( 'uwalertcolor' , $strAlertColor , time()+60*60*24*1 );
+    // }
+ 
+    
     // Create a Cache_Lite object
     $Cache_Lite = new Cache_Lite($options);
     

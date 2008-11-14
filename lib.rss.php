@@ -75,6 +75,7 @@
     // Takes no arguements
     function rmData()
     {
-        unlink('emergency');
+        if (file_exists('emergency'))
+            unlink('emergency');
     }
 ?>
