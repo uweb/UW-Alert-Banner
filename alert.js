@@ -79,7 +79,7 @@ var strAlert = getCookie('uwalertcolor') == 'red' ? 'red' : 'orange';
 
 // Don't output the stylesheet if the alert box was closed
 // || FileNoExists(RSS Feed)  // Maybe do a OR statement here as we don't always want to set a cookie
-if ( !getCookie('uwalerthide') && isThere('http://staff.washington.edu/cheiland/alert/emergency'))
+if ( !getCookie('uwalerthide') && isThere('http://depts.washington.edu/uweb/emergency/emergency'))
 {
     // If the file does not exist - then don't show
     
@@ -87,12 +87,12 @@ if ( !getCookie('uwalerthide') && isThere('http://staff.washington.edu/cheiland/
     // Probably less effecient but much easier to read
     // -------
     // What do we do for the 98% of the time when the cookie is not set and there is no RSS items?
-    document.write('<scr' + 'ipt type="text\/javascript" src="prototype.js"><\/script>' +
-    '<scr' + 'ipt type="text\/javascript" src="scriptaculous.js?load=effects"><\/script>' +
-    '<scr' + 'ipt type="text\/javascript" src="emergency.js"><\/script>');
+    document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
+    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>' +
+    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/emergency.js"><\/script>');
 
     var strStyle = strAlert == 'red' ? 'uwalert_red.css' : 'uwalert_orange.css';
-    document.write('<link href="'+ strStyle +'" rel="stylesheet" type="text\/css" \/>' +
+    document.write('<link href="http://depts.washington.edu/uweb/emergency/'+ strStyle +'" rel="stylesheet" type="text\/css" \/>' +
     '<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
 }
 else
