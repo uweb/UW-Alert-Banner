@@ -1,19 +1,22 @@
 <?php
 // Summary - Get or Create Cached RSS Data - run via CronJob (5 - 15min increments)
 
-    require_once('Cache/Lite.php');
+    //require_once('Cache/Lite.php');
 	/**
 	 * Go get our alert content via an RSS feed out of the emergency blog
 	 */
     
     // 1 * 60 * 60 == 3600;
-    $options = array(
-    'cacheDir' => 'rss_tmp/',
     // Small performance hit, may want te re-eval later
     // Could Eliminate Cache Altogether if needed
     // Then take advantage of the saveData/rmData more
+    // ------------------------------
+    $options = array(
+    'cacheDir' => 'rss_tmp/',
     'automaticSerialization' => TRUE,
-    'lifeTime' => 3600 // 1 hour ?
+    // Currently if the data is more than an hour old it won't display
+    // May have evaluate later
+    'lifeTime' => 3600 // 1 hour
     );
 
     // Create a Cache_Lite object
@@ -23,8 +26,8 @@
     
     // Alert Status (WP Categories)
     // 7 Publish
-    // 9 — Orange Alert
     // 8 — Red Alert 
+    // 9 — Orange Alert
 
     require_once('lib.rss.php');
     //$arrItems7 = getFeedData(7); // Don't think we need this 
@@ -38,22 +41,24 @@
     // get-message just pull from a file and have something run
     // as a cronjob, not as fast, but we aren't going for speed here
     // Reliability is much more important than how fast they get the message
-    $arrItems8 = getFeedData(6);
-    $arrItems9 = getFeedData(4);
+    $arrItemsRed = getFeedData(6);
+    $arrItemsOrange = getFeedData(4);
+    $strCookStatus1 = '';
+    $strCookStatus2 = '';
 
-    if ( $strStatus = getHighest($arrItems8[0]['pubDate'],$arrItems9[0]['pubDate']) )
+    if ( $strStatus = getHighest($arrItemsRed[0]['pubDate'],$arrItemsOrange[0]['pubDate']) )
     {
         $strAlertColor = '';
 
         // Not taking into account if the dates are the same or if the objects passed are not dates
         if ($strStatus == 1)
         {
-            $arrItems = $arrItems8;
+            $arrItems = $arrItemsRed;
             $strAlertColor = 'red';
         }
         elseif ($strStatus == 2)
         {
-            $arrItems = $arrItems9;
+            $arrItems = $arrItemsOrange;
             $strAlertColor = 'orange';
         }
 
@@ -62,7 +67,8 @@
         // As the RSS feed is updated every 5 minutes or so, it will probably
         // end up being more of a stumbling block than anything else
         $status = $Cache_Lite->save($arrItems,'rss');
-        setData($strAlertColor); // We are touching the file
+        //lsetData($strAlertColor); // We are touching the file
+        $strCookStatus1 = setcookie( 'uwalertcolor' , $strAlertColor , time()+60*60*24*1 , '/', '.washington.edu');
         // echo "Cache Creation Status: $status\n";
     }
     else
@@ -79,12 +85,14 @@
         // would have to go down in the middle of an emergency to pose
         // much of a problem - is this really an issue?
         
+        $strCookStatus2 = setcookie( 'uwalertcolor' , $strAlertColor , time() - 1 );    
+        
         // only remove data if it exists
-        rmData();
+        //rmData();
         // Clearing the cache does physically remove all the file(s)
         $Cache_Lite->clean();
     }
-    
+
     // New Content After a Long Period
     // New Content After a Short Period - What is a short period? 5 sec, 5 minutes?  How to avoid overload...
     // Clear Content After None Available - How long should content be available prior to clear?  1 day?  When

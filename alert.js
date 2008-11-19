@@ -21,8 +21,8 @@
 /*
  * Include our javascript object script, the wonderful Prototype... and friends
  *---------------------------*/
- 
-// getCookie - Stolen from the tubes, grab cookie by name
+
+ // getCookie - Stolen from the tubes, grab cookie by name
 function getCookie(cookieName)
 {
     var arrResults = document.cookie.match ( '(^|;) ?' + cookieName + '=([^;]*)(;|$)' );
@@ -74,24 +74,34 @@ function isThere(strURL)
 	}
 }
 
-// Dynamically set the next either from category or another method
-var strAlert = getCookie('uwalertcolor') == 'red' ? 'red' : 'orange';
-
 // Don't output the stylesheet if the alert box was closed
-// || FileNoExists(RSS Feed)  // Maybe do a OR statement here as we don't always want to set a cookie
-if ( !getCookie('uwalerthide') && isThere('http://depts.washington.edu/uweb/emergency/emergency'))
+// If we do the crontob for get_rss then we have to go this route, otherwise we can 
+//getCookie('uwalertcolor') // This would work if the get_rss is set by crontab
+//isThere('http://depts.washington.edu/uweb/emergency/emergency') // This would work on crontab
+// So why are we doing the isThere?
+
+document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
+    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>' +
+    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/emergency.js"><\/script>');
+
+if ( !getCookie('uwalerthide') && getCookie('uwalertcolor'))
 {
+    // Dynamically set the next either from category or another method
+    var strAlertColor = getCookie('uwalertcolor');
+
     // If the file does not exist - then don't show
     
     // Might have to do some additional work here
     // Probably less effecient but much easier to read
     // -------
     // What do we do for the 98% of the time when the cookie is not set and there is no RSS items?
-    document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
-    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>' +
-    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/emergency.js"><\/script>');
-
-    var strStyle = strAlert == 'red' ? 'uwalert_red.css' : 'uwalert_orange.css';
+    // document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
+    // '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>' +
+    // '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/emergency.js"><\/script>');
+    //var strAlertMessage = isThere('http://depts.washington.edu/uweb/');
+    //alert(strAlertMessage);
+    
+    var strStyle = strAlertColor == 'red' ? 'uwalert_red.css' : 'uwalert_orange.css';
     document.write('<link href="http://depts.washington.edu/uweb/emergency/'+ strStyle +'" rel="stylesheet" type="text\/css" \/>' +
     '<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
 }

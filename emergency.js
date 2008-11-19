@@ -24,16 +24,25 @@ var oMessage = getMessage();
 // getMessage - grab HTML from get_message.php
 function getMessage()
 {
-    var strGetMsgUrl = 'get_message.php';
+    // Full URL that doesn't seem to want to work right
+    //'http://depts.washington.edu/uweb/emergency/get_message.php'
+    var strGetMsgUrl = 'http://depts.washington.edu/uweb/emergency/get_message.php';
+    var strAvailable = isThere(strGetMsgUrl);
     // This does not seem to work as designed
     //var strDecayRate = 0;
     //strDecayRate = isThere('http://staff.washington.edu/cheiland/alert/emergency') ? 1 : 10;
-    
-    return new Ajax.PeriodicalUpdater('alertMessage', strGetMsgUrl, {
-	    method: 'post', // using POST to combat IE caching,
-	    frequency: 3
-        //decay: strDecayRate // Resets if there is a change in the response
-	});
+    if (strAvailable)
+    {
+        return new Ajax.PeriodicalUpdater('alertMessage', strGetMsgUrl, {
+    	    method: 'post', // using POST to combat IE caching,
+    	    frequency: 3
+            //decay: strDecayRate // Resets if there is a change in the response
+    	});
+    }
+    else
+    {
+        throw "Error: Can't Access Alert Message"; 
+    }
 }
 
 // displayAlert - check for cookie before  displaying message
@@ -55,12 +64,12 @@ function displayAlert()
 function addElement() 
 {
   var bodyTag = document.getElementsByTagName('body')[0];
-  
+
   var newDiv = document.createElement('div');
   var divIdName = 'alertMessage';
   
   newDiv.setAttribute('id',divIdName);
-  
+
   bodyTag.insertBefore(newDiv, bodyTag.firstChild);
 }
 
@@ -72,6 +81,9 @@ function setCookie( strName, strValue, strExpires, strPath, strDomain, strSecure
     var strToday = new Date();
     strToday.setTime( strToday.getTime() );
 
+    strPath = '/';
+    strDomain = '.washington.edu';
+    
      /*
             if the strExpires variable is set, make the correct 
             strExpires time, the current script below will set 
