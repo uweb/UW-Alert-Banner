@@ -46,6 +46,7 @@
     $strCookStatus1 = '';
     $strCookStatus2 = '';
 
+    // Where is the check if the file doesn't change - if it stays the same - then we don't want to rewrite the cache
     if ( $strStatus = getHighest($arrItemsRed[0]['pubDate'],$arrItemsOrange[0]['pubDate']) )
     {
         $strAlertColor = '';
@@ -67,8 +68,8 @@
         // As the RSS feed is updated every 5 minutes or so, it will probably
         // end up being more of a stumbling block than anything else
         $status = $Cache_Lite->save($arrItems,'rss');
-        //lsetData($strAlertColor); // We are touching the file
-        $strCookStatus1 = setcookie( 'uwalertcolor' , $strAlertColor , time()+60*60*24*1 , '/', '.washington.edu');
+        setData($strAlertColor); // We are touching the file
+        //$strCookStatus1 = setcookie( 'uwalertcolor' , $strAlertColor , time()+60*60*24*1 , '/', '.washington.edu');
         // echo "Cache Creation Status: $status\n";
     }
     else
@@ -85,10 +86,10 @@
         // would have to go down in the middle of an emergency to pose
         // much of a problem - is this really an issue?
         
-        $strCookStatus2 = setcookie( 'uwalertcolor' , $strAlertColor , time() - 1 );    
+        //$strCookStatus2 = setcookie( 'uwalertcolor' , $strAlertColor , time() - 1 );    
         
         // only remove data if it exists
-        //rmData();
+        rmData();
         // Clearing the cache does physically remove all the file(s)
         $Cache_Lite->clean();
     }

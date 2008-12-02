@@ -57,6 +57,7 @@
         $strTitle = $arrItems[0]['title'];
         $strLink = $arrItems[0]['link'];
         $strDesc = $arrItems[0]['description'];
+        $strPubdate = $arrItems[0]['pubDate'];
 
         // Content length unknown, trim to reasonable length
         $strContent = $strDesc." ";
@@ -79,10 +80,10 @@
 <div id="alertBox">
     <div id="alertBoxText">
         <h1>Campus Alert:</h1>
-        <p><?php echo $strContent ?></p>
+        <p><?php echo $strContent ?> <span>(<?php echo $strPubdate?>)</span></p>
     </div>
     <a href="javascript:void(0)" onclick="javascript:hideit('alertBox');Effect.BlindUp('alertBox')">
-    <img src="close.gif" name="xmark" width="10" height="10" id="xmark" /></a>
+    <img src="http://depts.washington.edu/uweb/emergency/close.gif" name="xmark" width="10" height="10" id="xmark" /></a>
     <div id="clearer"></div>
 </div>
 <?php

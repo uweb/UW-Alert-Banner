@@ -22,6 +22,8 @@
  * Include our javascript object script, the wonderful Prototype... and friends
  *---------------------------*/
 
+document.domain = 'washington.edu';
+ 
  // getCookie - Stolen from the tubes, grab cookie by name
 function getCookie(cookieName)
 {
@@ -33,6 +35,8 @@ function getCookie(cookieName)
         return null;
 }
 
+// The problem is XMLHttpRequest is an AJAX call, which means cross domain
+// even subdomains will fail, need to find another method
 function AJ()
 {
 	var obj;
@@ -64,8 +68,9 @@ function isThere(strURL)
 	var req = new AJ(); // XMLHttpRequest object
 	try
     {
-		req.open("HEAD", strURL, false);
-		req.send(null);
+        // This line does not work - bah
+		req.open('HEAD', strURL, false);
+        req.send(null);
 		return req.status == 200 ? true : false;
 	}
 	catch (er)
@@ -74,20 +79,23 @@ function isThere(strURL)
 	}
 }
 
+// var strStatusMess = isThere('http://depts.washington.edu/uweb/emergency/emergency');
+// alert(strStatusMess);
+
 // Don't output the stylesheet if the alert box was closed
 // If we do the crontob for get_rss then we have to go this route, otherwise we can 
 //getCookie('uwalertcolor') // This would work if the get_rss is set by crontab
 //isThere('http://depts.washington.edu/uweb/emergency/emergency') // This would work on crontab
 // So why are we doing the isThere?
 
-document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
-    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>' +
-    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/emergency.js"><\/script>');
+// Some Condition?!?
 
-if ( !getCookie('uwalerthide') && getCookie('uwalertcolor'))
+if (isThere('emergency-uweb-28462'))
 {
     // Dynamically set the next either from category or another method
-    var strAlertColor = getCookie('uwalertcolor');
+    // Need to find another way - Cookie is bad - For now 
+    var strAlertColor = 'red' //getCookie('uwalertcolor');
+    // PHP Function/Script that returns the color?
 
     // If the file does not exist - then don't show
     
@@ -95,9 +103,9 @@ if ( !getCookie('uwalerthide') && getCookie('uwalertcolor'))
     // Probably less effecient but much easier to read
     // -------
     // What do we do for the 98% of the time when the cookie is not set and there is no RSS items?
-    // document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
-    // '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>' +
-    // '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/emergency.js"><\/script>');
+    document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
+    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>' +
+    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/emergency.js"><\/script>');
     //var strAlertMessage = isThere('http://depts.washington.edu/uweb/');
     //alert(strAlertMessage);
     

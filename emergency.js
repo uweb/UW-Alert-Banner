@@ -18,26 +18,28 @@
  *
  *--------------------------------------------------------------------------*/
 
+document.domain = 'washington.edu';
+ 
 // Object Creation for message to carry through functions
-var oMessage = getMessage();
+//var oMessage = getMessage();
 
 // getMessage - grab HTML from get_message.php
 function getMessage()
 {
     // Full URL that doesn't seem to want to work right
     //'http://depts.washington.edu/uweb/emergency/get_message.php'
-    var strGetMsgUrl = 'http://depts.washington.edu/uweb/emergency/get_message.php';
+    var strGetMsgUrl = 'emergency-uweb-28462/get_message.php';
     var strAvailable = isThere(strGetMsgUrl);
     // This does not seem to work as designed
     //var strDecayRate = 0;
     //strDecayRate = isThere('http://staff.washington.edu/cheiland/alert/emergency') ? 1 : 10;
     if (strAvailable)
     {
-        return new Ajax.PeriodicalUpdater('alertMessage', strGetMsgUrl, {
-    	    method: 'post', // using POST to combat IE caching,
-    	    frequency: 3
+//        return new Ajax.PeriodicalUpdater('alertMessage', strGetMsgUrl, {
+//    	    method: 'post', // using POST to combat IE caching,
+//    	    frequency: 3
             //decay: strDecayRate // Resets if there is a change in the response
-    	});
+//    	});
     }
     else
     {
@@ -45,18 +47,18 @@ function getMessage()
     }
 }
 
-// displayAlert - check for cookie before  displaying message
+// displayAlert - check for cookie before  displaying message 
 // don't display if they have closed the alert
 function displayAlert()
 {
-    if ( getCookie('uwalerthide') )
-    {
-        oMessage.stop();
-    }
-    else
-    {
+    // if ( getCookie('uwalerthide') )
+    // {
+        // oMessage.stop();
+    // }
+    // else
+    // {
         addElement();
-    }
+    // }
 }
 
 // addElement - display HTML on page right below the body page
