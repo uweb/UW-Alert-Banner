@@ -22,7 +22,7 @@
  * Include our javascript object script, the wonderful Prototype... and friends
  *---------------------------*/
 
-document.domain = 'washington.edu';
+//document.domain = 'washington.edu';
  
  // getCookie - Stolen from the tubes, grab cookie by name
 function getCookie(cookieName)
