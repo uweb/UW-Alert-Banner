@@ -18,47 +18,29 @@
  *
  *--------------------------------------------------------------------------*/
 
-//document.domain = 'washington.edu';
- 
 // Object Creation for message to carry through functions
 var oMessage = getMessage();
 
 // getMessage - grab HTML from get_message.php
 function getMessage()
 {
-    // Full URL that doesn't seem to want to work right
-    //'http://depts.washington.edu/uweb/emergency/get_message.php'
-    var strGetMsgUrl = 'emergency-uweb-28462/get_message.php';
-    var strAvailable = isThere(strGetMsgUrl);
-    // This does not seem to work as designed
-    var strDecayRate = 5;
-    //strDecayRate = isThere('http://staff.washington.edu/cheiland/alert/emergency') ? 1 : 10;
-    if (strAvailable)
-    {
-       return new Ajax.PeriodicalUpdater('alertMessage', strGetMsgUrl, {
+    // Full URL won't want to work - Cross Domain and all that - proxy server
+    //  Figure out prior to offering service
+    var strGetMsgUrl = 'get_rss.php';
+
+    var strDecayRate = 3;
+
+    return new Ajax.PeriodicalUpdater('alertMessage', strGetMsgUrl, {
    	    method: 'post', // using POST to combat IE caching,
    	    decay: strDecayRate, // Resets if there is a change in the response
-        frequency: 600
+        frequency: 60000 // Going on vaca - don't pull much
    	});
-    }
-    else
-    {
-        throw "Error: Can't Access Alert Message"; 
-    }
 }
 
-// displayAlert - check for cookie before  displaying message 
-// don't display if they have closed the alert
+// displayAlert - wrapper to display message 
 function displayAlert()
 {
-    // if ( getCookie('uwalerthide') )
-    // {
-        // oMessage.stop();
-    // }
-    // else
-    // {
-        addElement();
-    // }
+    addElement();
 }
 
 // addElement - display HTML on page right below the body page
@@ -75,44 +57,8 @@ function addElement()
   bodyTag.insertBefore(newDiv, bodyTag.firstChild);
 }
 
-// setCookie - Another function stolen from the tubes
-//http://techpatterns.com/downloads/javascript_cookies.php
-function setCookie( strName, strValue, strExpires, strPath, strDomain, strSecure ) 
-{
-    // set time, it's in milliseconds
-    var strToday = new Date();
-    strToday.setTime( strToday.getTime() );
-
-    strPath = '/';
-    strDomain = '.washington.edu';
-    
-     /*
-            if the strExpires variable is set, make the correct 
-            strExpires time, the current script below will set 
-            it for x number of days, to make it for hours, 
-            delete * 24, for minutes, delete * 60 * 24
-            */
-    if ( strExpires )
-    {
-        // Original was set for days, we want to set it for hours
-        //strExpires = strExpires * 1000 * 60 * 60 * 24;
-        strExpires = strExpires * 1000 * 60 * 60;
-    }
-    var expiresDate = new Date( strToday.getTime() + (strExpires) );
-
-    document.cookie = strName + "=" + escape( strValue ) +
-    ( ( strExpires ) ? ";expires=" + expiresDate.toGMTString() : "" ) + 
-    ( ( strPath ) ? ";path=" + strPath : "" ) + 
-    ( ( strDomain ) ? ";domain=" + strDomain : "" ) +
-    ( ( strSecure ) ? ";secure" : "" );
-}
-
-
 // hideit - external function tied to close button
-// sets the cookie and closes the alert
 function hideit(id)
 {    
-    setCookie('uwalerthide' , 'yes' , 1);
-        
     oMessage.stop();
 }
