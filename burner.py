@@ -6,7 +6,7 @@ if so, then output content to the alert.js file and include everything
 needed.  If no alert, then just output skeleton file.
 """
 
-import os, urllib2, re
+import os, re
 import uwlibweb, feedparser
 #import librss  
 
@@ -34,15 +34,30 @@ strHeader = """
 /*
  * Include our javascript object script, the wonderful Prototype... and friends
  *---------------------------*/
-""";
+"""
+## 4 & 6 are test categories
+## Alert Status (WP Categories)
+## 7 Publish
+## 8 - Red Alert 
+## 9 - Orange Alert    
 # Constants
-RED = 4;
-ORANGE = 6;
+RED = 8
+ORANGE = 9
 
 # This slows the script down dramatically as it has to go out to the world and check the resource
 
 strAlertRed = feedparser.parse(uwlibweb.getFeedData(RED))
 strAlertOrange = feedparser.parse(uwlibweb.getFeedData(ORANGE))
+
+strHTMLContent = """
+<div id="alertBox">
+<div id="alertBoxText">
+        <h1>Campus Alert:</h1>
+        <p>There is no emergency.  For additional information, 
+        please visit <a href="http://emergency.washington.edu">emergency.washington.edu</a></p>
+    </div>
+    <div id="clearer"></div>
+</div> """
 
 try:
     strAlertStatus = uwlibweb.getHighest(strAlertRed.entries[0].date_parsed, strAlertOrange.entries[0].date_parsed)
@@ -103,7 +118,6 @@ document.write('<link href="http://depts.washington.edu/uweb/emergency/%s" rel="
 // displayAlert - grab HTML to display message 
 function displayAlert()
 {
-    // How best to insert HTML?
     var strAlertMessageHTML = '%s';
     // Can we pass to the following function?
     addElement(strAlertMessageHTML);
@@ -126,14 +140,37 @@ function addElement(strAlertMessageHTML)
 """ % (strStyle, re.escape(strHTMLContent))
 else:
     strContent = """
-function displayAlert()
+function displayAlert(strMode)
 {
-    // This is where some code should go so people
-    // Can test the warning system in some way
-    // Optional parameters come to mind
-    // Does nothing - for error & warning prevention
+    if (strMode == "test")
+    {
+        document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
+'<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
+
+document.write('<link href="http://depts.washington.edu/uweb/emergency/%s" rel="stylesheet" type="text\/css" \/>' +
+    '<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
+
+    var strAlertMessageHTML = '%s';
+    // Can we pass to the following function?
+    addElement(strAlertMessageHTML);
+    
+    }
+    // Does nothing useful - for error & warning prevention
 }
-    """
+function addElement(strAlertMessageHTML)
+{
+  var bodyTag = document.getElementsByTagName('body')[0];
+
+  var newDiv = document.createElement('div');
+  var divIdName = 'alertMessage';
+  
+  newDiv.setAttribute('id',divIdName);
+  newDiv.innerHTML = strAlertMessageHTML;
+
+  bodyTag.insertBefore(newDiv, bodyTag.firstChild);
+}
+    """ % ('uwalert_red.css', re.escape(strHTMLContent))
+    #Probably  should use a different color here
 
 strOutput = strHeader + strContent + "\n";
 
