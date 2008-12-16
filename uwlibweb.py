@@ -20,24 +20,44 @@ def getFeedData(intCategory):
     
     return strFileContents
     
-def getHighest(oDate1, oDate2):
-    """Returns the highest date between two dates
-    Make sure to capture output with try / except block
-    Unknown reason for failure
-    """
+# def getHighest(oDate1, oDate2):
+    # """Returns the highest date between two dates
+    # Make sure to capture output with try / except block
+    # Unknown reason for failure
+    # """
+    # strDate1 = datetime(oDate1.tm_year, oDate1.tm_mon, oDate1.tm_mday, oDate1.tm_hour, oDate1.tm_min, oDate1.tm_sec)
+    # strDate2 = datetime(oDate2.tm_year, oDate2.tm_mon, oDate2.tm_mday, oDate2.tm_hour, oDate2.tm_min, oDate2.tm_sec)
 
-    strDate1 = datetime(oDate1.tm_year, oDate1.tm_mon, oDate1.tm_mday, oDate1.tm_hour, oDate1.tm_min, oDate1.tm_sec)
-    strDate2 = datetime(oDate2.tm_year, oDate2.tm_mon, oDate2.tm_mday, oDate2.tm_hour, oDate2.tm_min, oDate2.tm_sec)
+    # if strDate1 > strDate2:
+        # return 1
+    # elif strDate1 < strDate2:
+        # return 2
+    # elif strDate1 == strDate2:
+        # return 3
+    # else:
+        # return 0
+
+def convertEpoch(oDate):
+    """Convert '2007-02-05 16:15:18' 
+    To: '%Y-%m-%d %H:%M:%S' 
+    Takes date as an object, not as a string
+    """
+    # I really need to test this - don't know if it will work with the pattern
+    strDate = datetime(oDate1.tm_year, oDate1.tm_mon, oDate1.tm_mday, oDate1.tm_hour, oDate1.tm_min, oDate1.tm_sec)
     
-    if strDate1 > strDate2:
-        return 1
-    elif strDate1 < strDate2:
-        return 2
-    elif strDate1 == strDate2:
-        return 3
-    else:
-        return 0
-        
+    strPattern = '%Y-%m-%d %H:%M:%S'
+    return int(time.mktime(time.strptime(strDate, strPattern))) 
+    
+def getHighest(hashItems):
+    """Guess what?  Returns the highest
+    Number in the hash - Currently just sorts
+    """
+    keys = hashItems.keys()
+    keys.sort()
+    arrItems = [hashItems[key] for key in keys]
+
+    return arrItems[0]
+ 
 def readURL(strURL):
     """Returns the contents from the URL
     """
