@@ -8,6 +8,7 @@ needed.  If no alert, then just output skeleton file.
 
 import os, re
 import uwlibweb, feedparser
+#import pprint
 from datetime import timedelta, datetime
 
 strHeader = """
@@ -47,7 +48,7 @@ ORANGE = 9
 BLUE = 10
 STEEL = 12
 
-strHTMLContent = """
+strTestHTMLContent = """
 <div id="alertBox">
 <div id="alertBoxText">
         <h1>Campus Alert:</h1>
@@ -57,81 +58,100 @@ strHTMLContent = """
     <div id="clearer"></div>
 </div> """
 
+strAddElement = """
+// addElement - display HTML on page right below the body page
+// don't want the alert to show up anywhere
+function addElement(strAlertMessageHTML)
+{
+  var bodyTag = document.getElementsByTagName('body')[0];
+
+  var newDiv = document.createElement('div');
+  var divIdName = 'alertMessage';
+  
+  newDiv.setAttribute('id',divIdName);
+  newDiv.innerHTML = strAlertMessageHTML;
+
+  bodyTag.insertBefore(newDiv, bodyTag.firstChild);
+} """
+
+###!!DEBUG!!###
+####pp = pprint.PrettyPrinter(indent=4)####
+
 # We want to make sure there are no problems with a lock of a post
 # If there are any problems, just set the date to zero
-hashAlertDate = {} # What is the game from using a hash instead of strings?
+hashAlert = dict() # {'red': '', 'orange': '', 'blue': '', 'steel': ''}
 try:
-    strAlertRed = feedparser.parse(uwlibweb.getFeedData(RED))
-    hashAlertDate['red'] = convertEpoch(strAlertRed.entries[0].date_parsed)
+    strFeed = feedparser.parse(uwlibweb.getFeedData(RED))
+    strDate = uwlibweb.convertEpoch(strFeed.entries[0].date_parsed)
+    hashAlert['red'] = {'feed': strFeed, 'date': strDate}
 except:
-    hashAlertDate['red'] = 0
+    hashAlert['red'] = ''
 
 try:
-    strAlertOrange = feedparser.parse(uwlibweb.getFeedData(ORANGE))
-    hashAlertDate['orange'] = convertEpoch(strAlertOrange.entries[0].date_parsed)
+    strFeed = feedparser.parse(uwlibweb.getFeedData(ORANGE))
+    strDate = uwlibweb.convertEpoch(strFeed.entries[0].date_parsed)
+    hashAlert['orange'] = {'feed': strFeed, 'date': strDate}
 except:
-    hashAlertDate['orange'] = 0
+    hashAlert['orange'] = ''
 
 try:
-    strAlertBlue = feedparser.parse(uwlibweb.getFeedData(BLUE))
-    hashAlertDate['blue'] = convertEpoch(strAlertBlue.entries[0].date_parsed)
+    strFeed = feedparser.parse(uwlibweb.getFeedData(BLUE))
+    strDate = uwlibweb.convertEpoch(strFeed.entries[0].date_parsed)
+    hashAlert['blue'] = {'feed': strFeed, 'date': strDate}
 except:
-    hashAlertDate['blue'] = 0
+    hashAlert['blue'] = ''
 
 try:
-    strAlertSteel = feedparser.parse(uwlibweb.getFeedData(STEEL))
-    hashAlertDate['steel'] = convertEpoch(strAlertSteel.entries[0].date_parsed)
+    strFeed = feedparser.parse(uwlibweb.getFeedData(STEEL))
+    strDate = uwlibweb.convertEpoch(strFeed.entries[0].date_parsed)
+    hashAlert['steel'] = {'feed': strFeed, 'date': strDate}
 except:
-    hashAlertDate['steel'] = 0
+    hashAlert['steel'] = ''
+    
+#pp.pprint(hashAlert)    
     
 # No alert is a good Alert
 strAlertStatus = 0
+################### StartWeird
 
-# Need an array here - what's the best way to add the blue or additional alerts without blowing up the system
-# How do we efficiently compare 4+ dates?
-# This is the gain from the hash instead of strings...
+hashDates = {}
 
-strHighDate = uwlibweb.getHighest(hashAlertDate)
+for strKey,strValue in hashAlert.items():
+    if strValue != '':
+        for strKey2,strValue2 in hashAlert[strKey].items():
+            hashDates[strKey] = hashAlert[strKey]['date']
+        
+# hashDates will only contain the colors with dates        
+if hashDates:
+    strHighDate = uwlibweb.getHighest(hashDates)
+    for strKey,strValue in hashAlert.items():
+        # Avoid posting a blank alert
+        if hashAlert[strKey] != '':
+            for strKey2,strValue2 in hashAlert[strKey].items():
+                if hashAlert[strKey]['date'] == strHighDate:
+                    strAlertColor = strKey
+                    strAlertStatus = 1
 
-for strKey,strValue in hashAlertDate.items():
-    # Avoid posting a blank alert
-    if (strValue == strHighDate) and (strValue != 0):
-        strAlertColor = strKey
-        strAlertStatus = 1
-
-# if strAlertRedDate and strAlertOrangeDate:
-    # strAlertStatus = uwlibweb.getHighest(strAlertRedDate, strAlertOrangeDate)
-# elif strAlertRedDate:
-    # strAlertStatus = 1
-# elif strAlertOrangeDate:
-    # strAlertStatus = 2
+strAlert = 0
 
 if strAlertStatus:
-    # Do something interesting here
-    #strAlertColor = ''
-    
-    # Ignoring if both dates ar the same
-    # This is extremely wonky
-    # if strAlertStatus == 1:
-        # strAlert = strAlertRed;
-        # strAlertColor = 'red';
-    # elif strAlertStatus == 2:
-        # strAlert = strAlertOrange;
-        # strAlertColor = 'orange';
+    strAlert = hashAlert[strAlertColor]['feed']
+################### End Weird
 
-    # Set alert color based on file contents
-    # What happens if the color fails?
-    # the color should fail before we get here
-    strStyle = 'uwalert_' + strAlertColor + '.css'        
+if strAlert:
+    # A lack of color should fail before we get here
+    # We are setting this value manually - we can trust it
+    strStyle = 'uwalert_' + strAlertColor + '.css'
 
     # Take newest item and display
-    strTitle = strAlert.entries[0].title # don't trust encoding
+    strTitle = strAlert.entries[0].title.decode('iso-8859-1') # don't trust encoding
     strLink = 'http://emergency.washington.edu/'
-    strDesc = strAlert.entries[0].description # don't trust encoding
+    strDesc = strAlert.entries[0].description.decode('iso-8859-1') # don't trust encoding
+    # Encode vs. Decode article
     #http://mail.python.org/pipermail/python-list/2004-August/275972.html
     strDate = strAlert.entries[0].date
     strParsedDate = strAlert.entries[0].date_parsed
-    
+
     strFormatDate = datetime(strParsedDate.tm_year, strParsedDate.tm_mon, strParsedDate.tm_mday, strParsedDate.tm_hour, strParsedDate.tm_min, strParsedDate.tm_sec)
 
     strContent = strDesc[:180] + '... '
@@ -147,9 +167,8 @@ if strAlertStatus:
     </div>
     <div id="clearer"></div>
 </div> """ % (strContent)
-        
-    #strFormatDate.strftime("%A, %B %d"))        # Enable once server time is fixed on spokane
-        
+#strFormatDate.strftime("%A, %B %d"))        # Enable once server time is fixed on spokane
+
     strContent = """
 document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
 '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
@@ -164,34 +183,49 @@ function displayAlert()
     // Can we pass to the following function?
     addElement(strAlertMessageHTML);
 }
-
-// addElement - display HTML on page right below the body page
-// don't want the alert to show up anywhere
-function addElement(strAlertMessageHTML)
-{
-  var bodyTag = document.getElementsByTagName('body')[0];
-
-  var newDiv = document.createElement('div');
-  var divIdName = 'alertMessage';
-  
-  newDiv.setAttribute('id',divIdName);
-  newDiv.innerHTML = strAlertMessageHTML;
-
-  bodyTag.insertBefore(newDiv, bodyTag.firstChild);
-}
 """ % (strStyle, re.escape(strHTMLContent))
+    strOutput = strHeader + strContent + strAddElement + "\n";
 else:
     strContent = """
 function displayAlert(strMode)
 {
     // Does nothing useful - for error & warning prevention
+} """
+    strOutput = strHeader + strContent + "\n";
+
+# This may only be used for me - still good to have
+strTestStyle = 'uwalert_steel.css'
+strTestContent = """
+document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
+'<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
+
+document.write('<link href="http://depts.washington.edu/uweb/emergency/%s" rel="stylesheet" type="text\/css" \/>' +
+    '<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
+
+// displayAlert - grab HTML to display message 
+function displayAlert()
+{
+    var strAlertMessageHTML = '%s';
+    // Can we pass to the following function?
+    addElement(strAlertMessageHTML);
 }
-    """
+""" % (strTestStyle, re.escape(strTestHTMLContent))
 
-strOutput = strHeader + strContent + "\n";
-
+#uwlibweb.saveAlert('alert.js', strContent)
+# Pushing out real alert
 try:
     strFileout = '/rc22/d10/uweb/public_html/emergency/alert.js'
+    objFile = open(strFileout, "w")
+    objFile.write(strOutput)
+    objFile.close()
+except Exception, strError:
+    print "Error Writing to File %s because %s" % (strFileout, strError)
+
+# Alert for my test purposes 
+strOutput = strHeader + strTestContent + strAddElement + "\n";
+#uwlibweb.saveAlert('alert-test.js', strContent)
+try:
+    strFileout = '/rc22/d10/uweb/public_html/emergency/alert-test.js'
     objFile = open(strFileout, "w")
     objFile.write(strOutput)
     objFile.close()

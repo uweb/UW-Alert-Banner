@@ -4,11 +4,12 @@
 Summary: Library containing functions for supporting the burner.py script
 """
 
-import urllib, os, sys
+import urllib, os, sys, time
 from datetime import timedelta, datetime
 
 def getFeedData(intCategory):
     """getFeedData() - Get the data from the RSS feed and save to a file
+    Mostly used for debugging - will find some use for it later
     """
     strURL = 'http://emergency.washington.edu/?feed=rss2&cat=' + str(intCategory)
         
@@ -19,43 +20,27 @@ def getFeedData(intCategory):
     saveData(strFilename,strFileContents)
     
     return strFileContents
-    
-# def getHighest(oDate1, oDate2):
-    # """Returns the highest date between two dates
-    # Make sure to capture output with try / except block
-    # Unknown reason for failure
-    # """
-    # strDate1 = datetime(oDate1.tm_year, oDate1.tm_mon, oDate1.tm_mday, oDate1.tm_hour, oDate1.tm_min, oDate1.tm_sec)
-    # strDate2 = datetime(oDate2.tm_year, oDate2.tm_mon, oDate2.tm_mday, oDate2.tm_hour, oDate2.tm_min, oDate2.tm_sec)
-
-    # if strDate1 > strDate2:
-        # return 1
-    # elif strDate1 < strDate2:
-        # return 2
-    # elif strDate1 == strDate2:
-        # return 3
-    # else:
-        # return 0
 
 def convertEpoch(oDate):
     """Convert '2007-02-05 16:15:18' 
     To: '%Y-%m-%d %H:%M:%S' 
     Takes date as an object, not as a string
     """
-    # I really need to test this - don't know if it will work with the pattern
-    strDate = datetime(oDate1.tm_year, oDate1.tm_mon, oDate1.tm_mday, oDate1.tm_hour, oDate1.tm_min, oDate1.tm_sec)
-    
+    strDate = str(datetime(oDate.tm_year, oDate.tm_mon, oDate.tm_mday, oDate.tm_hour, oDate.tm_min, oDate.tm_sec))
+
     strPattern = '%Y-%m-%d %H:%M:%S'
-    return int(time.mktime(time.strptime(strDate, strPattern))) 
+    return int(time.mktime(time.strptime(strDate, strPattern)))
     
 def getHighest(hashItems):
-    """Guess what?  Returns the highest
-    Number in the hash - Currently just sorts
+    """Guess what?  Returns the highest (value)
+    Number in the hash 
+    TODO: Either take a slide or modify to see HoH
+    or the dict (...Python Equiv)
     """
     keys = hashItems.keys()
     keys.sort()
     arrItems = [hashItems[key] for key in keys]
-
+    
     return arrItems[0]
  
 def readURL(strURL):
@@ -65,6 +50,18 @@ def readURL(strURL):
     strData = oFile.read()
     oFile.close()
     return str(strData)
+    
+def saveAlert(strFilename, strAlertText):
+    """Create actual js for usage
+    Not in production yet
+    """
+    try:
+        strFileout = '/rc22/d10/uweb/public_html/emergency/' + strFilename
+        objFile = open(strFileout, "w")
+        objFile.write(strAlertText)
+        objFile.close()
+    except Exception, strError:
+        print "Error Writing to File %s because %s" % (strFileout, strError)
     
 def saveData(strFilename, strFileContents):
     """Saves data to the storage location
