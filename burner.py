@@ -52,16 +52,6 @@ ORANGE = 9
 BLUE = 10
 STEEL = 12
 
-# strTestHTMLContent = """
-# <div id="alertBox">
-# <div id="alertBoxText">
-        # <h1>Campus Alert:</h1>
-        # <p>There is no emergency.  For additional information, 
-        # please visit <a href="http://emergency.washington.edu">emergency.washington.edu</a></p>
-    # </div>
-    # <div id="clearer"></div>
-# </div> """
-
 # We want to make sure there are no problems with a lock of a post
 # If there are any problems, just set the entry to zero
 hashAlert = dict() # {'red': '', 'orange': '', 'blue': '', 'steel': ''}
@@ -127,6 +117,14 @@ if hashDates:
 
 ################### Start Less Weird Than Yesterday
 
+strAlertPlainText = ''
+
+hashPlainAlert = {
+    'welcome': 'You have reached the University of Washington information line. ',
+    'alert': "strAlertPlainText",
+    'close': 'You may also visit us on the Internet at Washington.edu.  Thank you for calling the University of Washington.  Goodbye.'
+    }
+
 if strAlert:
     # A lack of color should fail before we get here
     # We are setting this value manually - we can trust it
@@ -145,6 +143,7 @@ if strAlert:
 
     if strDesc and strTitle:
         strContent = strDesc[:180] + '... '
+        hashPlainAlert['alert'] = strTitle + '. '
         strContent += '<a href="' + strLink + '" title ="' + strTitle + '">More Info</a> &gt;&gt;'
     else:
         strContent = 'Whoops'
@@ -217,15 +216,29 @@ function displayAlert(strMode)
 # }
 # """ % (strTestStyle, re.escape(strTestHTMLContent))
 
-#uwlibweb.saveAlert('alert.js', strContent)
+uwlibweb.saveAlert('alert.js', strContent)
+
+strTextOutput = hashPlainAlert['welcome'] + hashPlainAlert['alert'] + hashPlainAlert['close']
+uwlibweb.saveAlert('alert.txt', strTextOutput)
+
 # Pushing out real alert
-try:
-    strFileout = '/rc22/d10/uweb/public_html/emergency/alert.js'
-    objFile = open(strFileout, "w")
-    objFile.write(strOutput)
-    objFile.close()
-except Exception, strError:
-    print "Error Writing to File %s because %s" % (strFileout, strError)
+# try:
+    # strFileout = '/rc22/d10/uweb/public_html/emergency/alert.js'
+    # objFile = open(strFileout, "w")
+    # objFile.write(strOutput)
+    # objFile.close()
+# except Exception, strError:
+    # print "Error Writing to File %s because %s" % (strFileout, strError)
+
+# strTextOutput = hashPlainAlert['welcome'] + hashPlainAlert['alert'] + hashPlainAlert['close']
+
+# try:
+    # strFileout = '/rc22/d10/uweb/public_html/emergency/alert.txt'
+    # objFile = open(strFileout, "w")
+    # objFile.write(strTextOutput)
+    # objFile.close()
+# except Exception, strError:
+    # print "Error Writing to File %s because %s" % (strFileout, strError)    
 
 # # Alert for my test purposes 
 # strOutput = strHeader + strTestContent + strAddElement + "\n";
