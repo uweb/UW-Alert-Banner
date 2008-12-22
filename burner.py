@@ -39,6 +39,7 @@ strHeader = """
 /*
  * Include our javascript object script, the wonderful Prototype... and friends
  *---------------------------*/
+
 """
 ## 4 & 6 are test categories
 ## Alert Status (WP Categories)
@@ -120,9 +121,6 @@ if hashDates:
 strPlainAlert = ''
 
 if strAlert:
-    # A lack of color should fail before we get here
-    # We are setting this value manually - we can trust it
-    # strStyle = 'uwalert_' + strAlertColor + '.css'
 
     # Take newest item and display
     strTitle = strAlert.entries[0].title.encode("latin-1") # don't trust encoding
@@ -138,19 +136,8 @@ if strAlert:
     if strDesc and strTitle:
         strPlainAlert = strTitle + ".\n" + "<break />\n" + strDesc +  '.'
         strContent = strDesc[:180] + '... '    
-        #strContent += '<a href="' + strLink + '" title ="' + strTitle + '">More Info</a> &gt;&gt;'
     else:
         strContent = 'Whoops'
-
-#    strHTMLContent = """
-#<div id="alertBox">
-#<div id="alertBoxText">
-#        <h1>Campus Alert:</h1>
-#        <p>%s</p>
-#    </div>
-#    <div id="clearer"></div>
-#</div> """ % (strContent)
-#strFormatDate.strftime("%A, %B %d"))        # Enable once server time is fixed on spokane
 
     # This will come in handy once more alert types are displayed
     strAddElement = """
@@ -160,6 +147,9 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
 {
   // Grab the tag to start the party
   var bodyTag = document.getElementsByTagName('body')[0];
+  
+  bodyTag.style.margin = '0px';
+  bodyTag.style.padding = '0px';
 
   var wrapperDiv = document.createElement('div');
   wrapperDiv.setAttribute('id','alertMessage');
@@ -209,12 +199,15 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
     '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
     """
 
-    strContent = """
-    var strLink = (window.location.protocol == 'https:') ? 'https://' : 'http://';
-document.write('<link href="' + strLink + 'depts.washington.edu/uweb/emergency/%s" rel="stylesheet" type="text\/css" \/>' +
-'<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
+    strContent = """// Code contributed by Dustin Brewer
+var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
+var strCSS = document.createElement('link');
+strCSS.setAttribute('href', strProto + 'depts.washington.edu/uweb/emergency/%s');
+strCSS.setAttribute('rel','stylesheet');
+strCSS.setAttribute('type','text/css');
+document.getElementsByTagName('head')[0].appendChild(strCSS);
 
-// displayAlert - grab HTML to display message 
+// displayAlert - grab content to display message 
 function displayAlert()
 {
     var strAlertTitle = '%s';
