@@ -88,7 +88,7 @@ strAlert = ''
 strStyle = ''
 ################### Start Less Weird Than Yesterday
 
-#Example Data
+#Example Data Structure
 # # # # hashAlert{
     # # # # 'color': {'feed': '', 'date', ''},
     # # # # 'color': {'feed': '', 'date', ''},
@@ -115,15 +115,9 @@ if hashDates:
                 strAlert = hashAlert[strAlertColor]['feed']
                 strStyle = 'uwalert_' + strAlertColor + '.css'
 
-################### Start Less Weird Than Yesterday
+################### End Less Weird Than Yesterday
 
-strAlertPlainText = ''
-
-hashPlainAlert = {
-    'welcome': 'You have reached the University of Washington information line. ',
-    'alert': "strAlertPlainText",
-    'close': 'You may also visit us on the Internet at Washington.edu.  Thank you for calling the University of Washington.  Goodbye.'
-    }
+strPlainAlert = ''
 
 if strAlert:
     # A lack of color should fail before we get here
@@ -131,9 +125,9 @@ if strAlert:
     # strStyle = 'uwalert_' + strAlertColor + '.css'
 
     # Take newest item and display
-    strTitle = strAlert.entries[0].title.encode("utf-8") # don't trust encoding
+    strTitle = strAlert.entries[0].title.encode("latin-1") # don't trust encoding
     strLink = 'http://emergency.washington.edu/'
-    strDesc = strAlert.entries[0].description.encode("utf-8") # don't trust encoding
+    strDesc = strAlert.entries[0].description.encode("latin-1") # don't trust encoding
     # Encode vs. Decode article
     #http://mail.python.org/pipermail/python-list/2004-August/275972.html
     strDate = strAlert.entries[0].date
@@ -142,53 +136,95 @@ if strAlert:
     strFormatDate = datetime(strParsedDate.tm_year, strParsedDate.tm_mon, strParsedDate.tm_mday, strParsedDate.tm_hour, strParsedDate.tm_min, strParsedDate.tm_sec)
 
     if strDesc and strTitle:
-        strContent = strDesc[:180] + '... '
-        hashPlainAlert['alert'] = strTitle + '. '
-        strContent += '<a href="' + strLink + '" title ="' + strTitle + '">More Info</a> &gt;&gt;'
+        strPlainAlert = strTitle + ".\n" + "<break />\n" + strDesc +  '.'
+        strContent = strDesc[:180] + '... '    
+        #strContent += '<a href="' + strLink + '" title ="' + strTitle + '">More Info</a> &gt;&gt;'
     else:
         strContent = 'Whoops'
 
-    strHTMLContent = """
-<div id="alertBox">
-<div id="alertBoxText">
-        <h1>Campus Alert:</h1>
-        <p>%s</p>
-    </div>
-    <div id="clearer"></div>
-</div> """ % (strContent)
+#    strHTMLContent = """
+#<div id="alertBox">
+#<div id="alertBoxText">
+#        <h1>Campus Alert:</h1>
+#        <p>%s</p>
+#    </div>
+#    <div id="clearer"></div>
+#</div> """ % (strContent)
 #strFormatDate.strftime("%A, %B %d"))        # Enable once server time is fixed on spokane
 
+    # This will come in handy once more alert types are displayed
     strAddElement = """
 // addElement - display HTML on page right below the body page
-// don't want the alert to show up anywhere
-function addElement(strAlertMessageHTML)
+// don't want the alert to show up randomly
+function addElement(strAlertTitle,strAlertLink,strAlertMessage)
 {
+  // Grab the tag to start the party
   var bodyTag = document.getElementsByTagName('body')[0];
 
-  var newDiv = document.createElement('div');
-  var divIdName = 'alertMessage';
-  
-  newDiv.setAttribute('id',divIdName);
-  newDiv.innerHTML = strAlertMessageHTML;
+  var wrapperDiv = document.createElement('div');
+  wrapperDiv.setAttribute('id','alertMessage');
 
-  bodyTag.insertBefore(newDiv, bodyTag.firstChild);
+  var alertBoxDiv = document.createElement('div');
+  alertBoxDiv.setAttribute('id', 'alertBox');
+
+  var alertBoxTextDiv = document.createElement('div');
+  alertBoxTextDiv.setAttribute('id', 'alertBoxText');
+  
+  var header1 = document.createElement('h1');
+  var header1Text = document.createTextNode('Campus Alert:');
+  header1.appendChild(header1Text);
+
+  var alertTextP = document.createElement('p');
+  var alertText = document.createTextNode(strAlertMessage);
+  alertTextP.appendChild(alertText);
+
+  var alertLink = document.createElement('a');
+  alertLink.setAttribute('href', strAlertLink);
+  alertLink.setAttribute('title', strAlertTitle);
+  var alertLinkText = document.createTextNode('More Info');
+  alertLink.appendChild(alertLinkText);
+
+  var gtText = document.createTextNode(' >>');
+  
+  var clearDiv = document.createElement('div');
+  clearDiv.setAttribute('id', 'clearer');
+
+  // Start Building the Actual Div
+  alertTextP.appendChild(alertLink);
+  alertTextP.appendChild(gtText);
+
+  alertBoxTextDiv.appendChild(header1);
+  alertBoxTextDiv.appendChild(alertTextP);
+
+  alertBoxDiv.appendChild(alertBoxTextDiv);
+  alertBoxDiv.appendChild(clearDiv);
+
+  wrapperDiv.appendChild(alertBoxDiv);
+  
+  bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 } """
 
-    strContent = """
-document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
-'<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
+    strJSInclude = """
+    document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
+    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
+    """
 
-document.write('<link href="http://depts.washington.edu/uweb/emergency/%s" rel="stylesheet" type="text\/css" \/>' +
-    '<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
+    strContent = """
+    var strLink = (window.location.protocol == 'https:') ? 'https://' : 'http://';
+document.write('<link href="' + strLink + 'depts.washington.edu/uweb/emergency/%s" rel="stylesheet" type="text\/css" \/>' +
+'<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
 
 // displayAlert - grab HTML to display message 
 function displayAlert()
 {
-    var strAlertMessageHTML = '%s';
-    // Can we pass to the following function?
-    addElement(strAlertMessageHTML);
+    var strAlertTitle = '%s';
+    var strAlertLink = '%s';
+    var strAlertMessage = '%s';
+    
+    addElement(strAlertTitle,strAlertLink,strAlertMessage);
 }
-""" % (strStyle, re.escape(strHTMLContent))
+""" % (strStyle, re.escape(strTitle), strLink, re.escape(strContent))
+
     strOutput = strHeader + strContent + strAddElement + "\n";
 else:
     strContent = """
@@ -198,55 +234,7 @@ function displayAlert(strMode)
 } """
     strOutput = strHeader + strContent + "\n";
 
-# This may only be used for me - still good to have
-# strTestStyle = 'uwalert_steel.css'
-# strTestContent = """
-# document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
-# '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
+# Output all alerts and finish with the notification
+uwlibweb.saveAlert('alert.js', strOutput)
 
-# document.write('<link href="http://depts.washington.edu/uweb/emergency/%s" rel="stylesheet" type="text\/css" \/>' +
-    # '<sty' + 'le type="text\/css"><!-- body { margin: 0; padding: 0; } --><\/style>');
-
-# // displayAlert - grab HTML to display message 
-# function displayAlert()
-# {
-    # var strAlertMessageHTML = '%s';
-    # // Can we pass to the following function?
-    # addElement(strAlertMessageHTML);
-# }
-# """ % (strTestStyle, re.escape(strTestHTMLContent))
-
-uwlibweb.saveAlert('alert.js', strContent)
-
-strTextOutput = hashPlainAlert['welcome'] + hashPlainAlert['alert'] + hashPlainAlert['close']
-uwlibweb.saveAlert('alert.txt', strTextOutput)
-
-# Pushing out real alert
-# try:
-    # strFileout = '/rc22/d10/uweb/public_html/emergency/alert.js'
-    # objFile = open(strFileout, "w")
-    # objFile.write(strOutput)
-    # objFile.close()
-# except Exception, strError:
-    # print "Error Writing to File %s because %s" % (strFileout, strError)
-
-# strTextOutput = hashPlainAlert['welcome'] + hashPlainAlert['alert'] + hashPlainAlert['close']
-
-# try:
-    # strFileout = '/rc22/d10/uweb/public_html/emergency/alert.txt'
-    # objFile = open(strFileout, "w")
-    # objFile.write(strTextOutput)
-    # objFile.close()
-# except Exception, strError:
-    # print "Error Writing to File %s because %s" % (strFileout, strError)    
-
-# # Alert for my test purposes 
-# strOutput = strHeader + strTestContent + strAddElement + "\n";
-# #uwlibweb.saveAlert('alert-test.js', strContent)
-# try:
-    # strFileout = '/rc22/d10/uweb/public_html/emergency/alert-test.js'
-    # objFile = open(strFileout, "w")
-    # objFile.write(strOutput)
-    # objFile.close()
-# except Exception, strError:
-    # print "Error Writing to File %s because %s" % (strFileout, strError)
+uwlibweb.saveAlert('alert.txt', strPlainAlert)
