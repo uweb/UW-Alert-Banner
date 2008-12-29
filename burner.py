@@ -103,8 +103,8 @@ for strKey,strValue in hashAlert.items():
     if strValue != '':
         hashDates[strKey] = hashAlert[strKey]['date']
 
-#pp.pprint(hashDates)
-#pp.pprint(hashAlert)
+pp.pprint(hashDates)
+pp.pprint(hashAlert)
 
 # hashDates will only contain the colors with dates        
 if hashDates:
@@ -123,9 +123,9 @@ strPlainAlert = ''
 if strAlert:
 
     # Take newest item and display
-    strTitle = strAlert.entries[0].title.encode("latin-1") # don't trust encoding
+    strTitle = strAlert.entries[0].title.encode("iso-8859-15", "replace") # don't trust encoding
     strLink = 'http://emergency.washington.edu/'
-    strDesc = strAlert.entries[0].description.encode("latin-1") # don't trust encoding
+    strDesc = strAlert.entries[0].description.encode("iso-8859-15", "replace") # don't trust encoding
     # Encode vs. Decode article
     #http://mail.python.org/pipermail/python-list/2004-August/275972.html
     strDate = strAlert.entries[0].date
@@ -194,10 +194,10 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
   bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 } """
 
-    strJSInclude = """
-    document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
-    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
-    """
+#    strJSInclude = """
+#    document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
+#    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
+#    """
 
     strContent = """// Code contributed by Dustin Brewer
 var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
