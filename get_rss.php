@@ -1,15 +1,19 @@
 <?php
-// Summary - Get or Create Cached RSS Data - run via CronJob (5 - 15min increments)
-
-    //require_once('Cache/Lite.php');
-	/**
+    /**
 	 * Go get our alert content via an RSS feed out of the emergency blog
 	 */
-    
+    require_once('Cache/Lite.php');
+
+    // 4 & 6 are test categories
+    // Alert Status (WP Categories)
+    // 7 Publish
+    // 8 — Red Alert 
+    // 9 — Orange Alert    
+    define('ORANGE', 4);
+    define('RED', 6);
+	
     // 1 * 60 * 60 == 3600;
-    // Small performance hit, may want te re-eval later
-    // Could Eliminate Cache Altogether if needed
-    // Then take advantage of the saveData/rmData more
+    // Small performance hit?,
     // ------------------------------
     $options = array(
     'cacheDir' => 'rss_tmp/',
@@ -22,33 +26,15 @@
     // Create a Cache_Lite object
     $Cache_Lite = new Cache_Lite($options);
 
-    // 4 & 6 are test categories
-    
-    // Alert Status (WP Categories)
-    // 7 Publish
-    // 8 — Red Alert 
-    // 9 — Orange Alert
-
     require_once('lib.rss.php');
-    //$arrItems7 = getFeedData(7); // Don't think we need this 
 
-    // Need a way of detecting if no items are available
-    // Could make the getHigest a bit more robust, or feed it 
+    $arrItemsRed = getFeedData(RED);
+    $arrItemsOrange = getFeedData(ORANGE);
     
-    // More login - need to remember this entire script is run 
-    // every 10 seconds or less, maybe fork out another process
-    // or have this run as a seperate script and have the 
-    // get-message just pull from a file and have something run
-    // as a cronjob, not as fast, but we aren't going for speed here
-    // Reliability is much more important than how fast they get the message
-    $arrItemsRed = getFeedData(6);
-    $arrItemsOrange = getFeedData(4);
-    $strCookStatus1 = '';
-    $strCookStatus2 = '';
-
-    // Where is the check if the file doesn't change - if it stays the same - then we don't want to rewrite the cache
+    // Actually could do a comparion against the cache in the lib.rss.php (getFeedData) method
     if ( $strStatus = getHighest($arrItemsRed[0]['pubDate'],$arrItemsOrange[0]['pubDate']) )
     {
+        $intCategory = '';
         $strAlertColor = '';
 
         // Not taking into account if the dates are the same or if the objects passed are not dates
@@ -56,63 +42,74 @@
         {
             $arrItems = $arrItemsRed;
             $strAlertColor = 'red';
+            $intCategory = RED;
         }
         elseif ($strStatus == 2)
         {
             $arrItems = $arrItemsOrange;
             $strAlertColor = 'orange';
+            $intCategory = ORANGE;
         }
-
-        // Could replace this with another method and forgo traditinal caching
-        // I don't think it's gaining us much at this point
-        // As the RSS feed is updated every 5 minutes or so, it will probably
-        // end up being more of a stumbling block than anything else
-        $status = $Cache_Lite->save($arrItems,'rss');
-        setData($strAlertColor); // We are touching the file
-        //$strCookStatus1 = setcookie( 'uwalertcolor' , $strAlertColor , time()+60*60*24*1 , '/', '.washington.edu');
-        // echo "Cache Creation Status: $status\n";
+        
+        // Run through and find the latest version of content
+        $arrCategoryCacheItems = $Cache_Lite->get('rss-cat-'.$intCategory);
+        $arrMainCacheItems = $Cache_Lite->get('rss'.$intCategory);
+        // Next!
+        $arrItems = is_array($arrMainCacheItems) ? $arrMainCacheItems : $arrCategoryCacheItems;
+        $strStatusCached = getHighest($arrCachedItems[0]['pubDate'],$arrItems[0]['pubDate']);
+        
+        setData($strAlertColor);
+        
+        // if the cached version is newer or the same age, then pull it
+        if ($strStatusCached == 2)
+            $Cache_Lite->save($arrItems,'rss');
     }
     else
     {
-        // If we are here that means there are no items to grab - clean the cache and
-        // signal the decay
-        
-        // If we are here that also means the site could be down
-        // If the site is down during an emergency or if it can't 
-        // contact the site do we have bigger problems?
-        
-        // Worse case is the site is down and I need a way
-        // to manually override it - but as of right now the site
-        // would have to go down in the middle of an emergency to pose
-        // much of a problem - is this really an issue?
-        
-        //$strCookStatus2 = setcookie( 'uwalertcolor' , $strAlertColor , time() - 1 );    
-        
-        // only remove data if it exists
-        rmData();
-        // Clearing the cache does physically remove all the file(s)
+        // Clearing the cache by physically removing and all the file(s)
+        // No Cache - No content
         $Cache_Lite->clean();
     }
 
-    // New Content After a Long Period
-    // New Content After a Short Period - What is a short period? 5 sec, 5 minutes?  How to avoid overload...
-    // Clear Content After None Available - How long should content be available prior to clear?  1 day?  When
-    // the event is over, how will we know?  Automatically clear vs manually clear
-    // Manually Clear if the event is pulled from the Publish or any of the Sub Categories
+    // Grab the information created by the get_rss.php script
+    $arrItems = $Cache_Lite->get('rss');
+ 
+    // If something exists in the cache
+    if ( is_array($arrItems) )
+    {
+        // Take newest item and display
+        $strTitle = $arrItems[0]['title'];
+        $strLink = $arrItems[0]['link'];
+        $strDesc = $arrItems[0]['description'];
+        $strPubdate = $arrItems[0]['pubDate'];
 
-    // if rss feed exists
-        // if new
-            // then cache
-        // else
-            // then grab from cache
-    // else
-        // make note, check again in time 
-    // Save the Content for the RSS Feed
-    
-    // This should work... May not need this 
-    // or at least change the way we need it
-    // if ($strContent)
-        // saveData($strContent);
-    // else
-        // rmData();
+        // Content length unknown, trim to reasonable length
+        $strContent = $strDesc." ";
+        $strContent = substr($strContent,0,200);
+        $strContent = substr($strContent,0,strrpos($strContent,' '));
+        $strContent = $strContent."...";        
+        
+        $strContent = ($strLink) || ($strTitle) ? 
+            $strContent . '<a href="' . $strLink . '" title ="'. $strTitle .'">More Info</a> &gt;&gt;' 
+            : '';
+    }
+
+    /**
+           * HTML goes here
+           */
+    // If there is an RSS feed to pull
+    if ($strContent)
+    {
+?>
+<div id="alertBox">
+    <div id="alertBoxText">
+        <h1>Campus Alert:</h1>
+        <p><?php echo $strContent ?> <span>(<?php echo $strPubdate?>)</span></p>
+    </div>
+    <a href="javascript:void(0)" onclick="javascript:hideit('alertBox');Effect.BlindUp('alertBox')">
+    <img src="http://depts.washington.edu/uweb/emergency/close.gif" name="xmark" width="10" height="10" id="xmark" /></a>
+    <div id="clearer"></div>
+</div>
+<?php
+    }
 ?>

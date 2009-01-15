@@ -41,11 +41,6 @@
     // return 0 - failure includes both dates matching
     function getHighest($strDate1, $strDate2)
     {
-        // This should work in theory
-        // Aparently this does not work, needs information split
-        //if (!checkdate($strDate1) || !checkdate($strDate2))
-            //return 0;
-
         $strDate1 = strtotime($strDate1);
         $strDate2 = strtotime($strDate2);
         
@@ -65,7 +60,7 @@
     // Linked to rmData function
     function setData($strData)
     {
-        $fh = fopen('emergency', 'w');
+        $fh = fopen('alert.js', 'w');
         fwrite($fh, $strData); // Should have an or die here
         fclose($fh);
     }
@@ -73,9 +68,9 @@
     // rmData - Removing saved RSS data
     // Linked to saveData function
     // Takes no arguements
-    function rmData()
-    {
-        if (file_exists('emergency'))
-            unlink('emergency');
-    }
+    // function rmData()
+    // {
+        // if (file_exists('emergency'))
+            // unlink('emergency');
+    // }
 ?>
