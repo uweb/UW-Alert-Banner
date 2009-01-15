@@ -11,8 +11,8 @@ import uwlibweb, feedparser
 from datetime import timedelta, datetime
 
 ################ DEBUG ####################
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
+# # import pprint
+# # pp = pprint.PrettyPrinter(indent=4)
 ################ DEBUG ####################
 
 strHeader = """
@@ -87,7 +87,7 @@ except:
 # No alert is a good Alert
 strAlert = ''
 strStyle = ''
-################### Start Less Weird Than Yesterday
+################### Data Manipulation and Reorg
 
 #Example Data Structure
 # # # # hashAlert{
@@ -103,8 +103,10 @@ for strKey,strValue in hashAlert.items():
     if strValue != '':
         hashDates[strKey] = hashAlert[strKey]['date']
 
-pp.pprint(hashDates)
-pp.pprint(hashAlert)
+####DEBUG####
+# # pp.pprint(hashDates)
+# # pp.pprint(hashAlert)
+####DEBUG####
 
 # hashDates will only contain the colors with dates        
 if hashDates:
@@ -116,7 +118,7 @@ if hashDates:
                 strAlert = hashAlert[strAlertColor]['feed']
                 strStyle = 'uwalert_' + strAlertColor + '.css'
 
-################### End Less Weird Than Yesterday
+################### Data Manipulation and Reorg
 
 strPlainAlert = ''
 
