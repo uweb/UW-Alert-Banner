@@ -11,8 +11,8 @@ import uwlibweb, feedparser
 from datetime import timedelta, datetime
 
 ################ DEBUG ####################
-# # import pprint
-# # pp = pprint.PrettyPrinter(indent=4)
+#import pprint
+#pp = pprint.PrettyPrinter(indent=4)
 ################ DEBUG ####################
 
 strHeader = """
@@ -35,11 +35,6 @@ strHeader = """
  *  </html>
  *
  *--------------------------------------------------------------------------*/
-
-/*
- * Include our javascript object script, the wonderful Prototype... and friends
- *---------------------------*/
-
 """
 ## 4 & 6 are test categories
 ## Alert Status (WP Categories)
@@ -87,7 +82,7 @@ except:
 # No alert is a good Alert
 strAlert = ''
 strStyle = ''
-################### Data Manipulation and Reorg
+################### Start Less Weird Than Yesterday
 
 #Example Data Structure
 # # # # hashAlert{
@@ -103,10 +98,8 @@ for strKey,strValue in hashAlert.items():
     if strValue != '':
         hashDates[strKey] = hashAlert[strKey]['date']
 
-####DEBUG####
-# # pp.pprint(hashDates)
-# # pp.pprint(hashAlert)
-####DEBUG####
+#pp.pprint(hashDates)
+#pp.pprint(hashAlert)
 
 # hashDates will only contain the colors with dates        
 if hashDates:
@@ -118,7 +111,7 @@ if hashDates:
                 strAlert = hashAlert[strAlertColor]['feed']
                 strStyle = 'uwalert_' + strAlertColor + '.css'
 
-################### Data Manipulation and Reorg
+################### End Less Weird Than Yesterday
 
 strPlainAlert = ''
 
