@@ -29,7 +29,7 @@ strHeader = """
  *  <body>
  *  
  *  <script type="text/javascript">
- *  	getMessage();
+ *  	displayAlert();
  *  </script>
  *  </body>
  *  </html>
@@ -46,7 +46,7 @@ strHeader = """
 RED = 8
 ORANGE = 9
 BLUE = 10
-STEEL = 12
+STEEL = 11
 
 # We want to make sure there are no problems with a lock of a post
 # If there are any problems, just set the entry to zero
