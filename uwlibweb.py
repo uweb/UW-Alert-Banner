@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.5
+#!/bin/env python2.4
 
 """
 Summary: Library containing functions for supporting the burner.py script
@@ -56,7 +56,7 @@ def saveAlert(strFilename, strAlertText):
     Not in production yet
     """
     try:
-        strFileout = '/rc22/d10/uweb/public_html/emergency/' + strFilename
+        strFileout = '/www/' + strFilename
         objFile = open(strFileout, "w")
         objFile.write(strAlertText)
         objFile.close()
@@ -67,7 +67,7 @@ def saveData(strFilename, strFileContents):
     """Saves data to the storage location
     May opt to remove and only use for debug
     """
-    strFolder = '/rc22/d10/uweb/public_html/emergency/storage/'
+    strFolder = '/www/'
     
     #save the data into the file
     try:

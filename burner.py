@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.5
+#!/bin/env python2.4
 
 """
 Summary: script to run in cronjob - detect if there is something to post
@@ -24,7 +24,7 @@ strHeader = """
  *  <html>
  *  <head>
  *  <title>Page Title</title>
- *  <script type="text/javascript" src="http://depts.washington.edu/uweb/emergency/alert.js"></script>
+ *  <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
  *  </head>
  *  <body>
  *  
@@ -190,14 +190,14 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
 } """
 
 #    strJSInclude = """
-#    document.write('<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/prototype.js"><\/script>' +
-#    '<scr' + 'ipt type="text\/javascript" src="http://depts.washington.edu/uweb/emergency/scriptaculous.js?load=effects"><\/script>');
+#    document.write('<scr' + 'ipt type="text\/javascript" src="http://emergency.washington.edu/prototype.js"><\/script>' +
+#    '<scr' + 'ipt type="text\/javascript" src="http://emergency.washington.edu/scriptaculous.js?load=effects"><\/script>');
 #    """
 
     strContent = """// Code contributed by Dustin Brewer
 var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
 var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + 'depts.washington.edu/uweb/emergency/%s');
+strCSS.setAttribute('href', strProto + 'emergency.washington.edu/%s');
 strCSS.setAttribute('rel','stylesheet');
 strCSS.setAttribute('type','text/css');
 document.getElementsByTagName('head')[0].appendChild(strCSS);
