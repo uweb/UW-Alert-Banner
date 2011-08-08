@@ -53,12 +53,12 @@ very lightweight and only contains a few lines of javascript, even when active
 the alert.js file is very small.
 
 
-Between the <head></head> tags:
+Between the <head></head> tags::
 
- <script type=”text/javascript” src=”http://emergency.washington.edu/alert.js”></script>
+ <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
 
  <!-- Above the </body> tag: -->
- <script type=”text/javascript”>
+ <script type="text/javascript">
  displayAlert();
  </script>
 
@@ -70,11 +70,11 @@ Testing
 To verify the banner will not disrupt any elements on the page, the test code is
 available below. The banner will display a steel color and a brief message.
 
-Between the <head></head> tags:
+Between the <head></head> tags::
 
- <script type=”text/javascript” src=”http://emergency.washington.edu/alert-test.js”></script>
+ <script type="text/javascript" src="http://emergency.washington.edu/alert-test.js"></script>
 
  <!-- Above the </body> tag: -->
- <script type=”text/javascript”>
+ <script type="text/javascript">
  displayAlert();
  </script>
