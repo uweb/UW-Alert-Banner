@@ -67,7 +67,7 @@ def saveData(strFilename, strFileContents):
     """Saves data to the storage location
     May opt to remove and only use for debug
     """
-    strFolder = '/www/'
+    strFolder = '/usr/users/a_em1/emergency/storage/'
     
     #save the data into the file
     try:
