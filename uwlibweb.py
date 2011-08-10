@@ -7,6 +7,19 @@ Summary: Library containing functions for supporting the burner.py script
 import urllib, os, sys, time
 from datetime import timedelta, datetime
 
+def getJsonData():
+    """getJsonData() - Get the data from the json api and save to a file
+    """
+    strURL = 'http://emergency.washington.edu/?json=1'
+        
+    strFileContents = readURL(strURL)
+
+    strFilename = 'emergency.json'
+    # Is there a reason to save every time?
+    saveData(strFilename,strFileContents)
+    
+    return strFileContents
+
 def getFeedData(intCategory):
     """getFeedData() - Get the data from the RSS feed and save to a file
     Mostly used for debugging - will find some use for it later
@@ -49,7 +62,7 @@ def readURL(strURL):
     oFile = urllib.urlopen(strURL)
     strData = oFile.read()
     oFile.close()
-    return str(strData)
+    return strData
     
 def saveAlert(strFilename, strAlertText):
     """Create actual js for usage
@@ -67,7 +80,7 @@ def saveData(strFilename, strFileContents):
     """Saves data to the storage location
     May opt to remove and only use for debug
     """
-    strFolder = '/usr/users/a_em1/emergency/storage/'
+    strFolder = 'storage/'
     
     #save the data into the file
     try:
