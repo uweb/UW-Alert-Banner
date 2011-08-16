@@ -34,9 +34,8 @@ class AlertBanner(object):
         self._status = ""
         self._alert = ""
         self._color = ""
-        #self._header = ""
-        #self._content = ""
-        #self._footer = ""
+        self._content = ""
+        self._output = ""
         self._types = {
             5  :'test',
             8  :'red',
@@ -49,7 +48,7 @@ class AlertBanner(object):
     def set_url(self, url):
         self._url = url
     def get_status(self):
-        return "%s" % (self._status)
+        return "%s" % self._status
     def set_status(self, status):
         self._status = status
     def get_alert(self):
@@ -57,14 +56,128 @@ class AlertBanner(object):
     def set_alert(self, alert):
         self._alert = alert
     def get_color(self):
-        return self._color
+        return "%s" % self._color
     def set_color(self, color):
         self._color = color
+    def get_output(self):
+        return "%s" % self._output
+    def set_output(self, output):
+        self._output = output
 
-    color   = property(get_color, set_color)
     alert   = property(get_alert, set_alert)
+    color   = property(get_color, set_color)
+    output  = property(get_output, set_output)
     status  = property(get_status, set_status)
     url     = property(get_url, set_url)
+
+    def _build(self):
+        strHeader = """
+        /*  University of Washington - Alert 2.0 Beta
+         *  (c) 2011 Chris Heiland, Tim Chang-Miller
+         *
+         *  Script should be included like such:
+         *  
+         *  <html>
+         *  <head>
+         *  <title>Page Title</title>
+         *  <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
+         *  </head>
+         *  <body>
+         *  
+         *  <script type="text/javascript">
+         *  	displayAlert();
+         *  </script>
+         *  </body>
+         *  </html>
+         *
+         *  Full docs at: 
+         *  uw.edu/externalaffairs/uwmarketing/toolkits/uw-alert-banner/
+         *
+         *--------------------------------------------------------------------------*/
+        """
+
+        strAddElement = """// addElement - display HTML on page right below the body page
+        // don't want the alert to show up randomly
+        function addElement(strAlertTitle,strAlertLink,strAlertMessage)
+        {
+          // Grab the tag to start the party
+          var bodyTag = document.getElementsByTagName('body')[0];
+          
+          bodyTag.style.margin = '0px';
+          bodyTag.style.padding = '0px';
+
+          var wrapperDiv = document.createElement('div');
+          wrapperDiv.setAttribute('id','alertMessage');
+
+          var alertBoxDiv = document.createElement('div');
+          alertBoxDiv.setAttribute('id', 'alertBox');
+
+          var alertBoxTextDiv = document.createElement('div');
+          alertBoxTextDiv.setAttribute('id', 'alertBoxText');
+          
+          var header1 = document.createElement('h1');
+          var header1Text = document.createTextNode('Campus Alert:');
+          header1.appendChild(header1Text);
+
+          var alertTextP = document.createElement('p');
+          var alertText = document.createTextNode(strAlertMessage);
+          alertTextP.appendChild(alertText);
+
+          var alertLink = document.createElement('a');
+          alertLink.setAttribute('href', strAlertLink);
+          alertLink.setAttribute('title', strAlertTitle);
+          var alertLinkText = document.createTextNode('More Info');
+          alertLink.appendChild(alertLinkText);
+
+          var gtText = document.createTextNode(' >>');
+          
+          var clearDiv = document.createElement('div');
+          clearDiv.setAttribute('id', 'clearer');
+
+          // Start Building the Actual Div
+          alertTextP.appendChild(alertLink);
+          alertTextP.appendChild(gtText);
+
+          alertBoxTextDiv.appendChild(header1);
+          alertBoxTextDiv.appendChild(alertTextP);
+
+          alertBoxDiv.appendChild(alertBoxTextDiv);
+          alertBoxDiv.appendChild(clearDiv);
+
+          wrapperDiv.appendChild(alertBoxDiv);
+          
+          bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
+        } """
+
+        strContent = """// Code contributed by Dustin Brewer
+            var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
+            var strCSS = document.createElement('link');
+            strCSS.setAttribute('href', strProto + 'emergency.washington.edu/%s');
+            strCSS.setAttribute('rel','stylesheet');
+            strCSS.setAttribute('type','text/css');
+            document.getElementsByTagName('head')[0].appendChild(strCSS);
+
+            // displayAlert - grab content to display message 
+            function displayAlert()
+            {
+                var strAlertTitle = '%s';
+                var strAlertLink = '%s';
+                var strAlertMessage = '%s';
+                
+                addElement(strAlertTitle,strAlertLink,strAlertMessage);
+            }
+            """ % (strStyle, re.escape(strTitle), strLink, re.escape(strContent))
+
+        self.output = strHeader + strContent + strAddElement + "\n"
+
+        #else:
+        #    strContent = """
+        #function displayAlert(strMode)
+        #{
+        #    // Does nothing useful - for error & warning prevention
+        #} """
+
+        #    self.output = strHeader + strContent + "\n"
 
     def load(self):
         """
@@ -78,12 +191,8 @@ class AlertBanner(object):
         self.status = self._alertdata['status']
         self.alert = self._alertdata['posts'][0]
 
-        categories = self.alert['categories']
-
-        ## This would come up if it was info / red
-        ## we only need to make sure there is an alert
-        ## color available
-        for category in categories:
+        ## We only need to verify there is an alert color available
+        for category in self.alert['categories']:
             ## If we can't find our type, then we're done
             if category['id'] in self._types:
                 self.color = self._types[category['id']]
