@@ -38,10 +38,11 @@ class AlertBanner(object):
         #self._content = ""
         #self._footer = ""
         self._types = {
-            '8' :'red',
-            '9' :'orange',
-            '10':'blue',
-            '11':'steel'}
+            5  :'test',
+            8  :'red',
+            9  :'orange',
+            10 :'blue',
+            11 :'steel'}
 
     def get_url(self):
         return "%s" % (self._url)
@@ -79,17 +80,13 @@ class AlertBanner(object):
 
         categories = self.alert['categories']
 
-        ## If we can't find our type, then we're done
+        ## This would come up if it was info / red
+        ## we only need to make sure there is an alert
+        ## color available
         for category in categories:
+            ## If we can't find our type, then we're done
             if category['id'] in self._types:
-
-        #if len(categories) == 1:
-        #    category = categories[0] 
-        #    self.color = self._types[category['id']]
-        #else:
-
-
-        ## TODO: Multiple categories????
+                self.color = self._types[category['id']]
 
         # TODO: Is there a reason to save every time?
         self._save()
@@ -113,13 +110,11 @@ class AlertBanner(object):
         Grabs latest alert
         """
         if self.status == 'ok':
-            categories = self.alert['categories']
-            for category in categories:
-
-                if category['id'] == 5:
-                    print """Title: %s""" % self.alert['title']
-                    print """Excerpt: %s""" % self.alert['excerpt']
-                    #print """Content: %s \n""" % self.alert['content']
+            if self.color:
+                print """Title: %s""" % self.alert['title']
+                print """Color: %s""" % self.color
+                print """Excerpt: %s""" % self.alert['excerpt']
+                #print """Content: %s \n""" % self.alert['content']
         else:
             raise Exception("Problem with emergency feed")
 
