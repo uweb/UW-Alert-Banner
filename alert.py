@@ -31,6 +31,8 @@ class AlertBanner(object):
         self._cache = 'storage/'
         self._alertdata = ""
         self._filename = 'emergency.json'
+        self._status = ""
+        self._alert = ""
         self._header = ""
         self._content = ""
         self._footer = ""
@@ -43,7 +45,17 @@ class AlertBanner(object):
         return "%s" % (self._url)
     def set_url(self, url):
         self._url = url
+    def get_status(self):
+        return "%s" % (self._status)
+    def set_status(self, status):
+        self._status = status
+    def get_alert(self):
+        return self._alert
+    def set_alert(self, alert):
+        self._alert = alert
 
+    alert = property(get_alert, set_alert)
+    status = property(get_status, set_status)
     url = property(get_url, set_url)
 
     def load(self):
@@ -53,6 +65,9 @@ class AlertBanner(object):
         oFile = urllib2.urlopen(self._url)
         self._alertdata = json.loads(oFile.read())
         oFile.close()
+
+        self.status = self._alertdata['status']
+        self.alert = self._alertdata['posts'][0]
 
         # TODO: Is there a reason to save every time?
         self._save()
@@ -75,11 +90,13 @@ class AlertBanner(object):
         """
         Grabs latest alert
         """
-        if self._alertdata['status'] == 'ok':
-            categories = self._alertdata['posts'][0]['categories']
+        if self.status == 'ok':
+            categories = self.alert['categories']
             for category in categories:
-                print category['id']
-                #if category['id'] == self.RED
+                if category['id'] == 5:
+                    print """Title: %s""" % self.alert['title']
+                    print """Excerpt: %s""" % self.alert['excerpt']
+                    #print """Content: %s \n""" % self.alert['content']
         else:
             raise Exception("Problem with emergency feed")
 

@@ -19,6 +19,7 @@ class TestAlertBanner(unittest.TestCase):
         strData = json.loads(oFile.read())
         oFile.close()
 
+        self.assertEqual(self.Alert.status, 'ok')
         self.assertEqual(self.Alert._alertdata, strData)
 
     def testdisplay(self):

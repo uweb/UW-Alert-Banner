@@ -19,8 +19,16 @@ from alert import AlertBanner
 ##print json.dumps( oJ, sort_keys=True, indent=4) 
 #print oJ['pages']
 
-alert = AlertBanner()
+banner = AlertBanner()
 
-alert.load()
-alert._latest()
-#alert.display()
+banner.load()
+banner._latest()
+#banner.display()
+
+#alert.status
+#alert.color
+#alert.title
+#alert.summary
+#alert.content
+
+
