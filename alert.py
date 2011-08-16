@@ -39,6 +39,13 @@ class AlertBanner(object):
         self.BLUE = 10
         self.STEEL = 11
 
+    def get_url(self):
+        return "%s" % (self._url)
+    def set_url(self, url):
+        self._url = url
+
+    url = property(get_url, set_url)
+
     def load(self):
         """
         Get the data from the json api and save to a file
@@ -73,4 +80,6 @@ class AlertBanner(object):
             for category in post['categories']:
                 print category['id']
                 #if category['id'] == self.RED
+    def display(self):
+        print json.dumps(self.alertdata)
 
