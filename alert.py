@@ -33,13 +33,15 @@ class AlertBanner(object):
         self._filename = 'emergency.json'
         self._status = ""
         self._alert = ""
-        self._header = ""
-        self._content = ""
-        self._footer = ""
-        self.RED = 8
-        self.ORANGE = 9
-        self.BLUE = 10
-        self.STEEL = 11
+        self._color = ""
+        #self._header = ""
+        #self._content = ""
+        #self._footer = ""
+        self._types = {
+            '8' :'red',
+            '9' :'orange',
+            '10':'blue',
+            '11':'steel'}
 
     def get_url(self):
         return "%s" % (self._url)
@@ -53,10 +55,15 @@ class AlertBanner(object):
         return self._alert
     def set_alert(self, alert):
         self._alert = alert
+    def get_color(self):
+        return self._color
+    def set_color(self, color):
+        self._color = color
 
-    alert = property(get_alert, set_alert)
-    status = property(get_status, set_status)
-    url = property(get_url, set_url)
+    color   = property(get_color, set_color)
+    alert   = property(get_alert, set_alert)
+    status  = property(get_status, set_status)
+    url     = property(get_url, set_url)
 
     def load(self):
         """
@@ -66,8 +73,23 @@ class AlertBanner(object):
         self._alertdata = json.loads(oFile.read())
         oFile.close()
 
+        ## The assumption is the latest post has our data
         self.status = self._alertdata['status']
         self.alert = self._alertdata['posts'][0]
+
+        categories = self.alert['categories']
+
+        ## If we can't find our type, then we're done
+        for category in categories:
+            if category['id'] in self._types:
+
+        #if len(categories) == 1:
+        #    category = categories[0] 
+        #    self.color = self._types[category['id']]
+        #else:
+
+
+        ## TODO: Multiple categories????
 
         # TODO: Is there a reason to save every time?
         self._save()
@@ -93,6 +115,7 @@ class AlertBanner(object):
         if self.status == 'ok':
             categories = self.alert['categories']
             for category in categories:
+
                 if category['id'] == 5:
                     print """Title: %s""" % self.alert['title']
                     print """Excerpt: %s""" % self.alert['excerpt']

@@ -8,19 +8,20 @@ from alert import AlertBanner
 class TestAlertBanner(unittest.TestCase):
 
     def setUp(self):
-        self.Alert = AlertBanner()
+        self.banner = AlertBanner()
 
     def testload(self):
-        self.Alert.url = 'http://emergency.washington.edu/emergency.json'
-        self.Alert.load()
+        self.banner.url = 'http://emergency.washington.edu/emergency.json'
+        self.banner.load()
 
         ## For consistent tests, we have red alert
         oFile = open('storage/emergency.json', 'r')
         strData = json.loads(oFile.read())
         oFile.close()
 
-        self.assertEqual(self.Alert.status, 'ok')
-        self.assertEqual(self.Alert._alertdata, strData)
+        self.assertEqual(self.banner.status, 'ok')
+        self.assertEqual(self.banner.color, 'red')
+        self.assertEqual(self.banner._alertdata, strData)
 
     def testdisplay(self):
         self.assertEqual('','')
