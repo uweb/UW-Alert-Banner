@@ -27,7 +27,7 @@ class AlertBanner(object):
     Primary Alert Object
     """
     def __init__(self):
-        self._url = 'http://emergency.washington.edu/?json=1'
+        self._url = 'http://emergency.washington.edu/?json=1&count=1'
         self._cache = 'storage/'
         self._alertdata = ""
         self._filename = 'emergency.json'
@@ -75,11 +75,15 @@ class AlertBanner(object):
         """
         Grabs latest alert
         """
-
-        for post in self._alertdata['posts']:
-            for category in post['categories']:
+        if self._alertdata['status'] == 'ok':
+            categories = self._alertdata['posts'][0]['categories']
+            for category in categories:
                 print category['id']
                 #if category['id'] == self.RED
+        else:
+            raise Exception("Problem with emergency feed")
+
+
     def display(self):
         print json.dumps(self.alertdata)
 

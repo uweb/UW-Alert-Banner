@@ -22,4 +22,5 @@ from alert import AlertBanner
 alert = AlertBanner()
 
 alert.load()
-alert.display()
+alert._latest()
+#alert.display()
