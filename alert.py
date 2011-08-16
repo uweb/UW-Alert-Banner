@@ -22,7 +22,7 @@ import os, sys, time
 import urllib2,json
 from datetime import timedelta, datetime
 
-class Alert(object):
+class AlertBanner(object):
     """ 
     Primary Alert Object
     """
@@ -34,13 +34,17 @@ class Alert(object):
         self._header = ""
         self._content = ""
         self._footer = ""
+        self.RED = 8
+        self.ORANGE = 9
+        self.BLUE = 10
+        self.STEEL = 11
 
     def load(self):
         """
         Get the data from the json api and save to a file
         """
-        oFile = urllib.urlopen(self._url)
-        self._alertdata = oFile.read()
+        oFile = urllib2.urlopen(self._url)
+        self._alertdata = json.loads(oFile.read())
         oFile.close()
 
         # TODO: Is there a reason to save every time?
@@ -54,9 +58,19 @@ class Alert(object):
 
         try:
             oFile = open(self._cache + self._filename, 'w')
-            oFile.write(self._alertdata)
+            oFile.write(json.dumps(self._alertdata))
             oFile.close()
             return 1
         except Exception, strError:
             print "Error Writing to File %s%s because %s" % (self._cache, self._filename, strError)
+
+    def _latest(self):
+        """
+        Grabs latest alert
+        """
+
+        for post in self._alertdata['posts']:
+            for category in post['categories']:
+                print category['id']
+                #if category['id'] == self.RED
 
