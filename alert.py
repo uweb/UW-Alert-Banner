@@ -19,6 +19,7 @@ __email__ = "cheiland@uw.edu"
 __status__ = "Development"
 
 import os, sys, time
+import re
 import urllib2,json
 from datetime import timedelta, datetime
 
@@ -34,6 +35,7 @@ class AlertBanner(object):
         self._status = ""
         self._alert = ""
         self._color = ""
+        self._link = 'http://emergency.washington.edu/'
         self._content = ""
         self._output = ""
         self._types = {
@@ -149,6 +151,7 @@ class AlertBanner(object):
           bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
         } """
 
+        strStyle = """uwalert_%s.css""" % self.color
         strContent = """// Code contributed by Dustin Brewer
             var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
             var strCSS = document.createElement('link');
@@ -166,7 +169,7 @@ class AlertBanner(object):
                 
                 addElement(strAlertTitle,strAlertLink,strAlertMessage);
             }
-            """ % (strStyle, re.escape(strTitle), strLink, re.escape(strContent))
+            """ % (strStyle, re.escape(self.alert['title']), self._link, re.escape(self.alert['content']))
 
         self.output = strHeader + strContent + strAddElement + "\n"
 
@@ -229,5 +232,7 @@ class AlertBanner(object):
 
 
     def display(self):
-        print json.dumps(self.alertdata)
+        self._build()
+        print self.output
+        #print json.dumps(self.alertdata)
 

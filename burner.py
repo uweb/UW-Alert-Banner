@@ -99,9 +99,6 @@ for strKey,strValue in hashAlert.items():
     if strValue != '':
         hashDates[strKey] = hashAlert[strKey]['date']
 
-#pp.pprint(hashDates)
-#pp.pprint(hashAlert)
-
 # hashDates will only contain the colors with dates        
 if hashDates:
     strHighDate = uwlibweb.getHighest(hashDates)
