@@ -227,13 +227,15 @@ class AlertBanner(object):
             if self.status == 'ok':
                 if self.color:
                     self.output = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
+                    print self.output
                     return self.output
             else:
                 raise Exception("Problem with emergency feed")
         else:
             self._build()
+            print self.output
             return self.output
 
         #print json.dumps(self.alertdata)
-        print self.output
+        #print self.output
 
