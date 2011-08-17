@@ -27,6 +27,7 @@ class AlertBanner(object):
         self._alertdata = ""
         self._status = ""
         self._alert = ""
+        self._excerpt = ""
         self._color = ""
         self._link = 'http://emergency.washington.edu/'
         self._deploy = 'storage/'
@@ -87,6 +88,11 @@ class AlertBanner(object):
             ## If we can't find our type, then we're done
             if category['id'] in self._types:
                 self.color = self._types[category['id']]
+
+        if self.alert['excerpt']:
+            self._excerpt = self.alert['excerpt']
+        else:
+            self._excerpt = self.alert['content'][:180] + '... '
 
         # TODO: Is there a reason to save every time?
         self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json')
@@ -189,7 +195,7 @@ function displayAlert()
 
     addElement(strAlertTitle,strAlertLink,strAlertMessage);
 }
-""" % (self.color, re.escape(self.alert['title']), self._link, re.escape(self.alert['content']))
+""" % (self.color, re.escape(self.alert['title']), self._link, re.escape(self._excerpt))
         else:
             strContent = """function displayAlert(strMode)
 {
@@ -199,7 +205,7 @@ function displayAlert()
         self.output = strHeader + strContent
         return 1
 
-    def _save(self,sData,sFile)
+    def _save(self,sData,sFile):
         """
         Private method to save data to the storage/output locations
         """
@@ -223,8 +229,8 @@ function displayAlert()
 
         strPlain = ''
         if self.color:
-            ## Plain text version requested by random department
-            strPlain = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
+            ## Plain text version requested by a department
+            strPlain = """%s.\n<break />\n%s.""" % (self.alert['title'],self._excerpt)
 
         self._save(strPlain,"""%s.txt""" % self._filename)
         if sType == 'plain':

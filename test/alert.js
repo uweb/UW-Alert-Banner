@@ -85,7 +85,7 @@ function displayAlert()
 {
     var strAlertTitle = 'Incoming\ Asteroid';
     var strAlertLink = 'http://emergency.washington.edu/';
-    var strAlertMessage = 'There\'s\ no\ hope\,\ classes\ cancelled';
+    var strAlertMessage = 'DESC\:\ Astroid\ Fatal';
 
     addElement(strAlertTitle,strAlertLink,strAlertMessage);
 }
