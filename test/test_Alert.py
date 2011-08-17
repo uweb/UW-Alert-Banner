@@ -21,6 +21,7 @@ class TestAlertBanner1(unittest.TestCase):
         self.assertEqual(self.banner.status, 'ok')
         self.assertEqual(self.banner.color, 'red')
         self.assertEqual(self.banner._alertdata, strData)
+        self.assertEqual(self.banner.excerpt, 'DESC: Astroid Fatal')
 
     def testdisplay(self):
         self.assertEqual(self.banner.display('plain'),"Incoming Asteroid.\n<break />\nDESC: Astroid Fatal.")
@@ -51,6 +52,7 @@ class TestAlertBanner2(unittest.TestCase):
         self.assertEqual(self.banner.status, 'ok')
         self.assertEqual(self.banner.color, '')
         self.assertEqual(self.banner._alertdata, strData)
+        self.assertEqual(self.banner.excerpt, 'DESC: Astroid Fatal')
 
     def testdisplay(self):
         self.assertEqual(self.banner.display('plain'),'')

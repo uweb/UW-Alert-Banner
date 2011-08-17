@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.4
+#!/usr/bin/env python2.6
 
 """
 Summary: script to run in cronjob - detect if there is something to post

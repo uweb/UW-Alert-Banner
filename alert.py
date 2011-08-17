@@ -15,7 +15,7 @@ __status__ = "Development"
 
 import os, sys, time
 import re
-import urllib2,json
+import urllib2, json
 from datetime import timedelta, datetime
 
 class AlertBanner(object):
@@ -59,12 +59,17 @@ class AlertBanner(object):
         return "%s" % self._output
     def set_output(self, output):
         self._output = output
+    def get_excerpt(self):
+        return "%s" % self._excerpt
+    def set_excerpt(self, excerpt):
+        self._excerpt = excerpt
 
-    alert   = property(get_alert, set_alert)
-    color   = property(get_color, set_color)
-    output  = property(get_output, set_output)
-    status  = property(get_status, set_status)
-    url     = property(get_url, set_url)
+    alert     = property(get_alert, set_alert)
+    color     = property(get_color, set_color)
+    excerpt   = property(get_excerpt, set_excerpt)
+    output    = property(get_output, set_output)
+    status    = property(get_status, set_status)
+    url       = property(get_url, set_url)
 
     def load(self):
         """
@@ -95,7 +100,7 @@ class AlertBanner(object):
             self._excerpt = self.alert['content'][:180] + '... '
 
         # TODO: Is there a reason to save every time?
-        self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json')
+        #self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json')
 
     def _build(self):
         ## If we have an color, we are running an alert - we need
