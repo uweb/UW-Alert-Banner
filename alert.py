@@ -238,6 +238,7 @@ function displayAlert()
             strPlain = """%s.\n<break />\n%s.""" % (self.alert['title'],self._excerpt)
 
         self._save(strPlain,"""%s.txt""" % self._filename)
+        ## Exists solely for tests
         if sType == 'plain':
             return strPlain
 
