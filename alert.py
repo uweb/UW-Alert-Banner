@@ -29,15 +29,14 @@ class AlertBanner(object):
         self._alert = ""
         self._color = ""
         self._link = 'http://emergency.washington.edu/'
-        self._cache = 'storage/'
-        self._prod = 'storage/'
+        self._deploy = 'storage/'
         self._filename = 'alert'
         self._output = ""
         self._types = {
-            8  :'red',
-            9  :'orange',
-            10 :'blue',
-            11 :'steel'}
+            8  : 'red',
+            9  : 'orange',
+            10 : 'blue',
+            11 : 'steel'}
 
     def get_url(self):
         return "%s" % (self._url)
@@ -90,9 +89,9 @@ class AlertBanner(object):
                 self.color = self._types[category['id']]
 
         # TODO: Is there a reason to save every time?
-        self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json',1)
+        self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json')
 
-    def _build(self,sType=None):
+    def _build(self):
         ## If we have an color, we are running an alert - we need
         ## this to be as streamlined as possible
 
@@ -121,7 +120,14 @@ class AlertBanner(object):
 """
 
         if self.color:
-            strFooter = """// addElement - display HTML on page right below the body page
+            strContent = """// Code contributed by Dustin Brewer
+var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
+var strCSS = document.createElement('link');
+strCSS.setAttribute('href', strProto + 'emergency.washington.edu/uwalert_%s.css');
+strCSS.setAttribute('rel','stylesheet');
+strCSS.setAttribute('type','text/css');
+document.getElementsByTagName('head')[0].appendChild(strCSS);
+// addElement - display HTML on page right below the body page
 // don't want the alert to show up randomly
 function addElement(strAlertTitle,strAlertLink,strAlertMessage)
 {
@@ -172,15 +178,7 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
   wrapperDiv.appendChild(alertBoxDiv);
 
   bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
-}"""
-
-            strContent = """// Code contributed by Dustin Brewer
-var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
-var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + 'emergency.washington.edu/uwalert_%s.css');
-strCSS.setAttribute('rel','stylesheet');
-strCSS.setAttribute('type','text/css');
-document.getElementsByTagName('head')[0].appendChild(strCSS);
+}
 
 // displayAlert - grab content to display message 
 function displayAlert()
@@ -193,30 +191,20 @@ function displayAlert()
 }
 """ % (self.color, re.escape(self.alert['title']), self._link, re.escape(self.alert['content']))
         else:
-            strFooter  = ''
             strContent = """function displayAlert(strMode)
 {
     // Does nothing useful (for error & warning prevention)
 }
 """
-        self.output = strHeader + strContent + strFooter
-        self._save(self.output,"""%s.js""" % self._filename)
-
-        ## Plain text version requested by random department
-        strPlain = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
-        self._save(strPlain,"""%s.txt""" % self._filename)
-
+        self.output = strHeader + strContent
         return 1
 
-    def _save(self,sData,sFile,intCache=None):
+    def _save(self,sData,sFile)
         """
         Private method to save data to the storage/output locations
         """
 
-        strLocation = """%s%s""" % (self._prod,sFile)
-
-        if intCache:
-            strLocation = """%s%s""" % (self._cache,sFile)
+        strLocation = """%s%s""" % (self._deploy,sFile)
 
         try:
             oFile = open(strLocation, 'w')
@@ -227,11 +215,23 @@ function displayAlert()
             print "Error Writing to File %s because %s" % (strLocation, strError)
 
     ## TODO: Needs more thought
-    def display(self):
+    def display(self,sType=None):
         """
         Display latest alert in both plain and js mode
         """
         self.load()
 
+        strPlain = ''
+        if self.color:
+            ## Plain text version requested by random department
+            strPlain = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
+
+        self._save(strPlain,"""%s.txt""" % self._filename)
+        if sType == 'plain':
+            return strPlain
+
         if self._build():
+            self._save(self.output,"""%s.js""" % self._filename)
             return self.output
+        else:
+            print "Problem rendering banner\n"

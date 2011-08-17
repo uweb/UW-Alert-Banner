@@ -24,4 +24,3 @@ function displayAlert(strMode)
 {
     // Does nothing useful (for error & warning prevention)
 }
-

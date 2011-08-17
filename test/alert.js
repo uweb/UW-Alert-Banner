@@ -27,16 +27,6 @@ strCSS.setAttribute('href', strProto + 'emergency.washington.edu/uwalert_red.css
 strCSS.setAttribute('rel','stylesheet');
 strCSS.setAttribute('type','text/css');
 document.getElementsByTagName('head')[0].appendChild(strCSS);
-
-// displayAlert - grab content to display message 
-function displayAlert()
-{
-    var strAlertTitle = 'Incoming\ Asteroid';
-    var strAlertLink = 'http://emergency.washington.edu/';
-    var strAlertMessage = 'There\'s\ no\ hope\,\ classes\ cancelled';
-
-    addElement(strAlertTitle,strAlertLink,strAlertMessage);
-}
 // addElement - display HTML on page right below the body page
 // don't want the alert to show up randomly
 function addElement(strAlertTitle,strAlertLink,strAlertMessage)
@@ -88,4 +78,14 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
   wrapperDiv.appendChild(alertBoxDiv);
 
   bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
+}
+
+// displayAlert - grab content to display message 
+function displayAlert()
+{
+    var strAlertTitle = 'Incoming\ Asteroid';
+    var strAlertLink = 'http://emergency.washington.edu/';
+    var strAlertMessage = 'There\'s\ no\ hope\,\ classes\ cancelled';
+
+    addElement(strAlertTitle,strAlertLink,strAlertMessage);
 }
