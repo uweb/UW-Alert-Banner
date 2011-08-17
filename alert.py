@@ -13,7 +13,7 @@ __author__ = "Chris Heiland"
 __copyright__ = "Copyright 2011, University of Washington"
 __credits__ = ["Chris Heiland"]
 __license__ = "GPL"
-__version__ = "0.2"
+__version__ = "2.0"
 __maintainer__ = "Chris Heiland"
 __email__ = "cheiland@uw.edu"
 __status__ = "Development"
@@ -36,10 +36,9 @@ class AlertBanner(object):
         self._alert = ""
         self._color = ""
         self._link = 'http://emergency.washington.edu/'
-        self._content = ""
         self._output = ""
         self._types = {
-            5  :'test',
+            5  :'steel',
             8  :'red',
             9  :'orange',
             10 :'blue',
@@ -71,6 +70,27 @@ class AlertBanner(object):
     output  = property(get_output, set_output)
     status  = property(get_status, set_status)
     url     = property(get_url, set_url)
+
+    def load(self):
+        """
+        Get the data from the json api and save to a file
+        """
+        oFile = urllib2.urlopen(self._url)
+        self._alertdata = json.loads(oFile.read())
+        oFile.close()
+
+        ## The assumption is the latest post has our data
+        self.status = self._alertdata['status']
+        self.alert = self._alertdata['posts'][0]
+
+        ## We only need to verify there is an alert color available
+        for category in self.alert['categories']:
+            ## If we can't find our type, then we're done
+            if category['id'] in self._types:
+                self.color = self._types[category['id']]
+
+        # TODO: Is there a reason to save every time?
+        self._save()
 
     def _build(self):
         strHeader = """
@@ -151,57 +171,37 @@ class AlertBanner(object):
           bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
         } """
 
-        strStyle = """uwalert_%s.css""" % self.color
-        strContent = """// Code contributed by Dustin Brewer
-            var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
-            var strCSS = document.createElement('link');
-            strCSS.setAttribute('href', strProto + 'emergency.washington.edu/%s');
-            strCSS.setAttribute('rel','stylesheet');
-            strCSS.setAttribute('type','text/css');
-            document.getElementsByTagName('head')[0].appendChild(strCSS);
+        #if TODO: self.status == 'ok'
+        if self.color:
+            strContent = """// Code contributed by Dustin Brewer
+                var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
+                var strCSS = document.createElement('link');
+                strCSS.setAttribute('href', strProto + 'emergency.washington.edu/uwalert_%s.css');
+                strCSS.setAttribute('rel','stylesheet');
+                strCSS.setAttribute('type','text/css');
+                document.getElementsByTagName('head')[0].appendChild(strCSS);
 
-            // displayAlert - grab content to display message 
-            function displayAlert()
-            {
-                var strAlertTitle = '%s';
-                var strAlertLink = '%s';
-                var strAlertMessage = '%s';
-                
-                addElement(strAlertTitle,strAlertLink,strAlertMessage);
-            }
-            """ % (strStyle, re.escape(self.alert['title']), self._link, re.escape(self.alert['content']))
+                // displayAlert - grab content to display message 
+                function displayAlert()
+                {
+                    var strAlertTitle = '%s';
+                    var strAlertLink = '%s';
+                    var strAlertMessage = '%s';
+                    
+                    addElement(strAlertTitle,strAlertLink,strAlertMessage);
+                }
+                """ % (self.color, re.escape(self.alert['title']), self._link, re.escape(self.alert['content']))
 
-        self.output = strHeader + strContent + strAddElement + "\n"
+            self.output = strHeader + strContent + strAddElement + "\n"
 
-        #else:
-        #    strContent = """
-        #function displayAlert(strMode)
-        #{
-        #    // Does nothing useful - for error & warning prevention
-        #} """
+        else:
+            strContent = """
+        function displayAlert(strMode)
+        {
+            // Does nothing useful (for error & warning prevention)
+        } """
 
-        #    self.output = strHeader + strContent + "\n"
-
-    def load(self):
-        """
-        Get the data from the json api and save to a file
-        """
-        oFile = urllib2.urlopen(self._url)
-        self._alertdata = json.loads(oFile.read())
-        oFile.close()
-
-        ## The assumption is the latest post has our data
-        self.status = self._alertdata['status']
-        self.alert = self._alertdata['posts'][0]
-
-        ## We only need to verify there is an alert color available
-        for category in self.alert['categories']:
-            ## If we can't find our type, then we're done
-            if category['id'] in self._types:
-                self.color = self._types[category['id']]
-
-        # TODO: Is there a reason to save every time?
-        self._save()
+            self.output = strHeader + strContent + "\n"
 
     def _save(self):
         """
@@ -217,22 +217,23 @@ class AlertBanner(object):
         except Exception, strError:
             print "Error Writing to File %s%s because %s" % (self._cache, self._filename, strError)
 
-    def _latest(self):
+    ## TODO: Needs more thought
+    def display(self,sType=None):
         """
-        Grabs latest alert
+        Display latest alert
         """
-        if self.status == 'ok':
-            if self.color:
-                print """Title: %s""" % self.alert['title']
-                print """Color: %s""" % self.color
-                print """Excerpt: %s""" % self.alert['excerpt']
-                #print """Content: %s \n""" % self.alert['content']
+        if sType == 'plain':
+            #strPlainAlert = strTitle + ".\n" + "<break />\n" + strDesc +  '.'
+            if self.status == 'ok':
+                if self.color:
+                    self.output = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
+                    return self.output
+            else:
+                raise Exception("Problem with emergency feed")
         else:
-            raise Exception("Problem with emergency feed")
+            self._build()
+            return self.output
 
-
-    def display(self):
-        self._build()
-        print self.output
         #print json.dumps(self.alertdata)
+        print self.output
 

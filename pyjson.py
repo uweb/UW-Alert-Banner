@@ -22,7 +22,6 @@ from alert import AlertBanner
 banner = AlertBanner()
 
 banner.load()
-#banner._latest()
 banner.display()
 
 #alert.status
