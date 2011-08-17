@@ -30,7 +30,7 @@ class AlertBanner(object):
         self._color = ""
         self._link = 'http://emergency.washington.edu/'
         self._cache = 'storage/'
-        self._prod = '/data/www/'
+        self._prod = 'storage/'
         self._filename = 'alert'
         self._output = ""
         self._types = {
@@ -95,6 +95,31 @@ class AlertBanner(object):
     def _build(self,sType=None):
         ## If we have an color, we are running an alert - we need
         ## this to be as streamlined as possible
+
+        strHeader = """/*  University of Washington - Alert 2.0 Beta
+ *  (c) 2011 Chris Heiland, Tim Chang-Miller
+ *
+ *  Script should be included like such:
+ * 
+ *  <html>
+ *  <head>
+ *  <title>Page Title</title>
+ *  <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
+ *  </head>
+ *  <body>
+ * 
+ *  <script type="text/javascript">
+ *    displayAlert();
+ *  </script>
+ *  </body>
+ *  </html>
+ *
+ *  Full docs at:
+ *  uw.edu/externalaffairs/uwmarketing/toolkits/uw-alert-banner/
+ *
+ *--------------------------------------------------------------------------*/
+"""
+
         if self.color:
             strFooter = """// addElement - display HTML on page right below the body page
 // don't want the alert to show up randomly
@@ -182,30 +207,6 @@ function displayAlert()
         self._save(strPlain,"""%s.txt""" % self._filename)
 
         return 1
-
-        strHeader = """/*  University of Washington - Alert 2.0 Beta
- *  (c) 2011 Chris Heiland, Tim Chang-Miller
- *
- *  Script should be included like such:
- * 
- *  <html>
- *  <head>
- *  <title>Page Title</title>
- *  <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
- *  </head>
- *  <body>
- * 
- *  <script type="text/javascript">
- *    displayAlert();
- *  </script>
- *  </body>
- *  </html>
- *
- *  Full docs at:
- *  uw.edu/externalaffairs/uwmarketing/toolkits/uw-alert-banner/
- *
- *--------------------------------------------------------------------------*/
-"""
 
     def _save(self,sData,sFile,intCache=None):
         """
