@@ -20,15 +20,4 @@ from alert import AlertBanner
 #print oJ['pages']
 
 banner = AlertBanner()
-
-banner.load()
 banner.display()
-banner.display('plain')
-
-#alert.status
-#alert.color
-#alert.title
-#alert.summary
-#alert.content
-
-

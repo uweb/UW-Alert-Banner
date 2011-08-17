@@ -30,7 +30,8 @@ class AlertBanner(object):
         self._color = ""
         self._link = 'http://emergency.washington.edu/'
         self._cache = 'storage/'
-        self._prod = '/var/www/'
+        self._prod = '/data/www/'
+        self._filename = 'alert'
         self._output = ""
         self._types = {
             8  :'red',
@@ -89,34 +90,13 @@ class AlertBanner(object):
                 self.color = self._types[category['id']]
 
         # TODO: Is there a reason to save every time?
-        self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'emergency.json')
+        self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json',1)
 
-    def _build(self):
-        strHeader = """/*  University of Washington - Alert 2.0 Beta
- *  (c) 2011 Chris Heiland, Tim Chang-Miller
- *
- *  Script should be included like such:
- * 
- *  <html>
- *  <head>
- *  <title>Page Title</title>
- *  <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
- *  </head>
- *  <body>
- * 
- *  <script type="text/javascript">
- *    displayAlert();
- *  </script>
- *  </body>
- *  </html>
- *
- *  Full docs at:
- *  uw.edu/externalaffairs/uwmarketing/toolkits/uw-alert-banner/
- *
- *--------------------------------------------------------------------------*/
-"""
-
-        strAddElement = """// addElement - display HTML on page right below the body page
+    def _build(self,sType=None):
+        ## If we have an color, we are running an alert - we need
+        ## this to be as streamlined as possible
+        if self.color:
+            strFooter = """// addElement - display HTML on page right below the body page
 // don't want the alert to show up randomly
 function addElement(strAlertTitle,strAlertLink,strAlertMessage)
 {
@@ -169,7 +149,6 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
   bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 }"""
 
-        if self.color:
             strContent = """// Code contributed by Dustin Brewer
 var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
 var strCSS = document.createElement('link');
@@ -188,25 +167,54 @@ function displayAlert()
     addElement(strAlertTitle,strAlertLink,strAlertMessage);
 }
 """ % (self.color, re.escape(self.alert['title']), self._link, re.escape(self.alert['content']))
-
-            self.output = strHeader + strContent + strAddElement + "\n"
-
         else:
+            strFooter  = ''
             strContent = """function displayAlert(strMode)
 {
     // Does nothing useful (for error & warning prevention)
 }
 """
-            self.output = strHeader + strContent + "\n"
+        self.output = strHeader + strContent + strFooter
+        self._save(self.output,"""%s.js""" % self._filename)
 
-    def _save(self,sData,sFile,intProd=None):
+        ## Plain text version requested by random department
+        strPlain = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
+        self._save(strPlain,"""%s.txt""" % self._filename)
+
+        return 1
+
+        strHeader = """/*  University of Washington - Alert 2.0 Beta
+ *  (c) 2011 Chris Heiland, Tim Chang-Miller
+ *
+ *  Script should be included like such:
+ * 
+ *  <html>
+ *  <head>
+ *  <title>Page Title</title>
+ *  <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
+ *  </head>
+ *  <body>
+ * 
+ *  <script type="text/javascript">
+ *    displayAlert();
+ *  </script>
+ *  </body>
+ *  </html>
+ *
+ *  Full docs at:
+ *  uw.edu/externalaffairs/uwmarketing/toolkits/uw-alert-banner/
+ *
+ *--------------------------------------------------------------------------*/
+"""
+
+    def _save(self,sData,sFile,intCache=None):
         """
         Private method to save data to the storage/output locations
         """
 
         strLocation = """%s%s""" % (self._prod,sFile)
 
-        if not intProd:
+        if intCache:
             strLocation = """%s%s""" % (self._cache,sFile)
 
         try:
@@ -218,18 +226,11 @@ function displayAlert()
             print "Error Writing to File %s because %s" % (strLocation, strError)
 
     ## TODO: Needs more thought
-    def display(self,sType=None):
+    def display(self):
         """
         Display latest alert in both plain and js mode
         """
-        if sType == 'plain':
-            if self.color:
-                self.output = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
-            else:
-                self.output = ''
-            self._save(self.output,'alert.txt',1)
-            return self.output
-        else:
-            self._build()
-            self._save(self.output,'alert.js',1)
+        self.load()
+
+        if self._build():
             return self.output

@@ -9,14 +9,12 @@ class TestAlertBanner1(unittest.TestCase):
 
     def setUp(self):
         self.banner = AlertBanner()
-        self.banner.url = 'http://emergency.washington.edu/emergency.json'
-        ## Have to load here so display gets the data
-        self.banner.load()
+        self.banner.url = 'http://emergency.washington.edu/alert.json'
 
     def testload(self):
-
+        self.banner.load()
         ## For consistent tests, we have red alert
-        oFile = open('test/emergency.json', 'r')
+        oFile = open('test/alert.json', 'r')
         strData = json.loads(oFile.read())
         oFile.close()
 
@@ -25,12 +23,12 @@ class TestAlertBanner1(unittest.TestCase):
         self.assertEqual(self.banner._alertdata, strData)
 
     def testdisplay(self):
-        self.assertEqual(self.banner.display('plain'),"Incoming Asteroid.\n<break />\nDESC: Astroid Fatal.")
+        self.assertEqual(self.banner._build('txt'),"Incoming Asteroid.\n<break />\nDESC: Astroid Fatal.")
         ### Prod Banner
         oFile = open('test/alert.js', 'r')
         strData = oFile.read()
         oFile.close()
-        self.assertEqual(self.banner.display(),strData)
+        self.assertEqual(self.banner._build(),strData)
 
     def tearDown(self):
         for root, dirs, files in os.walk(self.banner._cache):
@@ -41,13 +39,12 @@ class TestAlertBanner2(unittest.TestCase):
 
     def setUp(self):
         self.banner = AlertBanner()
-        self.banner.url = 'http://emergency.washington.edu/noemergency.json'
-        self.banner.load()
+        self.banner.url = 'http://emergency.washington.edu/noalert.json'
 
     def testload(self):
-
+        self.banner.load()
         ## For consistent tests, we have no alert
-        oFile = open('test/noemergency.json', 'r')
+        oFile = open('test/noalert.json', 'r')
         strData = json.loads(oFile.read())
         oFile.close()
 
@@ -56,12 +53,12 @@ class TestAlertBanner2(unittest.TestCase):
         self.assertEqual(self.banner._alertdata, strData)
 
     def testdisplay(self):
-        self.assertEqual(self.banner.display('plain'),'')
+        self.assertEqual(self.banner._build('txt'),'')
         ### Prod Banner
         oFile = open('test/noalert.js', 'r')
         strData = oFile.read()
         oFile.close()
-        self.assertEqual(self.banner.display(),strData)
+        self.assertEqual(self.banner._build(),strData)
 
     def tearDown(self):
         for root, dirs, files in os.walk(self.banner._cache):
