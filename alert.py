@@ -80,6 +80,10 @@ class AlertBanner(object):
 
         ## The assumption is the latest post has our data
         self.status = self._alertdata['status']
+
+        ##if self.status != 'ok':
+        ##    raise Exception("Problem with emergency feed")
+            
         self.alert = self._alertdata['posts'][0]
 
         ## We only need to verify there is an alert color available
@@ -169,7 +173,6 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
   bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 }"""
 
-        #if TODO: self.status == 'ok'
         if self.color:
             strContent = """// Code contributed by Dustin Brewer
 var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
@@ -193,11 +196,10 @@ function displayAlert()
             self.output = strHeader + strContent + strAddElement + "\n"
 
         else:
-            strContent = """
-        function displayAlert(strMode)
-        {
-            // Does nothing useful (for error & warning prevention)
-        } """
+            strContent = """function displayAlert(strMode)
+{
+    // Does nothing useful (for error & warning prevention)
+} """
 
             self.output = strHeader + strContent + "\n"
 
