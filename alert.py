@@ -31,7 +31,6 @@ class AlertBanner(object):
         self._url = 'http://emergency.washington.edu/?json=1&count=1'
         self._cache = 'storage/'
         self._alertdata = ""
-        self._filename = 'emergency.json'
         self._status = ""
         self._alert = ""
         self._color = ""
@@ -90,107 +89,106 @@ class AlertBanner(object):
                 self.color = self._types[category['id']]
 
         # TODO: Is there a reason to save every time?
-        self._save()
+        self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'emergency.json')
 
     def _build(self):
-        strHeader = """
-        /*  University of Washington - Alert 2.0 Beta
-         *  (c) 2011 Chris Heiland, Tim Chang-Miller
-         *
-         *  Script should be included like such:
-         *  
-         *  <html>
-         *  <head>
-         *  <title>Page Title</title>
-         *  <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
-         *  </head>
-         *  <body>
-         *  
-         *  <script type="text/javascript">
-         *  	displayAlert();
-         *  </script>
-         *  </body>
-         *  </html>
-         *
-         *  Full docs at: 
-         *  uw.edu/externalaffairs/uwmarketing/toolkits/uw-alert-banner/
-         *
-         *--------------------------------------------------------------------------*/
-        """
+        strHeader = """/*  University of Washington - Alert 2.0 Beta
+ *  (c) 2011 Chris Heiland, Tim Chang-Miller
+ *
+ *  Script should be included like such:
+ * 
+ *  <html>
+ *  <head>
+ *  <title>Page Title</title>
+ *  <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
+ *  </head>
+ *  <body>
+ * 
+ *  <script type="text/javascript">
+ *    displayAlert();
+ *  </script>
+ *  </body>
+ *  </html>
+ *
+ *  Full docs at:
+ *  uw.edu/externalaffairs/uwmarketing/toolkits/uw-alert-banner/
+ *
+ *--------------------------------------------------------------------------*/
+"""
 
         strAddElement = """// addElement - display HTML on page right below the body page
-        // don't want the alert to show up randomly
-        function addElement(strAlertTitle,strAlertLink,strAlertMessage)
-        {
-          // Grab the tag to start the party
-          var bodyTag = document.getElementsByTagName('body')[0];
-          
-          bodyTag.style.margin = '0px';
-          bodyTag.style.padding = '0px';
+// don't want the alert to show up randomly
+function addElement(strAlertTitle,strAlertLink,strAlertMessage)
+{
+  // Grab the tag to start the party
+  var bodyTag = document.getElementsByTagName('body')[0];
 
-          var wrapperDiv = document.createElement('div');
-          wrapperDiv.setAttribute('id','alertMessage');
+  bodyTag.style.margin = '0px';
+  bodyTag.style.padding = '0px';
 
-          var alertBoxDiv = document.createElement('div');
-          alertBoxDiv.setAttribute('id', 'alertBox');
+  var wrapperDiv = document.createElement('div');
+  wrapperDiv.setAttribute('id','alertMessage');
 
-          var alertBoxTextDiv = document.createElement('div');
-          alertBoxTextDiv.setAttribute('id', 'alertBoxText');
-          
-          var header1 = document.createElement('h1');
-          var header1Text = document.createTextNode('Campus Alert:');
-          header1.appendChild(header1Text);
+  var alertBoxDiv = document.createElement('div');
+  alertBoxDiv.setAttribute('id', 'alertBox');
 
-          var alertTextP = document.createElement('p');
-          var alertText = document.createTextNode(strAlertMessage);
-          alertTextP.appendChild(alertText);
+  var alertBoxTextDiv = document.createElement('div');
+  alertBoxTextDiv.setAttribute('id', 'alertBoxText');
 
-          var alertLink = document.createElement('a');
-          alertLink.setAttribute('href', strAlertLink);
-          alertLink.setAttribute('title', strAlertTitle);
-          var alertLinkText = document.createTextNode('More Info');
-          alertLink.appendChild(alertLinkText);
+  var header1 = document.createElement('h1');
+  var header1Text = document.createTextNode('Campus Alert:');
+  header1.appendChild(header1Text);
 
-          var gtText = document.createTextNode(' >>');
-          
-          var clearDiv = document.createElement('div');
-          clearDiv.setAttribute('id', 'clearer');
+  var alertTextP = document.createElement('p');
+  var alertText = document.createTextNode(strAlertMessage);
+  alertTextP.appendChild(alertText);
 
-          // Start Building the Actual Div
-          alertTextP.appendChild(alertLink);
-          alertTextP.appendChild(gtText);
+  var alertLink = document.createElement('a');
+  alertLink.setAttribute('href', strAlertLink);
+  alertLink.setAttribute('title', strAlertTitle);
+  var alertLinkText = document.createTextNode('More Info');
+  alertLink.appendChild(alertLinkText);
 
-          alertBoxTextDiv.appendChild(header1);
-          alertBoxTextDiv.appendChild(alertTextP);
+  var gtText = document.createTextNode(' >>');
 
-          alertBoxDiv.appendChild(alertBoxTextDiv);
-          alertBoxDiv.appendChild(clearDiv);
+  var clearDiv = document.createElement('div');
+  clearDiv.setAttribute('id', 'clearer');
 
-          wrapperDiv.appendChild(alertBoxDiv);
-          
-          bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
-        } """
+  // Start Building the Actual Div
+  alertTextP.appendChild(alertLink);
+  alertTextP.appendChild(gtText);
+
+  alertBoxTextDiv.appendChild(header1);
+  alertBoxTextDiv.appendChild(alertTextP);
+
+  alertBoxDiv.appendChild(alertBoxTextDiv);
+  alertBoxDiv.appendChild(clearDiv);
+
+  wrapperDiv.appendChild(alertBoxDiv);
+
+  bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
+}"""
 
         #if TODO: self.status == 'ok'
         if self.color:
             strContent = """// Code contributed by Dustin Brewer
-                var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
-                var strCSS = document.createElement('link');
-                strCSS.setAttribute('href', strProto + 'emergency.washington.edu/uwalert_%s.css');
-                strCSS.setAttribute('rel','stylesheet');
-                strCSS.setAttribute('type','text/css');
-                document.getElementsByTagName('head')[0].appendChild(strCSS);
+var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
+var strCSS = document.createElement('link');
+strCSS.setAttribute('href', strProto + 'emergency.washington.edu/uwalert_%s.css');
+strCSS.setAttribute('rel','stylesheet');
+strCSS.setAttribute('type','text/css');
+document.getElementsByTagName('head')[0].appendChild(strCSS);
 
-                // displayAlert - grab content to display message 
-                function displayAlert()
-                {
-                    var strAlertTitle = '%s';
-                    var strAlertLink = '%s';
-                    var strAlertMessage = '%s';
-                    
-                    addElement(strAlertTitle,strAlertLink,strAlertMessage);
-                }
-                """ % (self.color, re.escape(self.alert['title']), self._link, re.escape(self.alert['content']))
+// displayAlert - grab content to display message 
+function displayAlert()
+{
+    var strAlertTitle = '%s';
+    var strAlertLink = '%s';
+    var strAlertMessage = '%s';
+
+    addElement(strAlertTitle,strAlertLink,strAlertMessage);
+}
+""" % (self.color, re.escape(self.alert['title']), self._link, re.escape(self.alert['content']))
 
             self.output = strHeader + strContent + strAddElement + "\n"
 
@@ -203,15 +201,15 @@ class AlertBanner(object):
 
             self.output = strHeader + strContent + "\n"
 
-    def _save(self):
+    def _save(self,sData,sFile):
         """
         Saves data to the storage location
         May opt to remove and only use for debug
         """
 
         try:
-            oFile = open(self._cache + self._filename, 'w')
-            oFile.write(json.dumps(self._alertdata))
+            oFile = open(self._cache + sFile, 'w')
+            oFile.write(sData)
             oFile.close()
             return 1
         except Exception, strError:
@@ -223,19 +221,14 @@ class AlertBanner(object):
         Display latest alert
         """
         if sType == 'plain':
-            #strPlainAlert = strTitle + ".\n" + "<break />\n" + strDesc +  '.'
             if self.status == 'ok':
                 if self.color:
                     self.output = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
-                    print self.output
+                    self._save(self.output,'alert.txt')
                     return self.output
             else:
                 raise Exception("Problem with emergency feed")
         else:
             self._build()
-            print self.output
+            self._save(self.output,'alert.js')
             return self.output
-
-        #print json.dumps(self.alertdata)
-        #print self.output
-

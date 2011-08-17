@@ -23,6 +23,7 @@ banner = AlertBanner()
 
 banner.load()
 banner.display()
+banner.display('plain')
 
 #alert.status
 #alert.color
