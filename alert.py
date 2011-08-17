@@ -4,11 +4,6 @@
 Summary: UW Alert Banner System package
 """
 
-######################################## DEBUG #################################
-## import pdb; set_trace();
-## import pdb
-######################################## DEBUG #################################
-
 __author__ = "Chris Heiland"
 __copyright__ = "Copyright 2011, University of Washington"
 __credits__ = ["Chris Heiland"]
@@ -29,15 +24,15 @@ class AlertBanner(object):
     """
     def __init__(self):
         self._url = 'http://emergency.washington.edu/?json=1&count=1'
-        self._cache = 'storage/'
         self._alertdata = ""
         self._status = ""
         self._alert = ""
         self._color = ""
         self._link = 'http://emergency.washington.edu/'
+        self._cache = 'storage/'
+        self._prod = '/var/www/'
         self._output = ""
         self._types = {
-            5  :'steel',
             8  :'red',
             9  :'orange',
             10 :'blue',
@@ -200,35 +195,41 @@ function displayAlert()
             strContent = """function displayAlert(strMode)
 {
     // Does nothing useful (for error & warning prevention)
-} """
-
+}
+"""
             self.output = strHeader + strContent + "\n"
 
-    def _save(self,sData,sFile):
+    def _save(self,sData,sFile,intProd=None):
         """
-        Saves data to the storage location
-        May opt to remove and only use for debug
+        Private method to save data to the storage/output locations
         """
 
+        strLocation = """%s%s""" % (self._prod,sFile)
+
+        if not intProd:
+            strLocation = """%s%s""" % (self._cache,sFile)
+
         try:
-            oFile = open(self._cache + sFile, 'w')
+            oFile = open(strLocation, 'w')
             oFile.write(sData)
             oFile.close()
             return 1
         except Exception, strError:
-            print "Error Writing to File %s%s because %s" % (self._cache, self._filename, strError)
+            print "Error Writing to File %s because %s" % (strLocation, strError)
 
     ## TODO: Needs more thought
     def display(self,sType=None):
         """
-        Display latest alert
+        Display latest alert in both plain and js mode
         """
         if sType == 'plain':
             if self.color:
                 self.output = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
-                self._save(self.output,'alert.txt')
-                return self.output
+            else:
+                self.output = ''
+            self._save(self.output,'alert.txt',1)
+            return self.output
         else:
             self._build()
-            self._save(self.output,'alert.js')
+            self._save(self.output,'alert.js',1)
             return self.output

@@ -69,7 +69,7 @@ def saveAlert(strFilename, strAlertText):
     Not in production yet
     """
     try:
-        strFileout = '/www/' + strFilename
+        strFileout = 'storage/' + strFilename
         objFile = open(strFileout, "w")
         objFile.write(strAlertText)
         objFile.close()

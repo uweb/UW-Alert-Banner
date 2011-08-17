@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.6
 
-import urllib2, json
+#import urllib2, json
 from alert import AlertBanner
 
 #strURL = 'http://emergency.washington.edu/?json=1'
