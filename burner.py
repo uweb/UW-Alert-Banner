@@ -1,4 +1,4 @@
-#!/bin/env python2.4
+#!/usr/bin/env python2.6
 
 """
 Summary: script to run in cronjob - detect if there is something to post
@@ -36,6 +36,7 @@ strHeader = """
  *
  *--------------------------------------------------------------------------*/
 """
+
 ## 4 & 6 are test categories
 ## Alert Status (WP Categories)
 ## 7 Publish
@@ -97,9 +98,6 @@ hashDates = {}
 for strKey,strValue in hashAlert.items():
     if strValue != '':
         hashDates[strKey] = hashAlert[strKey]['date']
-
-#pp.pprint(hashDates)
-#pp.pprint(hashAlert)
 
 # hashDates will only contain the colors with dates        
 if hashDates:
