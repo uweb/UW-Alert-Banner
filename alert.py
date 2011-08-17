@@ -81,8 +81,9 @@ class AlertBanner(object):
         ## The assumption is the latest post has our data
         self.status = self._alertdata['status']
 
-        ##if self.status != 'ok':
-        ##    raise Exception("Problem with emergency feed")
+        ## TODO: Should we just throw and go or do something else?
+        if self.status != 'ok':
+            raise Exception("Problem with emergency feed")
             
         self.alert = self._alertdata['posts'][0]
 
@@ -223,13 +224,10 @@ function displayAlert()
         Display latest alert
         """
         if sType == 'plain':
-            if self.status == 'ok':
-                if self.color:
-                    self.output = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
-                    self._save(self.output,'alert.txt')
-                    return self.output
-            else:
-                raise Exception("Problem with emergency feed")
+            if self.color:
+                self.output = """%s.\n<break />\n%s.""" % (self.alert['title'],self.alert['excerpt'])
+                self._save(self.output,'alert.txt')
+                return self.output
         else:
             self._build()
             self._save(self.output,'alert.js')
