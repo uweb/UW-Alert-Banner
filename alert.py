@@ -79,7 +79,7 @@ class AlertBanner(object):
 
         ## TODO: Should we just throw and go or do something else?
         if self.status != 'ok':
-            raise Exception("Problem with emergency feed")
+            print "Problem with emergency feed\n"
             
         self.alert = self._alertdata['posts'][0]
 
