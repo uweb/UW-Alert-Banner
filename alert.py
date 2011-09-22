@@ -95,11 +95,16 @@ class AlertBanner(object):
                 self.color = self._types[category['id']]
 
         if self.alert['excerpt']:
-            excerpt = ' '.join(self.alert['excerpt'].split()[:25])
-            self._excerpt = '%s [...] ' % excerpt
+            arrWords = self.alert['excerpt'].split()
         else:
-            excerpt = ' '.join(self.alert['content'].split()[:25])
-            self._excerpt = '%s [...] ' % excerpt
+            arrWords = self.alert['content'].split()
+
+        if len(arrWords) <= '35':
+            excerpt = ' '.join(arrWords)
+            self._excerpt = '%s '.decode('ascii') % excerpt
+        else:
+            excerpt = ' '.join(arrWords[:35])
+            self._excerpt = '%s [...] '.decode('ascii') % excerpt
 
         # TODO: Is there a reason to save every time?
         #self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json')
@@ -237,7 +242,7 @@ function displayAlert()
         strPlain = ''
         if self.color:
             ## Plain text version requested by a department
-            strPlain = """%s.\n<break />\n%s.""" % (self.alert['title'],self._excerpt)
+            strPlain = """%s.\n<break />\n%s""" % (self.alert['title'],self._excerpt)
 
         self._save(strPlain,"""%s.txt""" % self._filename)
         ## Exists solely for tests
