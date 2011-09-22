@@ -1,4 +1,4 @@
-#!/bin/env python2.4
+#!/usr/bin/env python2.6
 
 """
 Summary: UW Alert Banner System package
@@ -254,3 +254,14 @@ function displayAlert()
             return self.output
         else:
             print "Problem rendering banner\n"
+
+def main():
+    """
+    Main section for UW Alert Banner
+    """
+
+    banner = AlertBanner()
+    banner.display()
+
+if __name__ == "__main__":
+    main()
