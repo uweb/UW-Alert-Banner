@@ -24,7 +24,7 @@ def getFeedData(intCategory):
     """getFeedData() - Get the data from the RSS feed and save to a file
     Mostly used for debugging - will find some use for it later
     """
-    strURL = 'http://emergency.washington.edu/?feed=rss2&cat=' + str(intCategory)
+    strURL = 'http://emergency.washington.edu/feed/?cat=' + str(intCategory)
         
     strFileContents = readURL(strURL)
 
