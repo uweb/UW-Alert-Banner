@@ -76,7 +76,7 @@ class AlertBanner(object):
         Get the data from the json api and save to a file
         """
         oFile = urllib2.urlopen(self._url)
-        self._alertdata = json.loads(oFile.read())
+        self._alertdata = json.loads(oFile.read().replace('\n', ''))
         oFile.close()
 
         ## The assumption is the latest post has our data
@@ -95,9 +95,11 @@ class AlertBanner(object):
                 self.color = self._types[category['id']]
 
         if self.alert['excerpt']:
-            self._excerpt = self.alert['excerpt']
+            excerpt = ' '.join(self.alert['excerpt'].split()[:25])
+            self._excerpt = '%s [...] ' % excerpt
         else:
-            self._excerpt = self.alert['content'][:180] + '... '
+            excerpt = ' '.join(self.alert['content'].split()[:25])
+            self._excerpt = '%s [...] ' % excerpt
 
         # TODO: Is there a reason to save every time?
         #self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json')
