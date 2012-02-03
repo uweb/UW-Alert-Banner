@@ -40,11 +40,6 @@
 #alertBox img {
     border: none;
 }
-#xmark {
-	margin-top: 40px;
-	margin-left: 20px;
-}
-
 #alertBoxText a {
 	color: #FFFF66;
 }
