@@ -141,7 +141,7 @@ class AlertBanner(object):
             strContent = """// Code contributed by Dustin Brewer
 var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
 var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + 'emergency.washington.edu/uwalert_%s.css');
+strCSS.setAttribute('href', strProto + 'emergency.washington.edu/uwalert.css');
 strCSS.setAttribute('rel','stylesheet');
 strCSS.setAttribute('type','text/css');
 document.getElementsByTagName('head')[0].appendChild(strCSS);
@@ -160,6 +160,7 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
 
   var alertBoxDiv = document.createElement('div');
   alertBoxDiv.setAttribute('id', 'alertBox');
+  alertBoxDiv.setAttribute('class', '%s');
 
   var alertBoxTextDiv = document.createElement('div');
   alertBoxTextDiv.setAttribute('id', 'alertBoxText');
