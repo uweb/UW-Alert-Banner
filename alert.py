@@ -75,7 +75,7 @@ class AlertBanner(object):
         """
         Get the data from the json api and save to a file
         """
-        oFile = urllib2.urlopen(self._url)
+        oFile = urllib2.urlopen(self._url,timeout=10)
         self._alertdata = json.loads(oFile.read().replace('\n', ''))
         oFile.close()
 
@@ -86,28 +86,31 @@ class AlertBanner(object):
         if self.status != 'ok':
             print "Problem with emergency feed\n"
             
-        self.alert = self._alertdata['posts'][0]
+        count = self._alertdata['count'];
 
-        ## We only need to verify there is an alert color available
-        for category in self.alert['categories']:
-            ## If we can't find our type, then we're done
-            if category['id'] in self._types:
-                self.color = self._types[category['id']]
+        if count > 0:
+            self.alert = self._alertdata['posts'][0]
 
-        if self.alert['excerpt']:
-            arrWords = self.alert['excerpt'].split()
-        else:
-            arrWords = self.alert['content'].split()
+            ## We only need to verify there is an alert color available
+            for category in self.alert['categories']:
+                ## If we can't find our type, then we're done
+                if category['id'] in self._types:
+                    self.color = self._types[category['id']]
 
-        if len(arrWords) <= '35':
-            excerpt = ' '.join(arrWords)
-            self._excerpt = '%s '.decode('ascii') % excerpt
-        else:
-            excerpt = ' '.join(arrWords[:35])
-            self._excerpt = '%s [...] '.decode('ascii') % excerpt
+            if self.alert['excerpt']:
+                arrWords = self.alert['excerpt'].split()
+            else:
+                arrWords = self.alert['content'].split()
 
-        # TODO: Is there a reason to save every time?
-        #self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json')
+            if len(arrWords) <= '35':
+                excerpt = ' '.join(arrWords)
+                self._excerpt = '%s '.decode('ascii') % excerpt
+            else:
+                excerpt = ' '.join(arrWords[:35])
+                self._excerpt = '%s [...] '.decode('ascii') % excerpt
+
+            # TODO: Is there a reason to save every time?
+            #self._save(json.dumps(self._alertdata, sort_keys=True, indent=4),'alert.json')
 
     def _build(self):
         ## If we have an color, we are running an alert - we need
