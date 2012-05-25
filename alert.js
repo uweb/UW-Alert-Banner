@@ -4,10 +4,11 @@ $(document).ready(function() {
 
     // Alert colors  TODO Test alert slug
     types = {
-        'red-alert'     : 1,
-        'orange-alert'  : 1,
-        'blue-alert'    : 1,
-        'steel-alert'   : 1
+        'red-alert'     : 'red',
+        'orange-alert'  : 'orange',
+        'blue-alert'    : 'blue',
+        'steel-alert'   : 'steel',
+        'campus-info'   : 'red',
     };
  
     $.each(data.posts[0].categories, function(key,val) {
@@ -16,22 +17,12 @@ $(document).ready(function() {
         var strAlertTitle = data.posts[0].title;
         var strAlertLink = 'http://emergency.washington.edu/';
         var strAlertMessage = data.posts[0].excerpt;
+        var strAlertColor = types[val.slug];
 
-        addElement(strAlertTitle,strAlertLink,strAlertMessage);
+        addElement(strAlertTitle,strAlertLink,strAlertMessage,strAlertColor);
       }
     });
 
-    // data.categories
-    // var items = [];
-  
-    // $.each(data, function(key, val) {
-    //   items.push('<li id="' + key + '">' + val + '</li>');
-    // });
-  
-    // $('<ul/>', {
-    //   'class': 'my-new-list',
-    //   html: items.join('')
-    // }).appendTo('body');
   });
 
 });
@@ -67,13 +58,14 @@ $(strCSS).appendTo('head');
 
 // addElement - display HTML on page right below the body page
 // don't want the alert to show up randomly
-function addElement(strAlertTitle,strAlertLink,strAlertMessage)
+function addElement(strAlertTitle,strAlertLink,strAlertMessage,strAlertColor)
 {
   var wrapperDiv = document.createElement('div');
   wrapperDiv.setAttribute('id','alertMessage');
 
   var alertBoxDiv = document.createElement('div');
   alertBoxDiv.setAttribute('id', 'alertBox');
+  alertBoxDiv.setAttribute('class', strAlertColor);
 
   var alertBoxTextDiv = document.createElement('div');
   alertBoxTextDiv.setAttribute('id', 'alertBoxText');
@@ -83,6 +75,7 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
   header1.appendChild(header1Text);
 
   var alertTextP = document.createElement('p');
+  // FIXME not correctly displaying as encoded html
   var alertText = document.createTextNode(strAlertMessage);
   alertTextP.appendChild(alertText);
 
@@ -117,8 +110,3 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
 
   bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 }
-
-// displayAlert - grab content to display message 
-// function displayAlert()
-// {
-// }
