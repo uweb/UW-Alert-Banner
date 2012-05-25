@@ -1,9 +1,8 @@
 $(document).ready(function() {
-  var strURL = 'alert.json';
-  $.getJSON(strURL, function(data) {
-    // console.log(data.posts[0].categories);
 
-    // Alert colors
+  $.getJSON('alert.json', function(data) {
+
+    // Alert colors  TODO Test alert slug
     types = {
         'red-alert'     : 1,
         'orange-alert'  : 1,
@@ -13,7 +12,12 @@ $(document).ready(function() {
  
     $.each(data.posts[0].categories, function(key,val) {
       if (types[val.slug]) {
-          // Fire up alert
+        // Fire up alert
+        var strAlertTitle = data.posts[0].title;
+        var strAlertLink = 'http://emergency.washington.edu/';
+        var strAlertMessage = data.posts[0].excerpt;
+
+        addElement(strAlertTitle,strAlertLink,strAlertMessage);
       }
     });
 
@@ -31,7 +35,6 @@ $(document).ready(function() {
   });
 
 });
-
 
 /*  University of Washington - Alert 2.0 Beta
  *  (c) 2011 Chris Heiland, Tim Chang-Miller
@@ -118,9 +121,4 @@ function addElement(strAlertTitle,strAlertLink,strAlertMessage)
 // displayAlert - grab content to display message 
 // function displayAlert()
 // {
-    var strAlertTitle = '';
-    var strAlertLink = 'http://emergency.washington.edu/';
-    var strAlertMessage = '';
-
-    addElement(strAlertTitle,strAlertLink,strAlertMessage);
 // }
