@@ -28,7 +28,6 @@ $(document).ready(function() {
       'orange-alert'  : 'orange',
       'blue-alert'    : 'blue',
       'steel-alert'   : 'steel',
-      'campus-info'   : 'red',
     };
  
     $.each(data.posts[0].categories, function(strName,objCategory) {
