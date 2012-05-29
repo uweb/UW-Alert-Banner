@@ -24,10 +24,10 @@ $(document).ready(function() {
 
     // Alert colors
     types = {
-      'red-alert'     : 'red',
+      'red-alert-urgent'     : 'red',
       'orange-alert'  : 'orange',
       'blue-alert'    : 'blue',
-      'steel-alert'   : 'steel',
+      'steel-alert-fyis'   : 'steel',
     };
  
     $.each(data.posts[0].categories, function(strName,objCategory) {
