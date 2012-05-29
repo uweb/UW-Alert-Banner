@@ -31,25 +31,25 @@ $(document).ready(function() {
       'campus-info'   : 'red',
     };
  
-    $.each(data.posts[0].categories, function(key,val) {
-      if (types[val.slug]) {
+    $.each(data.posts[0].categories, function(strName,objCategory) {
+      if (types[objCategory.slug]) {
         // Fire up alert
         var strAlertTitle = data.posts[0].title;
         var strAlertLink = '//emergency.washington.edu/';
         var strAlertMessage = data.posts[0].excerpt;
-        var strAlertColor = types[val.slug];
+        var strAlertColor = types[objCategory.slug];
 
         $('body')
           .css({
-            'margin'   : '0px',
-            'padding'  : '0px'
+            'margin'  : '0px',
+            'padding' : '0px'
           })
           .prepend($('<div></div>').attr('id','alertMessage')
             .append(
               $('<div></div>')
                 .attr({
-                  'id'     : 'alertBox',
-                  'class'  : strAlertColor
+                  'id'    : 'alertBox',
+                  'class' : strAlertColor
                 })
               .append(
                 $('<div></div>')
@@ -63,7 +63,7 @@ $(document).ready(function() {
                           'title' : strAlertTitle
                       })
                       .text('More Info >>')
-                  )
+                    )
                 )
                 .prepend($('<h1></h1>').html('Campus Alert: '))
               )
