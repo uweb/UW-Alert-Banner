@@ -24,10 +24,11 @@ $(document).ready(function() {
 
     // Alert colors
     types = {
-      'red-alert-urgent'     : 'red',
-      'orange-alert'  : 'orange',
-      'blue-alert'    : 'blue',
-      'steel-alert-fyis'   : 'steel',
+      'red-alert-urgent' : 'red',
+      'orange-alert'     : 'orange',
+      'blue-alert'       : 'blue',
+      'steel-alert-fyis' : 'steel',
+      'test'             : 'red',
     };
  
     $.each(data.posts[0].categories, function(strName,objCategory) {
