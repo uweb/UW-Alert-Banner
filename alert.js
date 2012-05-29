@@ -20,7 +20,7 @@
  *--------------------------------------------------------------------------*/
 
 $(document).ready(function() {
-  $.getJSON('alert.json', function(data) {
+  $.getJSON('alert.cgi', function(data) {
 
     // Alert colors
     types = {
