@@ -29,10 +29,10 @@ def main():
     strUrl = 'https://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish'
 
     oFile = urllib2.urlopen(strUrl,timeout=10)
-    strJson = oFile.read().replace('\n', '')
+    strJson = oFile.read()
     oFile.close()
 
-    print "Content-type: text/html"
+    print "Content-type: text/plain"
     print
     print strJson
 
