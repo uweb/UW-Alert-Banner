@@ -40,8 +40,7 @@ gray areas, similar alerts may be classified differently.
 
 * RED - High level emergency or threat
 * ORANGE - Medium emergency or threat
-* BLUE - Mostly weather-related notices or low level
-* STEEL - FYIs or minor issues
+* STEEL - Weather-related notices, FYIs or minor issues
 
 Installation
 ============
@@ -55,7 +54,7 @@ the alert.js file is very small.
 
 Right above the </body> tag::
 
- <script type="text/javascript" src="//emergency.washington.edu/alert.js"></script>
+ <script type="text/javascript" src="//washington.edu/static/alert.js"></script>
 
 That's it!
 
@@ -67,5 +66,5 @@ available below. The banner will display a steel color and a brief message.
 
 Right above the </body> tag::
 
- <script type="text/javascript" src="//emergency.washington.edu/alert-test.js"></script>
+ <script type="text/javascript" src="//washington.edu/static/alert-test.js"></script>
 
