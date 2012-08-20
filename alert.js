@@ -10,7 +10,7 @@
  *  <body>
  * 
  *  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
- *  <script type="text/javascript" src="//emergency.washington.edu/alert.js"></script>
+ *  <script type="text/javascript" src="//washington.edu/static/alert.js"></script>
  *  </body>
  *  </html>
  *
@@ -26,9 +26,8 @@ $(document).ready(function() {
     types = {
       'red-alert-urgent' : 'red',
       'orange-alert'     : 'orange',
-      'blue-alert'       : 'blue',
       'steel-alert-fyis' : 'steel',
-      'test'             : 'red',
+      'test'             : 'steel',
     };
  
     $.each(data.posts[0].categories, function(strName,objCategory) {
