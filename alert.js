@@ -19,16 +19,21 @@
  *
  *--------------------------------------------------------------------------*/
 
-$(document).ready(function() {
-  $.getJSON('alert.cgi', function(data) {
+jQuery(document).ready(function($) {
+  $.getJSON('/static/alert.cgi', function(data) {
 
     // Alert colors
     types = {
       'red-alert-urgent' : 'red',
       'orange-alert'     : 'orange',
       'steel-alert-fyis' : 'steel',
-      'test'             : 'steel',
+      'test'             : 'steel'
     };
+
+    if (data.posts.length == 0) {
+        return false;
+    }
+
  
     $.each(data.posts[0].categories, function(strName,objCategory) {
       if (types[objCategory.slug]) {
