@@ -33,7 +33,7 @@ function initJQuery() {
     }
     setTimeout("initJQuery()", 50);
   } else {
-    $(function() {
+    jQuery(function($) {
       $.getJSON('alert.cgi', function(data) {
     
         // Alert colors
@@ -41,7 +41,7 @@ function initJQuery() {
           'red-alert-urgent' : 'red',
           'orange-alert'     : 'orange',
           'steel-alert-fyis' : 'steel',
-          'test'             : 'steel
+          'test'             : 'steel'
         };
      
         $.each(data.posts[0].categories, function(strName,objCategory) {

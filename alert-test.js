@@ -34,14 +34,14 @@ function initJQuery() {
     setTimeout("initJQuery()", 50);
   } else {
     $(function() {
-      $.getJSON('test/alert.json', function(data) {
+      $.getJSON('alert.json', function(data) {
     
         // Alert colors
         types = {
           'red-alert-urgent' : 'red',
           'orange-alert'     : 'orange',
           'steel-alert-fyis' : 'steel',
-          'test'             : 'steel
+          'test'             : 'steel'
         };
      
         $.each(data.posts[0].categories, function(strName,objCategory) {
