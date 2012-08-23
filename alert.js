@@ -34,7 +34,7 @@ function initJQuery() {
     setTimeout("initJQuery()", 50);
   } else {
     jQuery(function($) {
-      $.getJSON('alert.cgi', function(data) {
+      $.getJSON('alert.php', function(data) {
     
         // Alert colors
         types = {
