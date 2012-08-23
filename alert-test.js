@@ -1,91 +1,103 @@
-
-/*  University of Washington - Alert 1.0 Beta
- *  (c) 2008 Chris Heiland, Tim Chang-Miller
+/*  University of Washington - Alert 2.0 Beta
+ *  (c) 2011 Chris Heiland
  *
  *  Script should be included like such:
- *  
+ * 
  *  <html>
  *  <head>
  *  <title>Page Title</title>
- *  <script type="text/javascript" src="http://emergency.washington.edu/alert.js"></script>
  *  </head>
  *  <body>
- *  
- *  <script type="text/javascript">
- *  	displayAlert();
- *  </script>
+ * 
+ *  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+ *  <script type="text/javascript" src="//washington.edu/static/alert.js"></script>
  *  </body>
  *  </html>
  *
+ *  Full docs at:
+ *  uw.edu/externalaffairs/uwmarketing/toolkits/uw-alert-banner/
+ *
  *--------------------------------------------------------------------------*/
 
-// Code contributed by Dustin Brewer
-var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
-var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + 'emergency.washington.edu/uwalert_steel.css');
-strCSS.setAttribute('rel','stylesheet');
-strCSS.setAttribute('type','text/css');
-document.getElementsByTagName('head')[0].appendChild(strCSS);
-
-// displayAlert - grab content to display message 
-function displayAlert()
-{
-    var strAlertTitle = 'Campus\ Alert\:';
-    var strAlertLink = 'http://emergency.washington.edu/';
-    var strAlertMessage = 'There\ is\ no\ emergency\.\ \ For\ additional\ information\,\ please\ visit\ ';
+var jQueryScriptOutputted = false;
+function initJQuery() {
     
-    addElement(strAlertTitle,strAlertLink,strAlertMessage);
+  //if the jQuery object isn't available
+  if (typeof(jQuery) == 'undefined') {
+    if (! jQueryScriptOutputted) {
+      //only output the script once..
+      jQueryScriptOutputted = true;
+      
+      //output the script (load it from google api)
+      document.write("<scr" + "ipt type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></scr" + "ipt>");
+    }
+    setTimeout("initJQuery()", 50);
+  } else {
+    $(function() {
+      $.getJSON('test/alert.json', function(data) {
+    
+        // Alert colors
+        types = {
+          'red-alert-urgent' : 'red',
+          'orange-alert'     : 'orange',
+          'steel-alert-fyis' : 'steel',
+          'test'             : 'steel
+        };
+     
+        $.each(data.posts[0].categories, function(strName,objCategory) {
+          if (types[objCategory.slug]) {
+            // Fire up alert
+            var strAlertTitle = data.posts[0].title;
+            var strAlertLink = '//emergency.washington.edu/';
+            var strAlertMessage = data.posts[0].excerpt;
+            var strAlertColor = types[objCategory.slug];
+    
+            $('body')
+              .css({
+                'margin'  : '0px',
+                'padding' : '0px'
+              })
+              .prepend($('<div></div>').attr('id','alertMessage')
+                .append(
+                  $('<div></div>')
+                    .attr({
+                      'id'    : 'alertBox',
+                      'class' : strAlertColor
+                    })
+                  .append(
+                    $('<div></div>')
+                    .attr('id','alertBoxText')
+                    .html(
+                      $(strAlertMessage)
+                        .append(' ') // Needed Spacing
+                        .append($('<a></a>')
+                          .attr({
+                              'href'  : strAlertLink,
+                              'title' : strAlertTitle
+                          })
+                          .text('More Info >>')
+                        )
+                    )
+                    .prepend($('<h1></h1>').html('Campus Alert: '))
+                  )
+                  .append($('<div></div>').attr('id','clearer'))
+                )
+              );
+          }
+        });
+      });
+    
+      // Add some custom styles for the banner
+      $('head').append($('<link>')
+        .attr({ 
+          'href' : '//www.washington.edu/static/uwalert.css',
+          'rel'  : 'stylesheet',
+          'type' : 'text/css'
+        })
+      );
+    
+    });
+  }
 }
 
-// addElement - display HTML on page right below the body page
-// don't want the alert to show up randomly
-function addElement(strAlertTitle,strAlertLink,strAlertMessage)
-{
-  // Grab the tag to start the party
-  var bodyTag = document.getElementsByTagName('body')[0];
-  
-  bodyTag.style.margin = '0px';
-  bodyTag.style.padding = '0px';
-
-  var wrapperDiv = document.createElement('div');
-  wrapperDiv.setAttribute('id','alertMessage');
-
-  var alertBoxDiv = document.createElement('div');
-  alertBoxDiv.setAttribute('id', 'alertBox');
-
-  var alertBoxTextDiv = document.createElement('div');
-  alertBoxTextDiv.setAttribute('id', 'alertBoxText');
-  
-  var header1 = document.createElement('h1');
-  var header1Text = document.createTextNode('Campus Alert:');
-  header1.appendChild(header1Text);
-
-  var alertTextP = document.createElement('p');
-  var alertText = document.createTextNode(strAlertMessage);
-  alertTextP.appendChild(alertText);
-
-  var alertLink = document.createElement('a');
-  alertLink.setAttribute('href', strAlertLink);
-  alertLink.setAttribute('title', strAlertTitle);
-  var alertLinkText = document.createTextNode('More Info');
-  alertLink.appendChild(alertLinkText);
-
-  var gtText = document.createTextNode(' >>');
-  
-  var clearDiv = document.createElement('div');
-  clearDiv.setAttribute('id', 'clearer');
-
-  // Start Building the Actual Div
-  alertTextP.appendChild(alertLink);
-  alertTextP.appendChild(gtText);
-
-  alertBoxTextDiv.appendChild(header1);
-  alertBoxTextDiv.appendChild(alertTextP);
-
-  alertBoxDiv.appendChild(alertBoxTextDiv);
-  alertBoxDiv.appendChild(clearDiv);
-
-  wrapperDiv.appendChild(alertBoxDiv);
-  
-  bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
-} 
+initJQuery();
