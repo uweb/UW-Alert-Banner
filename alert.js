@@ -34,7 +34,7 @@ function initJQuery() {
     setTimeout("initJQuery()", 50);
   } else {
     jQuery(function($) {
-      $.getJSON('alert.php', function(data) {
+      $.getJSON('https://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=?', function(data) {
     
         // Alert colors
         types = {
