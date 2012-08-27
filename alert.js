@@ -43,6 +43,11 @@ function initJQuery() {
           'steel-alert-fyis' : 'steel',
           'test'             : 'steel'
         };
+
+        // Because we don't always have alerts
+        if (data.posts.length == 0) {
+          return false;
+        }
      
         $.each(data.posts[0].categories, function(strName,objCategory) {
           if (types[objCategory.slug]) {
