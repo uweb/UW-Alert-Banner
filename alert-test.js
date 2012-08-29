@@ -34,7 +34,7 @@ function initJQuery() {
     setTimeout("initJQuery()", 100);
   } else {
     $(function() {
-      $.getJSON('https://www.washington.edu/static/alert-test.json', function(data) {
+      $.getJSON('https://www.washington.edu/static/alert-test.json?callback=?', function(data) {
     
         // Alert colors
         types = {
