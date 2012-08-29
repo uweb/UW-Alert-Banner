@@ -31,10 +31,10 @@ function initJQuery() {
       //output the script (load it from google api)
       document.write("<scr" + "ipt type=\"text/javascript\" src=\"//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></scr" + "ipt>");
     }
-    setTimeout("initJQuery()", 50);
+    setTimeout("initJQuery()", 100);
   } else {
     $(function() {
-      $.getJSON('alert-test.json', function(data) {
+      $.getJSON('https://www.washington.edu/static/alert-test.json', function(data) {
     
         // Alert colors
         types = {
