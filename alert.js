@@ -37,8 +37,10 @@ document.getElementsByTagName('head')[0].appendChild(strCSS);
 // displayAlert - grab content to display message 
 function displayAlert(data)
 {
+    // console.log(data);
     // We don't care if there's nothing
-    if (data.found == 0) {
+    if (data.found == 0) 
+    {
         return false;
     }
 
@@ -50,10 +52,12 @@ function displayAlert(data)
       'test'             : 'steel'
     };
     
-    for (strCategory in data.posts[0].categories ) {
+    for (strCategory in data.posts[0].categories ) 
+    {
         var objCategory = data.posts[0].categories[strCategory]
         // console.log(objCategory);
-        if (types[objCategory.slug]) {
+        if (types[objCategory.slug]) 
+        {
             var strAlertTitle  = data.posts[0].title;
             var strAlertLink   = 'http://emergency.washington.edu/';
             var strAlertMessage = data.posts[0].excerpt;
@@ -61,8 +65,10 @@ function displayAlert(data)
         }
         
     }
-    
-    addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage);
+    if (strAlertColor)
+    {
+        addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage);
+    }
 }
 
 // addElement - display HTML on page right below the body page
