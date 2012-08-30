@@ -34,74 +34,77 @@ function initJQuery() {
     setTimeout("initJQuery()", 50);
   } else {
     jQuery(function($) {
-      $.getJSON('https://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=?', function(data) {
-    
-        // Alert colors
-        types = {
-          'red-alert-urgent' : 'red',
-          'orange-alert'     : 'orange',
-          'steel-alert-fyis' : 'steel',
-          'test'             : 'steel'
-        };
+      $.ajax({
+        url: 'https://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish', 
+        dataType: 'jsonp',
+        crossDomain: true,
+        success: function(data) {
+          // Alert colors
+          types = {
+            'red-alert-urgent' : 'red',
+            'orange-alert'     : 'orange',
+            'steel-alert-fyis' : 'steel',
+            'test'             : 'steel'
+          };
 
-        // Because we don't always have alerts
-        if (data.posts.length == 0) {
-          return false;
-        }
+          // Because we don't always have alerts
+          if (data.posts.length == 0) {
+            return false;
+          }
      
-        $.each(data.posts[0].categories, function(strName,objCategory) {
-          if (types[objCategory.slug]) {
-            // Fire up alert
-            var strAlertTitle = data.posts[0].title;
-            var strAlertLink = '//emergency.washington.edu/';
-            var strAlertMessage = data.posts[0].excerpt;
-            var strAlertColor = types[objCategory.slug];
+          $.each(data.posts[0].categories, function(strName,objCategory) {
+            if (types[objCategory.slug]) {
+              // Fire up alert
+              var strAlertTitle = data.posts[0].title;
+              var strAlertLink = '//emergency.washington.edu/';
+              var strAlertMessage = data.posts[0].excerpt;
+              var strAlertColor = types[objCategory.slug];
     
-            $('body')
-              .css({
-                'margin'  : '0px',
-                'padding' : '0px'
-              })
-              .prepend($('<div></div>').attr('id','alertMessage')
-                .append(
-                  $('<div></div>')
-                    .attr({
-                      'id'    : 'alertBox',
-                      'class' : strAlertColor
-                    })
+              $('body')
+                .css({
+                  'margin'  : '0px',
+                  'padding' : '0px'
+                })
+                .prepend($('<div></div>').attr('id','alertMessage')
                   .append(
                     $('<div></div>')
-                    .attr('id','alertBoxText')
-                    .html(
-                      $(strAlertMessage)
-                        .append(' ') // Needed Spacing
-                        .append($('<a></a>')
-                          .attr({
-                              'href'  : strAlertLink,
-                              'title' : strAlertTitle
-                          })
-                          .text('More Info >>')
-                        )
+                      .attr({
+                        'id'    : 'alertBox',
+                        'class' : strAlertColor
+                      })
+                    .append(
+                      $('<div></div>')
+                      .attr('id','alertBoxText')
+                      .html(
+                        $(strAlertMessage)
+                          .append(' ') // Needed Spacing
+                          .append($('<a></a>')
+                            .attr({
+                                'href'  : strAlertLink,
+                                'title' : strAlertTitle
+                            })
+                            .text('More Info >>')
+                          )
+                      )
+                      .prepend($('<h1></h1>').html('Campus Alert: '))
                     )
-                    .prepend($('<h1></h1>').html('Campus Alert: '))
+                    .append($('<div></div>').attr('id','clearer'))
                   )
-                  .append($('<div></div>').attr('id','clearer'))
-                )
-              );
-          }
-        });
-      });
+                ); // end $('body')
+            } // end .slug 
+          }); // end $.each
     
-      // Add some custom styles for the banner
-      $('head').append($('<link>')
-        .attr({ 
-          'href' : '//www.washington.edu/static/uwalert.css',
-          'rel'  : 'stylesheet',
-          'type' : 'text/css'
-        })
-      );
-    
-    });
+          // Add some custom styles for the banner
+          $('head').append( $('<link>')
+            .attr({ 
+              'href' : '//www.washington.edu/static/uwalert.css',
+              'rel'  : 'stylesheet',
+              'type' : 'text/css'
+            })
+          ); // end $('head')
+        } // end .success
+      }); // end $.ajax
+    });   
   }
 }
 
