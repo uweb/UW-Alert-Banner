@@ -90,8 +90,21 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
   header1.appendChild(header1Text);
 
   var alertTextP = document.createElement('p');
-  var alertText = document.createTextNode(strAlertMessage);
+
+  // var alertText = document.createTextNode(strAlertMessage);
+  // alertTextP.appendChild(alertText);
+
+  var div = document.createElement("div");
+  div.innerHTML = strAlertMessage;
+  // Strip out html that wordpress.com gives us
+  var alertTextMessage = div.textContent || div.innerText || "";
+  // Build alert text node and cut of max characters
+  var alertText = document.createTextNode(
+    alertTextMessage.substring(0,200) + 
+    (alertTextMessage.length >= 200 ? '... ' : ' ')
+  );
   alertTextP.appendChild(alertText);
+
 
   var alertLink = document.createElement('a');
   alertLink.setAttribute('href', strAlertLink);
