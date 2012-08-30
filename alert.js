@@ -19,93 +19,104 @@
  *
  *--------------------------------------------------------------------------*/
 
-var jQueryScriptOutputted = false;
-function initJQuery() {
-    
-  //if the jQuery object isn't available
-  if (typeof(jQuery) == 'undefined') {
-    if (! jQueryScriptOutputted) {
-      //only output the script once..
-      jQueryScriptOutputted = true;
-      
-      //output the script (load it from google api)
-      document.write("<scr" + "ipt type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></scr" + "ipt>");
-    }
-    setTimeout("initJQuery()", 50);
-  } else {
-    jQuery(function($) {
-      $.ajax({
-        url: 'https://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish', 
-        dataType: 'jsonp',
-        crossDomain: true,
-        success: function(data) {
-          // Alert colors
-          types = {
-            'red-alert-urgent' : 'red',
-            'orange-alert'     : 'orange',
-            'steel-alert-fyis' : 'steel',
-            'test'             : 'steel'
-          };
 
-          // Because we don't always have alerts
-          if (data.posts.length == 0) {
-            return false;
-          }
-     
-          $.each(data.posts[0].categories, function(strName,objCategory) {
-            if (types[objCategory.slug]) {
-              // Fire up alert
-              var strAlertTitle = data.posts[0].title;
-              var strAlertLink = '//emergency.washington.edu/';
-              var strAlertMessage = data.posts[0].excerpt;
-              var strAlertColor = types[objCategory.slug];
+var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
+
+var strScript = document.createElement('script');
+// script.setAttribute('src', '//www.washington.edu/static/alert-test.json');
+strScript.setAttribute('src', strProto + 'public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=displayAlert');
+document.getElementsByTagName('head')[0].appendChild(strScript); 
+
+// Code contributed by Dustin Brewer
+var strCSS = document.createElement('link');
+strCSS.setAttribute('href', strProto + 'www.washington.edu/static/uwalert.css');
+strCSS.setAttribute('rel','stylesheet');
+strCSS.setAttribute('type','text/css');
+document.getElementsByTagName('head')[0].appendChild(strCSS);
+
+// displayAlert - grab content to display message 
+function displayAlert(data)
+{
+    // We don't care if there's nothing
+    if (data.found == 0) {
+        return false;
+    }
+
+    // Alert colors
+    types = {
+      'red-alert-urgent' : 'red',
+      'orange-alert'     : 'orange',
+      'steel-alert-fyis' : 'steel',
+      'test'             : 'steel'
+    };
     
-              $('body')
-                .css({
-                  'margin'  : '0px',
-                  'padding' : '0px'
-                })
-                .prepend($('<div></div>').attr('id','alertMessage')
-                  .append(
-                    $('<div></div>')
-                      .attr({
-                        'id'    : 'alertBox',
-                        'class' : strAlertColor
-                      })
-                    .append(
-                      $('<div></div>')
-                      .attr('id','alertBoxText')
-                      .html(
-                        $(strAlertMessage)
-                          .append(' ') // Needed Spacing
-                          .append($('<a></a>')
-                            .attr({
-                                'href'  : strAlertLink,
-                                'title' : strAlertTitle
-                            })
-                            .text('More Info >>')
-                          )
-                      )
-                      .prepend($('<h1></h1>').html('Campus Alert: '))
-                    )
-                    .append($('<div></div>').attr('id','clearer'))
-                  )
-                ); // end $('body')
-            } // end .slug 
-          }); // end $.each
+    for (strCategory in data.posts[0].categories ) {
+        var objCategory = data.posts[0].categories[strCategory]
+        // console.log(objCategory);
+        if (types[objCategory.slug]) {
+            var strAlertTitle  = data.posts[0].title;
+            var strAlertLink   = 'http://emergency.washington.edu/';
+            var strAlertMessage = data.posts[0].excerpt;
+            var strAlertColor = types[objCategory.slug];
+        }
+        
+    }
     
-          // Add some custom styles for the banner
-          $('head').append( $('<link>')
-            .attr({ 
-              'href' : '//www.washington.edu/static/uwalert.css',
-              'rel'  : 'stylesheet',
-              'type' : 'text/css'
-            })
-          ); // end $('head')
-        } // end .success
-      }); // end $.ajax
-    });   
-  }
+    addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage);
 }
 
-initJQuery();
+// addElement - display HTML on page right below the body page
+// don't want the alert to show up randomly
+function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
+{
+  // Grab the tag to start the party
+  var bodyTag = document.getElementsByTagName('body')[0];
+  
+  bodyTag.style.margin = '0px';
+  bodyTag.style.padding = '0px';
+
+  var wrapperDiv = document.createElement('div');
+  wrapperDiv.setAttribute('id','alertMessage');
+
+  var alertBoxDiv = document.createElement('div');
+  alertBoxDiv.setAttribute('id', 'alertBox');
+  alertBoxDiv.setAttribute('class', strAlertColor);
+
+  var alertBoxTextDiv = document.createElement('div');
+  alertBoxTextDiv.setAttribute('id', 'alertBoxText');
+  
+  var header1 = document.createElement('h1');
+  var header1Text = document.createTextNode('Campus Alert:');
+  header1.appendChild(header1Text);
+
+  var alertTextP = document.createElement('p');
+  var alertText = document.createTextNode(strAlertMessage);
+  alertTextP.appendChild(alertText);
+
+  var alertLink = document.createElement('a');
+  alertLink.setAttribute('href', strAlertLink);
+  alertLink.setAttribute('title', strAlertTitle);
+  var alertLinkText = document.createTextNode('More Info');
+  alertLink.appendChild(alertLinkText);
+
+  var gtText = document.createTextNode(' >>');
+  
+  var clearDiv = document.createElement('div');
+  clearDiv.setAttribute('id', 'clearer');
+
+  // Start Building the Actual Div
+  alertTextP.appendChild(alertLink);
+  alertTextP.appendChild(gtText);
+
+  alertBoxTextDiv.appendChild(header1);
+  alertBoxTextDiv.appendChild(alertTextP);
+
+  alertBoxDiv.appendChild(alertBoxTextDiv);
+  alertBoxDiv.appendChild(clearDiv);
+
+  wrapperDiv.appendChild(alertBoxDiv);
+  
+  bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
+} 
+
+// displayAlert();
