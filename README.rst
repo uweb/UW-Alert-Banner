@@ -10,8 +10,8 @@ Introduction
 
 There was a requirement to have an alert banner on the top of pages to signify
 an alert. The alert page was done in wordpress and hosted on an external server
-so tying into it was a priority. This system takes an rss feed and creates a js
-file on the fly to pull into a page.
+so tying into it was a priority. This system takes an json feed and creates a 
+banner on the fly via js to pull into a page.
 
 Usage
 =====
@@ -48,8 +48,7 @@ Installation
 The banner will only show up on the page where you have put the code. If you
 want the banner to show on every page, then you’ll want to have your header and
 footer in an include or delivered via a content management system. The script is
-very lightweight and only contains a few lines of javascript, even when active
-the alert.js file is very small.
+very lightweight and only contains a few lines of javascript.
 
 
 Right above the </body> tag::
