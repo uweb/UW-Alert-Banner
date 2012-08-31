@@ -50,7 +50,6 @@ want the banner to show on every page, then you’ll want to have your header an
 footer in an include or delivered via a content management system. The script is
 very lightweight and only contains a few lines of javascript.
 
-
 Right above the </body> tag::
 
  <script type="text/javascript" src="//washington.edu/static/alert.js"></script>
