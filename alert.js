@@ -45,7 +45,7 @@ function displayAlert(data)
     types = {
       'red-alert-urgent' : 'red',
       'orange-alert'     : 'orange',
-      'steel-alert-fyis' : 'steel',
+      'steel-alert-fyis' : 'steel'
     };
     
     for (strCategory in data.posts[0].categories ) 

@@ -35,7 +35,7 @@ function displayAlert()
     types = {
       'red-alert-urgent' : 'red',
       'orange-alert'     : 'orange',
-      'steel-alert-fyis' : 'steel',
+      'steel-alert-fyis' : 'steel'
     };
     
     var strAlertTitle = 'Campus\ Alert\:';
