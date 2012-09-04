@@ -9,7 +9,6 @@
  *  </head>
  *  <body>
  * 
- *  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
  *  <script type="text/javascript" src="//washington.edu/static/alert.js"></script>
  *  </body>
  *  </html>
@@ -33,15 +32,15 @@ function displayAlert()
 {
     // Alert colors
     types = {
-      'red-alert-urgent' : 'uw-alertred',
-      'orange-alert'     : 'uw-alertorange',
-      'steel-alert-fyis' : 'uw-alertsteel'
+      'red-alert-urgent' : 'uwalert-red',
+      'orange-alert'     : 'uwalert-orange',
+      'steel-alert-fyis' : 'uwalert-steel'
     };
     
     var strAlertTitle = 'Campus\ Alert\:';
     var strAlertLink = 'http://emergency.washington.edu/';
     var strAlertMessage = 'There\ is\ no\ emergency\.\ \ For\ additional\ information\,\ please\ visit\ ';
-    var strAlertColor = 'steel';
+    var strAlertColor = 'uwalert-steel';
         
     // Banners must have an actual color
     if (strAlertColor)
