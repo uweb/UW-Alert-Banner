@@ -33,9 +33,9 @@ function displayAlert()
 {
     // Alert colors
     types = {
-      'red-alert-urgent' : 'red',
-      'orange-alert'     : 'orange',
-      'steel-alert-fyis' : 'steel'
+      'red-alert-urgent' : 'uw-alertred',
+      'orange-alert'     : 'uw-alertorange',
+      'steel-alert-fyis' : 'uw-alertsteel'
     };
     
     var strAlertTitle = 'Campus\ Alert\:';
@@ -61,14 +61,14 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
   bodyTag.style.padding = '0px';
 
   var wrapperDiv = document.createElement('div');
-  wrapperDiv.setAttribute('id','alertMessage');
+  wrapperDiv.setAttribute('id','uwalert-alertMessage');
 
   var alertBoxDiv = document.createElement('div');
-  alertBoxDiv.setAttribute('id', 'alertBox');
+  alertBoxDiv.setAttribute('id', 'uwalert-alertBox');
   alertBoxDiv.setAttribute('class', strAlertColor);
 
   var alertBoxTextDiv = document.createElement('div');
-  alertBoxTextDiv.setAttribute('id', 'alertBoxText');
+  alertBoxTextDiv.setAttribute('id', 'uwalert-alertBoxText');
   
   var header1 = document.createElement('h1');
   var header1Text = document.createTextNode('Campus Alert:');
@@ -101,7 +101,7 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
   var gtText = document.createTextNode(' >>');
   
   var clearDiv = document.createElement('div');
-  clearDiv.setAttribute('id', 'clearer');
+  clearDiv.setAttribute('id', 'uwalert-clearer');
 
   // Start Building the Actual Div
   alertTextP.appendChild(alertLink);

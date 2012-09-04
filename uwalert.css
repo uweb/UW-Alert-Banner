@@ -1,5 +1,5 @@
 @charset "utf-8";
-#alertBox {
+#uwalert-alertBox {
 	background-position: 25px 0px;
 	background-repeat: no-repeat;
 	height: 60px;
@@ -8,30 +8,33 @@
 	border-bottom-color: #FFFFFF;
     overflow: hidden;
 }
-.red {
+.uwalert-red {
 	background-image: url(alert_logo_red.jpg);
 	background-color: #C61029;
 }
-.steel {
+.uwalert-steel {
 	background-image: url(alert_logo_steel.jpg);
 	background-color: #597286;
 }
-.blue {
+.uwalert-blue {
 	background-image: url(alert_logo_blue.jpg);
 	background-color: #0193c9;
 }
-.orange {
+.uwalert-orange {
 	background-image: url(alert_logo_orange.jpg);
 	background-color: #ec7330;
 }
-#alertBoxText {
+#uwalert-alertBoxText {
 	width: 810px;
 	float: left;
 }
-#clearer {
+#uwalert-alertBoxText a {
+	color: #FFFF66;
+}
+#uwalert-clearer {
 	clear: both;
 }
-#alertBox h1 {
+#uwalert-alertBox h1 {
 	font-family: Arial, Helvetica, sans-serif;
 	color: #FFFFFF;
 	font-size: 22px;
@@ -42,7 +45,7 @@
 	float: left;
 	height: 60px;
 }
-#alertBox p {
+#uwalert-alertBox p {
 	display: block;
 	margin: 0;
 	font-family: Arial, Helvetica, sans-serif;
@@ -50,9 +53,6 @@
 	color: #FFFFFF;
 	padding: 5px 0 5px 350px;
 }
-#alertBox img {
+#uwalert-alertBox img {
 	border: none;
-}
-#alertBoxText a {
-	color: #FFFF66;
 }
