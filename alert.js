@@ -35,6 +35,12 @@ document.getElementsByTagName('head')[0].appendChild(strCSS);
 // displayAlert - grab content to display message 
 function displayAlert(data)
 {
+    // Just in case w.com delivers us something bad
+    if (!data)
+    {
+        return false;
+
+    }
     // We don't care if there's nothing
     if (data.found == 0) 
     {
