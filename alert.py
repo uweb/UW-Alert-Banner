@@ -77,7 +77,6 @@ class AlertBanner(object):
         oFile = urllib2.urlopen(self._url,timeout=10)
         self._alertdata = json.loads(oFile.read().replace('\n', ''))
         oFile.close()
-        import pdb; pdb.set_trace();
 
         count = self._alertdata['found'];
 
