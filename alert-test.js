@@ -20,13 +20,6 @@
 
 var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
 
-// Code contributed by Dustin Brewer
-var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + 'www.washington.edu/static/uwalert.css');
-strCSS.setAttribute('rel','stylesheet');
-strCSS.setAttribute('type','text/css');
-document.getElementsByTagName('head')[0].appendChild(strCSS);
-
 // displayAlert - grab content to display message 
 function displayAlert()
 {
@@ -119,3 +112,11 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
 } 
 
 displayAlert();
+
+// Code contributed by Dustin Brewer
+var strCSS = document.createElement('link');
+strCSS.setAttribute('href', strProto + 'www.washington.edu/static/uwalert.css');
+strCSS.setAttribute('rel','stylesheet');
+strCSS.setAttribute('type','text/css');
+document.getElementsByTagName('head')[0].appendChild(strCSS);
+

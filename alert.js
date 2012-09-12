@@ -25,13 +25,6 @@ var strScript = document.createElement('script');
 strScript.setAttribute('src', strProto + 'public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=displayAlert');
 document.getElementsByTagName('head')[0].appendChild(strScript); 
 
-// Code contributed by Dustin Brewer
-var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + 'www.washington.edu/static/uwalert.css');
-strCSS.setAttribute('rel','stylesheet');
-strCSS.setAttribute('type','text/css');
-document.getElementsByTagName('head')[0].appendChild(strCSS);
-
 // displayAlert - grab content to display message 
 function displayAlert(data)
 {
@@ -142,3 +135,11 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
   
   bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 } 
+
+// Code contributed by Dustin Brewer
+var strCSS = document.createElement('link');
+strCSS.setAttribute('href', strProto + 'www.washington.edu/static/uwalert.css');
+strCSS.setAttribute('rel','stylesheet');
+strCSS.setAttribute('type','text/css');
+document.getElementsByTagName('head')[0].appendChild(strCSS);
+
