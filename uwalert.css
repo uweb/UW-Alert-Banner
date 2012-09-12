@@ -56,3 +56,6 @@
 #uwalert-alertBox img {
 	border: none;
 }
+.uw-alert #thin-strip { 
+	top: 89px; 
+} 

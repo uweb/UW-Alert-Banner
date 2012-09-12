@@ -58,6 +58,7 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
   
   bodyTag.style.margin = '0px';
   bodyTag.style.padding = '0px';
+  bodyTag.className += ' uw-alert';
 
   var wrapperDiv = document.createElement('div');
   wrapperDiv.setAttribute('id','uwalert-alertMessage');
