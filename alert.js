@@ -22,6 +22,7 @@ var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
 
 var strScript = document.createElement('script');
 // Using the wordpress callback to grab our json
+// TODO: best way to switch between the two?
 //strScript.setAttribute('src', strProto + 'public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=displayAlert');
 strScript.setAttribute('src','http://localhost/UW-Alert-Banner/alert.php?c=displayAlert');
 document.getElementsByTagName('head')[0].appendChild(strScript); 
