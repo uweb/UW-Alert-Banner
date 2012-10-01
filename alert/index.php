@@ -15,7 +15,7 @@ function get_alert()
     if (!is_dir($strServerTmp))
         mkdir($strServerTmp, 0755, true);
 
-    $cache = $strServerTmp. 'alert.json';
+    $cache = $strServerTmp . 'alert.json';
 
     // if the file modification time is less than 30 seconds ago
     if(filemtime($cache) < (time() - 30))
@@ -24,10 +24,13 @@ function get_alert()
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+        // TODO Watch timeout and adjust as needed
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        // Unnecesary but also doesn't hurt to have
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         $data = curl_exec($ch);
         curl_close($ch);
+        // Dump out actual cached data
         $cachefile = fopen($cache, 'wb');
         fwrite($cachefile, $data);
         fclose($cachefile);
@@ -37,6 +40,7 @@ function get_alert()
         $data = file_get_contents($cache);
     }
     return $data;
+
 }
 ?>
 
