@@ -31,7 +31,6 @@ function get_alert()
         $cachefile = fopen($cache, 'wb');
         fwrite($cachefile, $data);
         fclose($cachefile);
-        var_dump($data);
     }
     else
     {
