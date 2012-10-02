@@ -23,11 +23,12 @@ var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
 // Thanks Dane!
 var test_status = window.location.hash.indexOf('alert') === -1 ? 'false' : 'true';
 var strScript = document.createElement('script');
-// Using the wordpress callback to grab our json
-// TODO: best way to switch between the two?
-//strScript.setAttribute('src', strProto + 'public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=displayAlert');
-// strScript.setAttribute('src', strProto + '//www.washington.edu/static/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status);
-strScript.setAttribute('src', strProto + '//localhost/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status);
+
+if (window.location.hostname == 'localhost')
+    strScript.setAttribute('src', strProto + '//localhost/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status);
+else
+    strScript.setAttribute('src', strProto + '//www.washington.edu/static/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status);
+
 document.getElementsByTagName('head')[0].appendChild(strScript); 
 
 // displayAlert - grab content to display message 
