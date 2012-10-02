@@ -98,8 +98,8 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
   var alertTextMessage = div.textContent || div.innerText || "";
   // Build alert text node and cut of max characters
   var alertText = document.createTextNode(
-    alertTextMessage.substring(0,200) + 
-    (alertTextMessage.length >= 200 ? '... ' : ' ')
+    alertTextMessage.substring(0,360) + 
+    (alertTextMessage.length >= 360 ? '... ' : ' ')
   );
   alertTextP.appendChild(alertText);
 
