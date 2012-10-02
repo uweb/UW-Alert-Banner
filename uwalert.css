@@ -23,20 +23,16 @@
 #uwalert-alert-message a { color: #FDE048; }
 
 .uwalert-red 			{ background-color: #C61029;}
-.uwalert-red div		{ background: url('http://www.uw.edu/static/alert_logo_red-v2.jpg') no-repeat 0 -38px; }
-#alert-mini.uwalert-red  { background: url('http://www.uw.edu/static/alert_logo_red-v2.jpg') no-repeat 20% -38px #C61029; background-size: 20%; }
+.uwalert-red div		{ background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 0 -38px; }
+#alert-mini.uwalert-red  { background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 20% -38px #C61029; background-size: 20%; }
 
 .uwalert-steel 		{ background-color: #597286; }
-.uwalert-steel div 	{ background: url('http://www.uw.edu/static/alert_logo_steel-v2.jpg') no-repeat 0 -38px; }
-#alert-mini.uwalert-steel  { background: url('http://www.uw.edu/static/alert_logo_steel-v2.jpg') no-repeat 20% -38px #597286; background-size: 20%; }
-
-.uwalert-blue 		{ background-color: #0193c9; }
-.uwalert-blue div 	{ background: url('http://www.uw.edu/static/alert_logo_blue-v2.jpg') no-repeat 0 -38px; }
-#alert-mini.uwalert-blue  { background: url('http://www.uw.edu/static/alert_logo_blue-v2.jpg') no-repeat 20% -38px #0193c9; background-size: 20%; }
+.uwalert-steel div 	{ background: url('//www.washington.edu/static/alert_logo_steel.jpg') no-repeat 0 -38px; }
+#alert-mini.uwalert-steel  { background: url('//www.washington.edu/static/alert_logo_steel.jpg') no-repeat 20% -38px #597286; background-size: 20%; }
 
 .uwalert-orange 		{ background-color: #ec7330;}
-.uwalert-orange div 	{ background: url('http://www.uw.edu/static/alert_logo_orange-v2.jpg') no-repeat 0 -38px; }
-#alert-mini.uwalert-orange  { background: url('http://www.uw.edu/static/alert_logo_orange-v2.jpg') no-repeat 20% -38px #ec7330; background-size: 20%; }
+.uwalert-orange div 	{ background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 0 -38px; }
+#alert-mini.uwalert-orange  { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 20% -38px #ec7330; background-size: 20%; }
 
 @media (min-width: 768px) {  
 
