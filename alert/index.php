@@ -48,16 +48,10 @@ function get_alert()
 }
 
 $strCallback = isset($_GET['c']) ? $_GET['c'] : '';
+
+if (isset($_GET['c']))
+    $strCallback = $_GET['c'];
+
+
+echo $strCallback ? $strCallback.'('.get_alert().')' : get_alert();
 ?>
-
-function grabAlertData(callback) 
-{
-    if (callback && typeof(callback) === "function") 
-    {
-        // execute the callback, passing parameters as necessary
-        var data = <?php echo get_alert(); ?>;
-        callback(data);
-    }
-}
-
-grabAlertData(<?php echo $strCallback; ?>);
