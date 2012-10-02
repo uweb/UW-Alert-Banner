@@ -28,8 +28,6 @@ var strDataFeed = '/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status
 
 var strScript = document.createElement('script');
 strScript.setAttribute('src', strProto + strDomain + strDataFeed);
-
-
 document.getElementsByTagName('head')[0].appendChild(strScript); 
 
 // displayAlert - grab content to display message 
