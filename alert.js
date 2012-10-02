@@ -82,24 +82,16 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
     bodyTag.className += ' uw-alert';
 
   var wrapperDiv = document.createElement('div');
-  wrapperDiv.setAttribute('id','uwalert-alertMessage');
-
-  var alertBoxDiv = document.createElement('div');
-  alertBoxDiv.setAttribute('id', 'uwalert-alertBox');
-  alertBoxDiv.setAttribute('class', strAlertColor);
+  wrapperDiv.setAttribute('id','uwalert-alert-message');
+  wrapperDiv.setAttribute('class', strAlertColor);
 
   var alertBoxTextDiv = document.createElement('div');
-  alertBoxTextDiv.setAttribute('id', 'uwalert-alertBoxText');
   
   var header1 = document.createElement('h1');
-  var header1Text = document.createTextNode('Campus Alert:');
+  var header1Text = document.createTextNode(strAlertTitle);
   header1.appendChild(header1Text);
 
   var alertTextP = document.createElement('p');
-
-  // Wordpres includes html, this won't do
-  // var alertText = document.createTextNode(strAlertMessage);
-  // alertTextP.appendChild(alertText);
 
   var div = document.createElement("div");
   div.innerHTML = strAlertMessage;
@@ -119,29 +111,20 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
   var alertLinkText = document.createTextNode('More Info');
   alertLink.appendChild(alertLinkText);
 
-  var gtText = document.createTextNode(' >>');
-  
-  var clearDiv = document.createElement('div');
-  clearDiv.setAttribute('id', 'uwalert-clearer');
-
   // Start Building the Actual Div
   alertTextP.appendChild(alertLink);
-  alertTextP.appendChild(gtText);
 
   alertBoxTextDiv.appendChild(header1);
   alertBoxTextDiv.appendChild(alertTextP);
 
-  alertBoxDiv.appendChild(alertBoxTextDiv);
-  alertBoxDiv.appendChild(clearDiv);
+  wrapperDiv.appendChild(alertBoxTextDiv);
 
-  wrapperDiv.appendChild(alertBoxDiv);
-  
   bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 } 
 
 // Code contributed by Dustin Brewer
 var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + 'www.washington.edu/static/uwalert.css');
+strCSS.setAttribute('href', strProto + 'www.washington.edu/static/uwalert-v2.css');
 strCSS.setAttribute('rel','stylesheet');
 strCSS.setAttribute('type','text/css');
 document.getElementsByTagName('head')[0].appendChild(strCSS);
