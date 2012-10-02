@@ -29,7 +29,6 @@ var strDataFeed = '/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status
 var strScript = document.createElement('script');
 strScript.setAttribute('src', strProto + strDomain + strDataFeed);
 
-
 document.getElementsByTagName('head')[0].appendChild(strScript); 
 
 // displayAlert - grab content to display message 
@@ -124,7 +123,7 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
 
 // Code contributed by Dustin Brewer
 var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + 'www.washington.edu/static/uwalert-v2.css');
+strCSS.setAttribute('href', strProto + strDomain + '/UW-Alert-Banner/uwalert.css');
 strCSS.setAttribute('rel','stylesheet');
 strCSS.setAttribute('type','text/css');
 document.getElementsByTagName('head')[0].appendChild(strCSS);
