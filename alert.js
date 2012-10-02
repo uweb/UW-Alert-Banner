@@ -24,10 +24,11 @@ var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
 var test_status = window.location.hash.indexOf('alert') === -1 ? 'false' : 'true';
 var strScript = document.createElement('script');
 
-if (window.location.hostname == 'localhost')
-    strScript.setAttribute('src', strProto + '//localhost/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status);
-else
-    strScript.setAttribute('src', strProto + '//www.washington.edu/static/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status);
+// Allow for local testing
+var strDomain = (window.location.hostname == 'localhost') ? '//localhost' : '//www.washington.edu/static';
+var strDataFeed = '/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status
+strScript.setAttribute('src', strProto + strDomain + strDataFeed);
+
 
 document.getElementsByTagName('head')[0].appendChild(strScript); 
 
