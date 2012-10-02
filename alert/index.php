@@ -5,10 +5,15 @@ header( 'Content-Type: application/javascript' );
 // TODO Need to have a test option
 function get_alert()
 {
+    $url = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish';
+    if (isset($_GET['test'])) 
+    {
+        if ($_GET['test'] == 'true')
+            $url = 'https://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
+    } 
 
     // $url = '//public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=displayAlert';
-    $url = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish';
-    // one of these will work TODO need to test it
+    // one of these will work depending on the environment
     $strServerTmp = isset($_SERVER['SERVER_TMPDIR']) ? $_SERVER['SERVER_TMPDIR'].'/uw-alert-banner/' : '/tmp/uw-alert-banner/';
 
     // We have a good possibility the directory won't be there initially
@@ -18,7 +23,7 @@ function get_alert()
     $cache = $strServerTmp . 'alert.json';
 
     // if the file modification time is less than 30 seconds ago
-    if(filemtime($cache) < (time() - 30))
+    if (!file_exists($cache) || (filemtime($cache) < (time() - 30)))
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -40,7 +45,6 @@ function get_alert()
         $data = file_get_contents($cache);
     }
     return $data;
-
 }
 ?>
 
