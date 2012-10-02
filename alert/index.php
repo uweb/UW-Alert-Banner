@@ -6,11 +6,8 @@ header( 'Content-Type: application/javascript' );
 function get_alert()
 {
     $url = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish';
-    if (isset($_GET['test'])) 
-    {
-        if ($_GET['test'] == 'true')
-            $url = 'https://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
-    } 
+    if ((isset($_GET['test'])) && ($_GET['test'] == 'true'))
+        $url = 'https://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
 
     // $url = '//public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=displayAlert';
     // one of these will work depending on the environment
@@ -21,6 +18,9 @@ function get_alert()
         mkdir($strServerTmp, 0755, true);
 
     $cache = $strServerTmp . 'alert.json';
+    if ((isset($_GET['test'])) && ($_GET['test'] == 'true'))
+        $cache = $strServerTmp . 'alert-test.json';
+
 
     // if the file modification time is less than 30 seconds ago
     if (!file_exists($cache) || (filemtime($cache) < (time() - 30)))
@@ -46,6 +46,8 @@ function get_alert()
     }
     return $data;
 }
+
+$strCallback = isset($_GET['c']) ? $_GET['c'] : '';
 ?>
 
 function grabAlertData(callback) 
@@ -58,4 +60,4 @@ function grabAlertData(callback)
     }
 }
 
-grabAlertData(<?php echo $_GET['c']; ?>);
+grabAlertData(<?php echo $strCallback; ?>);
