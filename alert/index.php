@@ -7,9 +7,8 @@ function get_alert()
 {
     $url = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish';
     if ((isset($_GET['test'])) && ($_GET['test'] == 'true'))
-        $url = 'https://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
+        $url = 'http://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
 
-    // $url = '//public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=displayAlert';
     // one of these will work depending on the environment
     $strServerTmp = isset($_SERVER['SERVER_TMPDIR']) ? $_SERVER['SERVER_TMPDIR'].'/uw-alert-banner/' : '/tmp/uw-alert-banner/';
 
@@ -21,16 +20,16 @@ function get_alert()
     if ((isset($_GET['test'])) && ($_GET['test'] == 'true'))
         $cache = $strServerTmp . 'alert-test.json';
 
-
     // if the file modification time is less than 30 seconds ago
     if (!file_exists($cache) || (filemtime($cache) < (time() - 30)))
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         // TODO Watch timeout and adjust as needed
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         // Unnecesary but also doesn't hurt to have
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         $data = curl_exec($ch);
@@ -42,7 +41,7 @@ function get_alert()
     }
     else
     {
-        $data = file_get_contents($cache);
+       $data = file_get_contents($cache);
     }
     return $data;
 }
