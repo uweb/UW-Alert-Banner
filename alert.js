@@ -32,33 +32,33 @@ strScript.setAttribute('src', strProto + strDomain + strDataFeed);
 document.getElementsByTagName('head')[0].appendChild(strScript); 
 
 // displayAlert - grab content to display message 
-function displayAlert(data)
+function displayAlert(objAlertData)
 {
     // Just in case w.com delivers us something bad
     // or We don't care if there's nothing
-    if ((!data) || (data.found == 0))
+    if ((!objAlertData) || (objAlertData.found == 0))
         return false;
 
     // Alert colors
-    types = {
+    arrAlertTypes = {
         'red-alert-urgent' : 'uwalert-red',
         'orange-alert'     : 'uwalert-orange',
         'steel-alert-fyis' : 'uwalert-steel'
     };
 
-    for (strCategory in data.posts[0].categories ) 
+    for (strCategory in objAlertData.posts[0].categories ) 
     {
         if ( window.location.hash.indexOf('uwalert') != -1 )
             var strTestAlertColor = window.location.hash.replace('#','');
 
-        var objCategory = data.posts[0].categories[strCategory];
+        var objCategory = objAlertData.posts[0].categories[strCategory];
         // Quick way to determine color
-        if ((types[objCategory.slug]) || strTestAlertColor)
+        if ((arrAlertTypes[objCategory.slug]) || strTestAlertColor)
         {
-            var strAlertTitle  = data.posts[0].title;
+            var strAlertTitle  = objAlertData.posts[0].title;
             var strAlertLink   = 'http://emergency.washington.edu/';
-            var strAlertMessage = data.posts[0].excerpt;
-            var strAlertColor = types[objCategory.slug] ? types[objCategory.slug] : strTestAlertColor;
+            var strAlertMessage = objAlertData.posts[0].excerpt;
+            var strAlertColor = arrAlertTypes[objCategory.slug] ? arrAlertTypes[objCategory.slug] : strTestAlertColor;
         }
 
     }
