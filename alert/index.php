@@ -7,7 +7,7 @@ function get_alert()
 {
     $url = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish';
     if ((isset($_GET['test'])) && ($_GET['test'] == 'true'))
-        $url = 'https://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
+        $url = 'http://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
 
     // $url = '//public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&callback=displayAlert';
     // one of these will work depending on the environment
