@@ -1,91 +1,83 @@
-#uwalert-alertBox {
-	background-position: 25px 0px;
-	background-repeat: no-repeat;
-	height: 60px;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #FFFFFF;
-    overflow: hidden;
-}
-.uwalert-red {
-	background-image: url('alert_logo_red.jpg');
-	background-color: #C61029;
-}
-.uwalert-steel {
-	background-image: url('alert_logo_steel.jpg');
-	background-color: #597286;
-}
-.uwalert-blue {
-	background-image: url('alert_logo_blue.jpg');
-	background-color: #0193c9;
-}
-.uwalert-orange {
-	background-image: url('alert_logo_orange.jpg');
-	background-color: #ec7330;
-}
-#uwalert-alertBoxText {
-	width: 810px;
-	float: left;
-}
-#uwalert-alertBoxText a {
-	color: #FFFF66;
-}
-#uwalert-clearer {
-	clear: both;
-}
-#uwalert-alertBox h1 {
-	font-family: Arial, Helvetica, sans-serif;
-	color: #FFFFFF;
-	font-size: 22px;
-	display: block;
-	margin: 0px;
-	width: 340px;
-	text-align: right;
-	float: left;
-	height: 60px;
-}
-#uwalert-alertBox p {
-	display: block;
-	margin: 0;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color: #FFFFFF;
-	padding: 5px 0 5px 350px;
-}
-#uwalert-alertBox img {
-	border: none;
-}
-.uw-alert #thin-strip { 
-	top: 60px; 
-} 
 
-@media (max-width: 768px) {  
-	body.mobile.uw-alert {
-		background-position: 0 100px;
+/************************************************
+*	New Alert  									*
+************************************************/
+
+#uwalert-alert-message div {
+	width: 1100px;
+	margin: 0 auto;
+	padding: 5px 0 15px;
+}
+#uwalert-alert-message h1, #uwalert-alert-message p {
+	color: white;
+	padding: 5px 100px 0 200px;
+	margin: 0;
+}
+#uwalert-alert-message h1 {
+	font-size: 18px;
+}
+#uwalert-alert-message p {
+	font-size: 13px;
+	line-height: 15px;
+}
+#uwalert-alert-message a { color: #FDE048; }
+
+.uwalert-red 			{ background-color: #C61029;}
+.uwalert-red div		{ background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 0 -38px; }
+#alert-mini.uwalert-red  { background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 20% -38px #C61029; background-size: 20%; }
+
+.uwalert-steel 		{ background-color: #597286; }
+.uwalert-steel div 	{ background: url('//www.washington.edu/static/alert_logo_steel.jpg') no-repeat 0 -38px; }
+#alert-mini.uwalert-steel  { background: url('//www.washington.edu/static/alert_logo_steel.jpg') no-repeat 20% -38px #597286; background-size: 20%; }
+
+.uwalert-orange 		{ background-color: #ec7330;}
+.uwalert-orange div 	{ background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 0 -38px; }
+#alert-mini.uwalert-orange  { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 20% -38px #ec7330; background-size: 20%; }
+
+@media (min-width: 768px) {  
+
+	#uwalert-alert-message div {
+		width: 1100px;
 	}
-	#uwalert-alertBox.uwalert-orange {
-		background-position: -150px 0;
+	#alert-mini {
+       position: fixed;
+       display:none;
+       top: 0;
+       right: 0;
+       left: 0;
+       text-align:center;
+       z-index: 1;
+       color: #fff;
+       padding: 40px 0 10px 0; 
 	}
-	#uwalert-alertBox.uwalert-orange h1 {
-		border: none;
-		display: block;
-		height: auto;
+}
+@media (max-width: 979px) and (min-width: 768px) {
+
+	#uwalert-alert-message h1, #uwalert-alert-message p {
+		color: white;
+		padding: 5px 0 0 200px;
 		margin: 0;
-		padding: 0;
+	}
+	#uwalert-alert-message div {
+		width: 768px;
+	}
+	
+}
+@media (max-width: 767px) {  
+	.uwalert-steel div, .uwalert-orange div, .uwalert-red div, .uwalert-blue divs {
+		background-position: center -40px;
+	}
+	#uwalert-alert-message div {
 		width: 100%;
-		text-align: left;
-	} 
-	#uwalert-alertBox p {
-		padding: 0;
+		padding-top: 65px;
 	}
-	#uwalert-alertBox {
-		height: 100px
+	#uwalert-alert-message h1, #uwalert-alert-message p {
+		color: white;
+		padding: 5px 15px 5px 30px;
+		margin: 0;
+		border: none;
 	}
-	#uwalert-alertBox h1 {
-		display: none;
-	}
-	#uwalert-alertBoxText {
-		width: auto;
-		padding: 5px 10px 0 10px;
+	#uwalert-alert-message h1 {
+		line-height: 18px;
 	}
 }

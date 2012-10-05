@@ -23,7 +23,7 @@ var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
 // Thanks Dane!
 var test_status = window.location.hash.indexOf('alert') === -1 ? 'false' : 'true';
 // Allow for local testing
-var strDomain = (window.location.hostname == 'localhost') ? '//localhost' : '//www.washington.edu/static';
+var strDomain = (window.location.hostname == 'localhost') ? 'localhost' : 'www.washington.edu/static';
 var strDataFeed = '/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status
 
 var strScript = document.createElement('script');
@@ -31,33 +31,33 @@ strScript.setAttribute('src', strProto + strDomain + strDataFeed);
 document.getElementsByTagName('head')[0].appendChild(strScript); 
 
 // displayAlert - grab content to display message 
-function displayAlert(data)
+function displayAlert(objAlertData)
 {
     // Just in case w.com delivers us something bad
     // or We don't care if there's nothing
-    if ((!data) || (data.found == 0))
+    if ((!objAlertData) || (objAlertData.found == 0))
         return false;
 
     // Alert colors
-    types = {
+    arrAlertTypes = {
         'red-alert-urgent' : 'uwalert-red',
         'orange-alert'     : 'uwalert-orange',
         'steel-alert-fyis' : 'uwalert-steel'
     };
 
-    for (strCategory in data.posts[0].categories ) 
+    for (strCategory in objAlertData.posts[0].categories ) 
     {
         if ( window.location.hash.indexOf('uwalert') != -1 )
             var strTestAlertColor = window.location.hash.replace('#','');
 
-        var objCategory = data.posts[0].categories[strCategory];
+        var objCategory = objAlertData.posts[0].categories[strCategory];
         // Quick way to determine color
-        if ((types[objCategory.slug]) || strTestAlertColor)
+        if ((arrAlertTypes[objCategory.slug]) || strTestAlertColor)
         {
-            var strAlertTitle  = data.posts[0].title;
+            var strAlertTitle  = objAlertData.posts[0].title;
             var strAlertLink   = 'http://emergency.washington.edu/';
-            var strAlertMessage = data.posts[0].excerpt;
-            var strAlertColor = types[objCategory.slug] ? types[objCategory.slug] : strTestAlertColor;
+            var strAlertMessage = objAlertData.posts[0].excerpt;
+            var strAlertColor = arrAlertTypes[objCategory.slug] ? arrAlertTypes[objCategory.slug] : strTestAlertColor;
         }
 
     }
@@ -80,24 +80,16 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
     bodyTag.className += ' uw-alert';
 
   var wrapperDiv = document.createElement('div');
-  wrapperDiv.setAttribute('id','uwalert-alertMessage');
-
-  var alertBoxDiv = document.createElement('div');
-  alertBoxDiv.setAttribute('id', 'uwalert-alertBox');
-  alertBoxDiv.setAttribute('class', strAlertColor);
+  wrapperDiv.setAttribute('id','uwalert-alert-message');
+  wrapperDiv.setAttribute('class', strAlertColor);
 
   var alertBoxTextDiv = document.createElement('div');
-  alertBoxTextDiv.setAttribute('id', 'uwalert-alertBoxText');
   
   var header1 = document.createElement('h1');
-  var header1Text = document.createTextNode('Campus Alert:');
+  var header1Text = document.createTextNode(strAlertTitle);
   header1.appendChild(header1Text);
 
   var alertTextP = document.createElement('p');
-
-  // Wordpres includes html, this won't do
-  // var alertText = document.createTextNode(strAlertMessage);
-  // alertTextP.appendChild(alertText);
 
   var div = document.createElement("div");
   div.innerHTML = strAlertMessage;
@@ -105,8 +97,8 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
   var alertTextMessage = div.textContent || div.innerText || "";
   // Build alert text node and cut of max characters
   var alertText = document.createTextNode(
-    alertTextMessage.substring(0,200) + 
-    (alertTextMessage.length >= 200 ? '... ' : ' ')
+    alertTextMessage.substring(0,360) + 
+    (alertTextMessage.length >= 360 ? '... ' : ' ')
   );
   alertTextP.appendChild(alertText);
 
@@ -117,29 +109,20 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
   var alertLinkText = document.createTextNode('More Info');
   alertLink.appendChild(alertLinkText);
 
-  var gtText = document.createTextNode(' >>');
-  
-  var clearDiv = document.createElement('div');
-  clearDiv.setAttribute('id', 'uwalert-clearer');
-
   // Start Building the Actual Div
   alertTextP.appendChild(alertLink);
-  alertTextP.appendChild(gtText);
 
   alertBoxTextDiv.appendChild(header1);
   alertBoxTextDiv.appendChild(alertTextP);
 
-  alertBoxDiv.appendChild(alertBoxTextDiv);
-  alertBoxDiv.appendChild(clearDiv);
+  wrapperDiv.appendChild(alertBoxTextDiv);
 
-  wrapperDiv.appendChild(alertBoxDiv);
-  
   bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 } 
 
 // Code contributed by Dustin Brewer
 var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + 'www.washington.edu/static/uwalert.css');
+strCSS.setAttribute('href', strProto + strDomain + '/UW-Alert-Banner/uwalert.css');
 strCSS.setAttribute('rel','stylesheet');
 strCSS.setAttribute('type','text/css');
 document.getElementsByTagName('head')[0].appendChild(strCSS);
