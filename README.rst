@@ -59,10 +59,10 @@ That's it!
 Testing
 -------
 
-To verify the banner will not disrupt any elements on the page, the test code is
-available below. The banner will display a steel color and a brief message.
+To test append a #alert-red, #alert-orange, or #alert-steel to your pages URL.
 
-Right above the </body> tag::
-
- <script type="text/javascript" src="//washington.edu/static/alert-test.js"></script>
+  Example:
+  
+  Original URL: http://www.washington.edu/static/UW-Alert-Banner-v2/
+  Test URL: http://www.washington.edu/static/UW-Alert-Banner-v2/#alert-red
 
