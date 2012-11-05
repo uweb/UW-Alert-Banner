@@ -79,45 +79,44 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
     bodyTag.style.padding = '0px';
     bodyTag.className += ' uw-alert';
 
-  var wrapperDiv = document.createElement('div');
-  wrapperDiv.setAttribute('id','uwalert-alert-message');
-  wrapperDiv.setAttribute('class', strAlertColor);
+    var wrapperDiv = document.createElement('div');
+    wrapperDiv.setAttribute('id','uwalert-alert-message');
+    wrapperDiv.setAttribute('class', strAlertColor);
 
-  var alertBoxTextDiv = document.createElement('div');
-  
-  var header1 = document.createElement('h1');
-  var header1Text = document.createTextNode(strAlertTitle);
-  header1.appendChild(header1Text);
+    var alertBoxTextDiv = document.createElement('div');
 
-  var alertTextP = document.createElement('p');
+    var header1 = document.createElement('h1');
+    var header1Text = document.createTextNode(strAlertTitle);
+    header1.appendChild(header1Text);
 
-  var div = document.createElement("div");
-  div.innerHTML = strAlertMessage;
-  // Strip out html that wordpress.com gives us
-  var alertTextMessage = div.textContent || div.innerText || "";
-  // Build alert text node and cut of max characters
-  var alertText = document.createTextNode(
+    var alertTextP = document.createElement('p');
+
+    var div = document.createElement("div");
+    div.innerHTML = strAlertMessage;
+    // Strip out html that wordpress.com gives us
+    var alertTextMessage = div.textContent || div.innerText || "";
+    // Build alert text node and cut of max characters
+    var alertText = document.createTextNode(
     alertTextMessage.substring(0,360) + 
-    (alertTextMessage.length >= 360 ? '... ' : ' ')
-  );
-  alertTextP.appendChild(alertText);
+        (alertTextMessage.length >= 360 ? '... ' : ' ')
+    );
+    alertTextP.appendChild(alertText);
 
+    var alertLink = document.createElement('a');
+    alertLink.setAttribute('href', strAlertLink);
+    alertLink.setAttribute('title', strAlertTitle);
+    var alertLinkText = document.createTextNode('More Info');
+    alertLink.appendChild(alertLinkText);
 
-  var alertLink = document.createElement('a');
-  alertLink.setAttribute('href', strAlertLink);
-  alertLink.setAttribute('title', strAlertTitle);
-  var alertLinkText = document.createTextNode('More Info');
-  alertLink.appendChild(alertLinkText);
+    // Start Building the Actual Div
+    alertTextP.appendChild(alertLink);
 
-  // Start Building the Actual Div
-  alertTextP.appendChild(alertLink);
+    alertBoxTextDiv.appendChild(header1);
+    alertBoxTextDiv.appendChild(alertTextP);
 
-  alertBoxTextDiv.appendChild(header1);
-  alertBoxTextDiv.appendChild(alertTextP);
+    wrapperDiv.appendChild(alertBoxTextDiv);
 
-  wrapperDiv.appendChild(alertBoxTextDiv);
-
-  bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
+    bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 } 
 
 // Code contributed by Dustin Brewer

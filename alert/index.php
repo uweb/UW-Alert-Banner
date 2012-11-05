@@ -5,9 +5,9 @@ header( 'Content-Type: application/javascript' );
 // TODO Need to have a test option
 function get_alert()
 {
-    $url = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish';
+    $strURL = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish';
     if ((isset($_GET['test'])) && ($_GET['test'] == 'true'))
-        $url = 'http://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
+        $strURL = 'http://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
 
     // one of these will work depending on the environment
     $strServerTmp = isset($_SERVER['SERVER_TMPDIR']) ? $_SERVER['SERVER_TMPDIR'].'/uw-alert-banner/' : '/tmp/uw-alert-banner/';
@@ -35,7 +35,7 @@ function get_alert()
     {
         // Get fresh data, it's too old or doesn't exist
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, $strURL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         // TODO Watch timeout and adjust as needed
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
