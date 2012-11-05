@@ -61,8 +61,8 @@ Testing
 
 To test append a #alert-red, #alert-orange, or #alert-steel to your pages URL.
 
-  Example:
+Example:
   
-  Original URL: http://www.washington.edu/static/UW-Alert-Banner-v2/
-  Test URL: http://www.washington.edu/static/UW-Alert-Banner-v2/#alert-red
+Original URL: http://www.washington.edu/static/UW-Alert-Banner-v2/
+Test URL: http://www.washington.edu/static/UW-Alert-Banner-v2/#alert-red
 

@@ -20,17 +20,20 @@ function get_alert()
     if ((isset($_GET['test'])) && ($_GET['test'] == 'true'))
         $strCache = $strServerTmp . 'alert-test.json';
 
-    // How old is the cached data?
-    $strTimestamp = filemtime($strCache);
-    $objDate = new DateTime();
-    $objDate->setTimestamp($strTimestamp);
-    $strInterval = $objDate->diff(new DateTime('now'));
-    $strCacheAge = $strInterval->format('%i minute(s), %s second(s) old');
+    if (file_exists($strCache))
+    {
+        // How old is the cached data?
+        $strTimestamp = filemtime($strCache);
+        $objDate = new DateTime();
+        $objDate->setTimestamp($strTimestamp);
+        $strInterval = $objDate->diff(new DateTime('now'));
+        $strCacheAge = $strInterval->format('%i minute(s), %s second(s) old');
+    }
 
     // if the file modification time is less than 30 seconds ago
     if (!file_exists($strCache) || (filemtime($strCache) < (time() - 30)))
     {
-        
+        // Get fresh data, it's too old or doesn't exist
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -50,6 +53,7 @@ function get_alert()
     }
     else
     {
+        // It's been less than 30 seconds, just used the cache
         $strCacheState = 'stale';
         $strCacheData = file_get_contents($strCache);
     }
@@ -57,7 +61,7 @@ function get_alert()
     // Adding our own data
     $strCachedDataDecoded = json_decode($strCacheData);
     $strCachedDataDecoded->{'cache_state'} = $strCacheState;
-    $strCachedDataDecoded->{'cache_age'} = $strCacheAge;
+    $strCachedDataDecoded->{'cache_age'} = isset($strCacheAge) ? $strCacheAge : '0';
     $strCacheData = json_encode($strCachedDataDecoded);
 
     return $strCacheData;
