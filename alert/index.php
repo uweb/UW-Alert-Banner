@@ -2,7 +2,6 @@
 // We want to deliver a dynamic javascript file
 header( 'Content-Type: application/javascript' ); 
 
-// TODO Need to have a test option
 function get_alert()
 {
     $strURL = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish';

@@ -21,7 +21,7 @@
 var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
 
 // Thanks Dane!
-var test_status = window.location.hash.indexOf('alert') === -1 ? 'false' : 'true';
+var test_status = window.location.hash.indexOf('uwalert') === -1 ? 'false' : 'true';
 // Allow for local testing
 var strDomain = (window.location.hostname == 'localhost') ? 'localhost' : 'www.washington.edu/static';
 var strDataFeed = '/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status
@@ -86,9 +86,18 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
     var alertBoxTextDiv = document.createElement('div');
 
     var header1 = document.createElement('h1');
-    var header1Text = document.createTextNode(strAlertTitle);
-    header1.appendChild(header1Text);
-
+    var header1Text = '';
+    // Supporting titles with special characters
+    try 
+    {
+        header1.innerHTML = strAlertTitle;
+    }
+    catch (err)
+    {
+        var header1Text = document.createTextNode(strAlertTitle);
+        header1.appendChild(header1Text);
+    }
+    
     var alertTextP = document.createElement('p');
 
     var div = document.createElement("div");
