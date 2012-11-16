@@ -1,4 +1,7 @@
 <?php 
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+
 // We want to deliver a dynamic javascript file
 header( 'Content-Type: application/javascript' ); 
 
@@ -65,8 +68,6 @@ function get_alert()
 
     return $strCacheData;
 }
-
-$strCallback = isset($_GET['c']) ? $_GET['c'] : '';
 
 echo isset($_GET['c']) ? sprintf('%s(%s)',$_GET['c'],get_alert()) : get_alert();
 ?>
