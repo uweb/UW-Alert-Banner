@@ -68,5 +68,5 @@ function get_alert()
 
 $strCallback = isset($_GET['c']) ? $_GET['c'] : '';
 
-echo isset($_GET['c']) ? $_GET['c'].'('.get_alert().')' : get_alert();
+echo isset($_GET['c']) ? sprintf('%s(%s)',$_GET['c'],get_alert()) : get_alert();
 ?>
