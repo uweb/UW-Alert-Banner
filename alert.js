@@ -33,8 +33,9 @@ document.getElementsByTagName('head')[0].appendChild(strScript);
 // displayAlert - grab content to display message 
 function displayAlert(objAlertData)
 {
+
     // Just in case w.com delivers us something bad
-    // or We don't care if there's nothing
+    // or We don't care if the feed is null
     if ((!objAlertData) || (objAlertData.found == 0))
         return false;
 
@@ -49,16 +50,16 @@ function displayAlert(objAlertData)
     // If there is a test alert 
     if ( window.location.hash.indexOf('uwalert') != -1 )
     {
+        // Sometimes we don't get a category from the w.com test feed
         var objFakeCat = new Object();
         var strTestAlertColor = window.location.hash.replace('#','');
         objFakeCat.slug = strTestAlertColor;
         arrCategories['Fake Category'] = objFakeCat;
-        console.log(objFakeCat.slug);
     }
 
     for (strCategory in arrCategories);
     {
-
+        var strSuccess = false;
         var objCategory = arrCategories[strCategory];
         // Quick way to determine color
         if (arrAlertTypes[objCategory.slug] || objFakeCat)
@@ -67,13 +68,14 @@ function displayAlert(objAlertData)
             var strAlertLink     = 'http://emergency.washington.edu/';
             var strAlertMessage  = objAlertData.posts[0].excerpt;
             var strAlertColor    = arrAlertTypes[objCategory.slug] ? arrAlertTypes[objCategory.slug] : objFakeCat.slug;
+            strSuccess           = true;
         }
-
     }
 
     // Banners must have an actual color
-    if (strAlertColor)
+    if (strSuccess)
         addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage);
+
 }
 
 // addElement - display HTML on page right below the body page
