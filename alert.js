@@ -45,27 +45,35 @@ function displayAlert(objAlertData)
         'steel-alert-fyis' : 'uwalert-steel'
     };
 
-    for (strCategory in objAlertData.posts[0].categories ) 
+    var arrCategories = objAlertData.posts[0].categories;
+    // If there is a test alert 
+    if ( window.location.hash.indexOf('uwalert') != -1 )
     {
-        if ( window.location.hash.indexOf('uwalert') != -1 )
-            var strTestAlertColor = window.location.hash.replace('#','');
+        var objFakeCat = new Object();
+        var strTestAlertColor = window.location.hash.replace('#','');
+        objFakeCat.slug = strTestAlertColor;
+        arrCategories['Fake Category'] = objFakeCat;
+        console.log(objFakeCat.slug);
+    }
 
-        var objCategory = objAlertData.posts[0].categories[strCategory];
+    for (strCategory in arrCategories);
+    {
+
+        var objCategory = arrCategories[strCategory];
         // Quick way to determine color
-        if ((arrAlertTypes[objCategory.slug]) || strTestAlertColor)
+        if (arrAlertTypes[objCategory.slug] || objFakeCat)
         {
-            var strAlertTitle  = objAlertData.posts[0].title;
-            var strAlertLink   = 'http://emergency.washington.edu/';
-            var strAlertMessage = objAlertData.posts[0].excerpt;
-            var strAlertColor = arrAlertTypes[objCategory.slug] ? arrAlertTypes[objCategory.slug] : strTestAlertColor;
+            var strAlertTitle    = objAlertData.posts[0].title;
+            var strAlertLink     = 'http://emergency.washington.edu/';
+            var strAlertMessage  = objAlertData.posts[0].excerpt;
+            var strAlertColor    = arrAlertTypes[objCategory.slug] ? arrAlertTypes[objCategory.slug] : objFakeCat.slug;
         }
 
     }
+
     // Banners must have an actual color
     if (strAlertColor)
-    {
         addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage);
-    }
 }
 
 // addElement - display HTML on page right below the body page
