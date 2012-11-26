@@ -57,7 +57,7 @@ function displayAlert(objAlertData)
         arrCategories['Fake Category'] = objFakeCat;
     }
 
-    for (strCategory in arrCategories);
+    for (strCategory in arrCategories)
     {
         var strSuccess = false;
         var objCategory = arrCategories[strCategory];
