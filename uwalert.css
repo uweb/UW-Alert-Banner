@@ -3,18 +3,19 @@
 *	New Alert  									*
 ************************************************/
 
-#uwalert-alert-message div {
+#uwalert-alert-inner {
 	width: 1100px;
 	margin: 0 auto;
 	padding: 5px 0 15px;
 }
-#uwalert-alert-message h1, #uwalert-alert-message p {
+#uw-alert-header, #uwalert-alert-message p {
 	color: white;
 	padding: 5px 100px 0 200px;
 	margin: 0;
 }
-#uwalert-alert-message h1 {
+#uw-alert-header {
 	font-size: 18px;
+	line-height: 1.1em;
 }
 #uwalert-alert-message p {
 	font-size: 13px;
@@ -36,7 +37,7 @@
 
 @media (min-width: 768px) {  
 
-	#uwalert-alert-message div {
+	#uwalert-alert-inner {
 		width: 1100px;
 	}
 	#alert-mini {
@@ -53,12 +54,12 @@
 }
 @media (max-width: 979px) and (min-width: 768px) {
 
-	#uwalert-alert-message h1, #uwalert-alert-message p {
+	#uw-alert-header, #uwalert-alert-message p {
 		color: white;
 		padding: 5px 0 0 200px;
 		margin: 0;
 	}
-	#uwalert-alert-message div {
+	#uwalert-alert-inner {
 		width: 768px;
 	}
 	
@@ -67,17 +68,17 @@
 	.uwalert-steel div, .uwalert-orange div, .uwalert-red div, .uwalert-blue divs {
 		background-position: center -40px;
 	}
-	#uwalert-alert-message div {
+	#uwalert-alert-inner {
 		width: 100%;
 		padding-top: 65px;
 	}
-	#uwalert-alert-message h1, #uwalert-alert-message p {
+	#uw-alert-header, #uwalert-alert-message p {
 		color: white;
 		padding: 5px 15px 5px 30px;
 		margin: 0;
 		border: none;
 	}
-	#uwalert-alert-message h1 {
+	#uw-alert-header {
 		line-height: 18px;
 	}
 }

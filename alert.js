@@ -94,8 +94,10 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
     wrapperDiv.setAttribute('class', strAlertColor);
 
     var alertBoxTextDiv = document.createElement('div');
+    alertBoxTextDiv.setAttribute('id','uwalert-alert-inner');
 
-    var header1 = document.createElement('h1');
+    var header1 = document.createElement('div');
+    header1.setAttribute('id', 'uw-alert-header');
     var header1Text = '';
     // Supporting titles with special characters
     try 
