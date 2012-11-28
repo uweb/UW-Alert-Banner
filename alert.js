@@ -95,6 +95,7 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
 
     var alertBoxTextDiv = document.createElement('div');
     alertBoxTextDiv.setAttribute('id','uwalert-alert-inner');
+    alertBoxTextDiv.setAttribute('class', strAlertColor);
 
     var header1 = document.createElement('div');
     header1.setAttribute('id', 'uw-alert-header');
