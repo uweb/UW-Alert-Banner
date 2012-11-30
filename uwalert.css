@@ -47,6 +47,7 @@ html { margin-top: 94px !important; }
 #uwalert-alert-inner.uwalert-orange  { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 0 -38px; }
 #alert-mini.uwalert-orange  { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 20% -38px #ec7330; background-size: 20%; }
 
+/* Widescreen */
 @media (min-width: 768px) {  
 
   #uwalert-alert-inner {
@@ -64,6 +65,7 @@ html { margin-top: 94px !important; }
     padding: 40px 0 10px 0; 
   }
 }
+/* Normal Desktop */
 @media (max-width: 979px) and (min-width: 768px) {
 
   #uw-alert-header, #uwalert-alert-message p {
@@ -76,6 +78,7 @@ html { margin-top: 94px !important; }
   }
   
 }
+/* Mobile */
 @media (max-width: 767px) {  
   .uwalert-steel div, .uwalert-orange div, .uwalert-red div, .uwalert-blue divs {
     background-position: center -40px;
