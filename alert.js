@@ -107,19 +107,25 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
     alertBoxTextDiv.setAttribute('id','uwalert-alert-inner');
     alertBoxTextDiv.setAttribute('class', strAlertColor);
 
+    var anchorLink = document.createElement('a');
+    anchorLink.setAttribute('href', strAlertLink);
+    anchorLink.setAttribute('title', strAlertTitle);
+
     var header1 = document.createElement('div');
     header1.setAttribute('id', 'uw-alert-header');
-    var header1Text = '';
+
     // Supporting titles with special characters
     try 
     {
-        header1.innerHTML = strAlertTitle;
+        anchorLink.innerHTML = strAlertTitle;
     }
     catch (err)
     {
         var header1Text = document.createTextNode(strAlertTitle);
-        header1.appendChild(header1Text);
+        anchorLink.appendChild(header1Text);
+
     }
+    header1.appendChild(anchorLink);
     
     var alertTextP = document.createElement('p');
 

@@ -80,10 +80,11 @@ html { margin-top: 94px !important; }
 }
 /* Mobile */
 @media (max-width: 767px) {  
-html { margin-top: 180px !important; }
+html { margin-top: 110px !important; }
 
   #uwalert-alert-message {
-    height: 180px;
+    min-width: 0;
+    height: 110px;
   }
   .uwalert-steel div, .uwalert-orange div, .uwalert-red div, .uwalert-blue divs {
     background-position: center -40px;
@@ -92,7 +93,10 @@ html { margin-top: 180px !important; }
     width: 100%;
     padding-top: 65px;
   }
-  #uw-alert-header, #uwalert-alert-message p {
+  #uwalert-alert-message p {
+      display:none;
+  }
+  #uw-alert-header  {
     color: white;
     padding: 5px 15px 5px 30px;
     margin: 0;
