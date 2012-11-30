@@ -85,8 +85,9 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
     // Grab the tag to start the party
     var bodyTag = document.getElementsByTagName('body')[0];
 
-    bodyTag.style.margin = '0px';
-    bodyTag.style.padding = '0px';
+    // TODO Do we still need to do this?
+    // bodyTag.style.margin = '0px';
+    // bodyTag.style.padding = '0px';
     bodyTag.className += ' uw-alert';
 
     var wrapperDiv = document.createElement('div');
