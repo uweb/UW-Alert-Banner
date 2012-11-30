@@ -73,8 +73,17 @@ function displayAlert(objAlertData)
     }
 
     // Banners must have an actual color
-    if (strSuccess)
+    // Don't load anything unless we have something to present
+    if (strSuccess) 
+    {
         addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage);
+        // Code contributed by Dustin Brewer
+        var strCSS = document.createElement('link');
+        strCSS.setAttribute('href', strProto + strDomain + '/UW-Alert-Banner/uwalert.css');
+        strCSS.setAttribute('rel','stylesheet');
+        strCSS.setAttribute('type','text/css');
+        document.getElementsByTagName('head')[0].appendChild(strCSS);
+    }
 
 }
 
@@ -141,11 +150,3 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
 
     bodyTag.insertBefore(wrapperDiv, bodyTag.firstChild);
 } 
-
-// Code contributed by Dustin Brewer
-var strCSS = document.createElement('link');
-strCSS.setAttribute('href', strProto + strDomain + '/UW-Alert-Banner/uwalert.css');
-strCSS.setAttribute('rel','stylesheet');
-strCSS.setAttribute('type','text/css');
-document.getElementsByTagName('head')[0].appendChild(strCSS);
-
