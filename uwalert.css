@@ -1,84 +1,83 @@
-
 /************************************************
-*	New Alert  									*
+*  New Alert          *
 ************************************************/
 
 #uwalert-alert-inner {
-	width: 1100px;
-	margin: 0 auto;
-	padding: 5px 0 15px;
+  width: 1100px;
+  margin: 0 auto;
+  padding: 5px 0 15px;
 }
 #uw-alert-header, #uwalert-alert-message p {
-	color: white;
-	padding: 5px 100px 0 200px;
-	margin: 0;
+  color: white;
+  padding: 5px 100px 0 200px;
+  margin: 0;
 }
 #uw-alert-header {
-	font-size: 18px;
-	line-height: 1.1em;
+  font-size: 18px;
+  line-height: 1.1em;
 }
 #uwalert-alert-message p {
-	font-size: 13px;
-	line-height: 15px;
+  font-size: 13px;
+  line-height: 15px;
 }
 #uwalert-alert-message a { color: #FDE048; }
 
-.uwalert-red 		{ background-color: #C61029;}
-#uwalert-alert-inner.uwalert-red 		{ background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 0 -38px; }
+.uwalert-red   { background-color: #C61029;}
+#uwalert-alert-inner.uwalert-red   { background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 0 -38px; }
 #alert-mini.uwalert-red  { background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 20% -38px #C61029; background-size: 20%; }
 
-.uwalert-steel 		{ background-color: #597286; }
-#uwalert-alert-inner.uwalert-steel  	{ background: url('//www.washington.edu/static/alert_logo_steel.jpg') no-repeat 0 -38px; }
+.uwalert-steel   { background-color: #597286; }
+#uwalert-alert-inner.uwalert-steel  { background: url('//www.washington.edu/static/alert_logo_steel.jpg') no-repeat 0 -38px; }
 #alert-mini.uwalert-steel  { background: url('//www.washington.edu/static/alert_logo_steel.jpg') no-repeat 20% -38px #597286; background-size: 20%; }
 
-.uwalert-orange 		{ background-color: #ec7330;}
-#uwalert-alert-inner.uwalert-orange  	{ background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 0 -38px; }
+.uwalert-orange   { background-color: #ec7330;}
+#uwalert-alert-inner.uwalert-orange  { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 0 -38px; }
 #alert-mini.uwalert-orange  { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 20% -38px #ec7330; background-size: 20%; }
 
 @media (min-width: 768px) {  
 
-	#uwalert-alert-inner {
-		width: 1100px;
-	}
-	#alert-mini {
-       position: fixed;
-       display:none;
-       top: 0;
-       right: 0;
-       left: 0;
-       text-align:center;
-       z-index: 1;
-       color: #fff;
-       padding: 40px 0 10px 0; 
-	}
+  #uwalert-alert-inner {
+    width: 1100px;
+  }
+  #alert-mini {
+    position: fixed;
+    display:none;
+    top: 0;
+    right: 0;
+    left: 0;
+    text-align:center;
+    z-index: 1;
+    color: #fff;
+    padding: 40px 0 10px 0; 
+  }
 }
 @media (max-width: 979px) and (min-width: 768px) {
 
-	#uw-alert-header, #uwalert-alert-message p {
-		color: white;
-		padding: 5px 0 0 200px;
-		margin: 0;
-	}
-	#uwalert-alert-inner {
-		width: 768px;
-	}
-	
+  #uw-alert-header, #uwalert-alert-message p {
+    color: white;
+    padding: 5px 0 0 200px;
+    margin: 0;
+  }
+  #uwalert-alert-inner {
+    width: 768px;
+  }
+  
 }
 @media (max-width: 767px) {  
-	.uwalert-steel div, .uwalert-orange div, .uwalert-red div, .uwalert-blue divs {
-		background-position: center -40px;
-	}
-	#uwalert-alert-inner {
-		width: 100%;
-		padding-top: 65px;
-	}
-	#uw-alert-header, #uwalert-alert-message p {
-		color: white;
-		padding: 5px 15px 5px 30px;
-		margin: 0;
-		border: none;
-	}
-	#uw-alert-header {
-		line-height: 18px;
-	}
+  .uwalert-steel div, .uwalert-orange div, .uwalert-red div, .uwalert-blue divs {
+    background-position: center -40px;
+  }
+  #uwalert-alert-inner {
+    width: 100%;
+    padding-top: 65px;
+  }
+  #uw-alert-header, #uwalert-alert-message p {
+    color: white;
+    padding: 5px 15px 5px 30px;
+    margin: 0;
+    border: none;
+  }
+  #uw-alert-header {
+    line-height: 18px;
+  }
 }
