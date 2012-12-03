@@ -56,9 +56,9 @@ function displayAlert(objAlertData)
         arrCategories['Fake Category'] = objFakeCat;
     }
 
+    var strSuccess = false;
     for (strCategory in arrCategories)
     {
-        var strSuccess = false;
         var objCategory = arrCategories[strCategory];
         // Quick way to determine color
         if (arrAlertTypes[objCategory.slug] || objFakeCat)
