@@ -7,7 +7,7 @@ header( 'Content-Type: application/javascript' );
 
 function get_alert()
 {
-    $strURL = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish';
+    $strURL = 'http://public-api.wordpress.com/rest/v1/sites/uwemergency.wordpress.com/posts/?number=1&type=post&status=publish&category=activate-banner';
     if ((isset($_GET['test'])) && ($_GET['test'] == 'true'))
         $strURL = 'http://public-api.wordpress.com/rest/v1/sites/en.blog.wordpress.com/posts/?number=1&type=post&status=publish';
 
