@@ -18,16 +18,15 @@
  *
  *--------------------------------------------------------------------------*/
 
-var strProto = (window.location.protocol == 'https:') ? 'https://' : 'http://';
-
 // Thanks Dane!
-var test_status = window.location.hash.indexOf('uwalert') === -1 ? 'false' : 'true';
+var strTestStatus = window.location.hash.indexOf('uwalert') === -1 ? 'false' : 'true';
 // Allow for local testing
 var strDomain = (window.location.hostname == 'localhost') ? 'localhost' : 'www.washington.edu/static';
-var strDataFeed = '/UW-Alert-Banner/alert/?c=displayAlert&test='+test_status
+var strDataFeed = '/UW-Alert-Banner/alert/?c=displayAlert&test='+strTestStatus;
+var strBaseUrl = window.location.protocol + '//' + strDomain;
 
 var strScript = document.createElement('script');
-strScript.setAttribute('src', strProto + strDomain + strDataFeed);
+strScript.setAttribute('src', strBaseUrl + strDataFeed);
 document.getElementsByTagName('head')[0].appendChild(strScript); 
 
 // displayAlert - grab content to display message 
