@@ -78,7 +78,7 @@ function displayAlert(objAlertData)
         addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage);
         // Code contributed by Dustin Brewer
         var strCSS = document.createElement('link');
-        strCSS.setAttribute('href', strProto + strDomain + '/UW-Alert-Banner/uwalert.css');
+        strCSS.setAttribute('href', strBaseUrl + '/UW-Alert-Banner/uwalert.css');
         strCSS.setAttribute('rel','stylesheet');
         strCSS.setAttribute('type','text/css');
         document.getElementsByTagName('head')[0].appendChild(strCSS);
