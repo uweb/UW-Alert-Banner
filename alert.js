@@ -14,7 +14,7 @@
  *  </html>
  *
  *  Full docs at:
- *  uw.edu/externalaffairs/uwmarketing/toolkits/uw-alert-banner/
+ *  uw.edu/marketing/uw-alert-banner/
  *
  *--------------------------------------------------------------------------*/
 
