@@ -2,17 +2,10 @@
 *  New Alert          *
 ************************************************/
 
-html { margin-top: 94px !important; }
-
 #uwalert-alert-message {
-  display:block;
-  height: 94px;
-  position: fixed;
-  top: 0;
-  left: 0;
+  min-width: 0;
   width: 100%;
   min-width: 600px;
-  z-index: 99999;
 }
 
 #uwalert-alert-inner {
@@ -80,21 +73,13 @@ html { margin-top: 94px !important; }
 }
 /* Mobile */
 @media (max-width: 767px) {  
-html { margin-top: 110px !important; }
 
-  #uwalert-alert-message {
-    min-width: 0;
-    height: 110px;
-  }
   .uwalert-steel div, .uwalert-orange div, .uwalert-red div, .uwalert-blue divs {
     background-position: center -40px;
   }
   #uwalert-alert-inner {
     width: 100%;
     padding-top: 65px;
-  }
-  #uwalert-alert-message p {
-      display:none;
   }
   #uw-alert-header  {
     color: white;

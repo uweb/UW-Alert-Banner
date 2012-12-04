@@ -82,6 +82,14 @@ function displayAlert(objAlertData)
         strCSS.setAttribute('rel','stylesheet');
         strCSS.setAttribute('type','text/css');
         document.getElementsByTagName('head')[0].appendChild(strCSS);
+        // Because content is loaded dynamically, need to wait to grab the height
+        setTimeout(function() {
+            var strHeight = document.getElementById('uwalert-alert-message').offsetHeight;
+            var bodyTag = document.getElementsByTagName('body')[0];
+            bodyTag.style.backgroundPosition='0px '+strHeight+'px';
+            console.log(strHeight);
+        },10);
+
     }
 
 }
