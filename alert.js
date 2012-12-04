@@ -87,7 +87,6 @@ function displayAlert(objAlertData)
             var strHeight = document.getElementById('uwalert-alert-message').offsetHeight;
             var bodyTag = document.getElementsByTagName('body')[0];
             bodyTag.style.backgroundPosition='0px '+strHeight+'px';
-            console.log(strHeight);
         },10);
 
     }
