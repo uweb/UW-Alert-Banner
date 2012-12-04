@@ -118,7 +118,7 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
     anchorLink.setAttribute('title', strAlertTitle);
 
     var header1 = document.createElement('div');
-    header1.setAttribute('id', 'uw-alert-header');
+    header1.setAttribute('id', 'uwalert-alert-header');
 
     // Supporting titles with special characters
     try 
