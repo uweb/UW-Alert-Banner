@@ -2,8 +2,6 @@
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
-// We want to deliver a dynamic javascript file
-header( 'Content-Type: application/javascript' ); 
 
 function get_alert()
 {
@@ -64,10 +62,29 @@ function get_alert()
     $strCachedDataDecoded = json_decode($strCacheData);
     $strCachedDataDecoded->{'cache_state'} = $strCacheState;
     $strCachedDataDecoded->{'cache_age'} = isset($strCacheAge) ? $strCacheAge : '0';
-    $strCacheData = json_encode($strCachedDataDecoded);
+    $strCacheData = $strCachedDataDecoded;
 
     return $strCacheData;
 }
 
-echo isset($_GET['c']) ? sprintf('%s(%s)',$_GET['c'],get_alert()) : get_alert();
+
+if (isset($_GET['f']))
+    $strFormat = $_GET['f'];
+else
+    $strFormat = 'json';
+
+
+if ($strFormat == 'json')
+{
+    // We want to deliver a dynamic javascript file
+    header( 'Content-Type: application/javascript' ); 
+    $strCacheData = json_encode($strCachedDataDecoded);
+    echo isset($_GET['c']) ? sprintf('%s(%s)',$_GET['c'],get_alert()) : get_alert();
+}
+else
+{
+    // We want to deliver a overkill static text file
+    header( 'Content-Type: plain/text, charset=utf-8' );
+    printf("%s\n<break />\n%s", strip_tags($strDataDecoded->{'posts'}[0]->{'title'}), strip_tags($strDataDecoded->{'posts'}[0]->{'excerpt'}));
+}
 ?>
