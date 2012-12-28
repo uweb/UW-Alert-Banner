@@ -78,8 +78,8 @@ if ($strFormat == 'json')
 {
     // We want to deliver a dynamic javascript file
     header( 'Content-Type: application/javascript' ); 
-    $strCacheData = json_encode($strCachedDataDecoded);
-    echo isset($_GET['c']) ? sprintf('%s(%s)',$_GET['c'],get_alert()) : get_alert();
+    $strCacheData = json_encode(get_alert());
+    echo isset($_GET['c']) ? sprintf('%s(%s)',$_GET['c'],$strCacheData) : $strCacheData;
 }
 else
 {
