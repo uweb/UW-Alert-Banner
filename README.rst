@@ -63,7 +63,7 @@ To test append a #uwalert-red, #uwalert-orange, or #uwalert-steel to your pages 
 
 Example:
   
-Original URL: http://www.washington.edu/static/UW-Alert-Banner-v2/
+Original URL: http://www.washington.edu/static/UW-Alert-Banner/
 
-Test URL: http://www.washington.edu/static/UW-Alert-Banner-v2/#uwalert-red
+Test URL: http://www.washington.edu/static/UW-Alert-Banner/#uwalert-red
 
