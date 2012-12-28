@@ -19,7 +19,5 @@ curl_close($ch);
 
 $strDataDecoded = json_decode($strData);
 
-// var_dump($strDataDecoded);
-
-printf("%s<break />\n%s", $strDataDecoded->{'posts'}[0]->{'title'}, $strDataDecoded->{'posts'}[0]->{'excerpt'});
+printf("%s\n<break />\n%s", strip_tags($strDataDecoded->{'posts'}[0]->{'title'}), strip_tags($strDataDecoded->{'posts'}[0]->{'excerpt'}));
 ?>
