@@ -84,7 +84,9 @@ if ($strFormat == 'json')
 else
 {
     // We want to deliver a overkill static text file
+    $strDataDecoded = get_alert();
     header( 'Content-Type: plain/text, charset=utf-8' );
-    printf("%s\n<break />\n%s", strip_tags($strDataDecoded->{'posts'}[0]->{'title'}), strip_tags($strDataDecoded->{'posts'}[0]->{'excerpt'}));
+    if (isset($strDataDecoded->{'posts'}[0]->{'title'}) || isset($strDataDecoded->{'posts'}[0]->{'excerpt'}))
+        printf("%s\n<break />\n%s", strip_tags($strDataDecoded->{'posts'}[0]->{'title'}), strip_tags($strDataDecoded->{'posts'}[0]->{'excerpt'}));
 }
 ?>
