@@ -21,17 +21,17 @@
 }
 #uwalert-alert-message a { color: #FDE048; }
 
-.uwalert-red         { background-color: #C61029;}
 #uwalert-alert-inner.uwalert-red      { background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 0 -38px; }
 #alert-mini.uwalert-red  { background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 16% 14% #C61029; background-size: 18%; }
+#uwalert-alert-message.uwalert-red         { background-color: #C61029;}
 
-.uwalert-steel       { background-color: #597286; }
 #uwalert-alert-inner.uwalert-steel     { background: url('//www.washington.edu/static/alert_logo_steel.jpg') no-repeat 0 -38px; }
 #alert-mini.uwalert-steel { background: url('//www.washington.edu/static/alert_logo_steel.jpg') no-repeat 16% 14% #597286; background-size: 18%; }
+#uwalert-alert-message.uwalert-steel       { background-color: #597286; }
 
-.uwalert-orange       { background-color: #ec7330;}
 #uwalert-alert-inner.uwalert-orange     { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 0 -38px; }
 #alert-mini.uwalert-orange { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 16% 14% #ec7330; background-size: 18%; }
+#uwalert-alert-message.uwalert-orange       { background-color: #ec7330;}
 
 
 /* Widescreen */
