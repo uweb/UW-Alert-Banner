@@ -147,8 +147,8 @@ function addElement(strAlertTitle,strAlertLink,strAlertColor,strAlertMessage)
 
     var alertLink = document.createElement('a');
     alertLink.setAttribute('href', strAlertLink);
-    alertLink.setAttribute('title', strAlertTitle);
-    var alertLinkText = document.createTextNode('More Info');
+    alertLink.setAttribute('aria-label', 'More info on ' + strAlertTitle);
+    var alertLinkText = document.createTextNode('More info');
     alertLink.appendChild(alertLinkText);
 
     // Start Building the Actual Div

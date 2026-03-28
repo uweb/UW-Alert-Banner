@@ -19,7 +19,7 @@
   font-size: 13px;
   line-height: 15px;
 }
-#uwalert-alert-message a { color: #FDE048; }
+#uwalert-alert-message a { color: #FFF; font-weight: bold; }
 
 #uwalert-alert-inner.uwalert-red      { background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 0 -38px; }
 #alert-mini.uwalert-red  { background: url('//www.washington.edu/static/alert_logo_red.jpg') no-repeat 16% 14% #C61029; background-size: 18%; }
@@ -31,7 +31,7 @@
 
 #uwalert-alert-inner.uwalert-orange     { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 0 -38px; }
 #alert-mini.uwalert-orange { background: url('//www.washington.edu/static/alert_logo_orange.jpg') no-repeat 16% 14% #ec7330; background-size: 18%; }
-#uwalert-alert-message.uwalert-orange       { background-color: #ec7330;}
+#uwalert-alert-message.uwalert-orange       { background-color: #BD4C0F;}
 
 
 /* Widescreen */
